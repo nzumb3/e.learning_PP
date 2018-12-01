@@ -2,28 +2,25 @@ package de.tudarmstadt.informatik.tudas.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.time.DayOfWeek;
 import java.util.Calendar;
 
-@Entity(tableName = "appointments")
+@Entity(tableName = "appointments", foreignKeys = @ForeignKey(entity = AppointmentContent.class, parentColumns = "id", childColumns = "appointment_content_id"))
 public class Appointment {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    /*@ColumnInfo(name = "start_day")
-    private DayOfWeek startDay;
+    @ColumnInfo(name = "start_date")
+    private Calendar startDate;
 
-    @ColumnInfo(name = "end_day")
-    private DayOfWeek endDay;*/
+    @ColumnInfo(name = "end_date")
+    private Calendar endDate;
 
-    @ColumnInfo(name = "start_time")
-    private Calendar startTime;
-
-    @ColumnInfo(name = "end_time")
-    private Calendar endTime;
+    @ColumnInfo(name = "appointment_content_id")
+    private int appointmentContentId;
 
     public int getId() {
         return id;
@@ -33,40 +30,24 @@ public class Appointment {
         this.id = id;
     }
 
-    /*public DayOfWeek getStartDay() {
-        return startDay;
+    public Calendar getStartDate() {
+        return startDate;
     }
 
-    public void setStartDay(DayOfWeek startDay) {
-        this.startDay = startDay;
+    public void setStartDate(Calendar startDate) {
+        this.startDate = startDate;
     }
 
-    public DayOfWeek getEndDay() {
-        return endDay;
+    public Calendar getEndDate() {
+        return endDate;
     }
 
-    public void setEndDay(DayOfWeek endDay) {
-        this.endDay = endDay;
-    }*/
-
-    public Calendar getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Calendar startTime) {
-        this.startTime = startTime;
-    }
-
-    public Calendar getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Calendar endTime) {
-        this.endTime = endTime;
+    public void setEndDate(Calendar endDate) {
+        this.endDate = endDate;
     }
 
     @Override
     public String toString() {
-        return startTime.get(Calendar.HOUR_OF_DAY) + ":" + startTime.get(Calendar.MINUTE) + " - " + endTime.get(Calendar.HOUR_OF_DAY) + ":" + endTime.get(Calendar.MINUTE);
+        return startDate.get(Calendar.HOUR_OF_DAY) + ":" + startDate.get(Calendar.MINUTE) + " - " + endDate.get(Calendar.HOUR_OF_DAY) + ":" + endDate.get(Calendar.MINUTE);
     }
 }

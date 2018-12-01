@@ -5,19 +5,18 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         final StringBuilder output = new StringBuilder();
 
-        mWordViewModel.getAppointments().observe(this, new Observer<List<Appointment>>() {
+        mWordViewModel.getAppointments().observe(this, new Observer<List<AppointmentContent>>() {
             @Override
-            public void onChanged(@Nullable final List<Appointment> words) {
+            public void onChanged(@Nullable final List<AppointmentContent> words) {
                 // Update the cached copy of the words in the adapter.
                 //output.append(words).append('\n');
                 adapter.setAppointment(words);
@@ -80,12 +79,13 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            AppointmentContent content = new AppointmentContent();
             Appointment word = new Appointment();
             /*word.setStartDay(null);
             word.setEndDay(null);*/
-            word.setStartTime(new GregorianCalendar(0, 0, 0, 11, 40));
-            word.setEndTime(new GregorianCalendar(0, 0, 0, 13, 20));
-            mWordViewModel.insert(word);
+            word.setStartDate(new GregorianCalendar(0, 0, 0, 11, 40));
+            word.setEndDate(new GregorianCalendar(0, 0, 0, 13, 20));
+            mWordViewModel.insert(content, word);
         } else {
             Toast.makeText(
                     getApplicationContext(),

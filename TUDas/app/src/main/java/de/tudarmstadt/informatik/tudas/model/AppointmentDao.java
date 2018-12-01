@@ -11,11 +11,8 @@ import java.util.List;
 public interface AppointmentDao {
 
     @Insert
-    void insert(Appointment... appointments);
+    void insert(AppointmentContent content, Appointment... appointments);
 
-    @Query("SELECT * FROM appointments")
-    LiveData<List<Appointment>> getAll();
-
-    @Query("DELETE FROM appointments")
-    void deleteAll();
+    @Query("SELECT * FROM appointment_contents")
+    LiveData<List<AppointmentContent>> getAll();
 }

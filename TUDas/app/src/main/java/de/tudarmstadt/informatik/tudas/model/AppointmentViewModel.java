@@ -10,7 +10,7 @@ public class AppointmentViewModel extends AndroidViewModel {
 
     private AppRepository repository;
 
-    private LiveData<List<Appointment>> appointments;
+    private LiveData<List<AppointmentContent>> appointments;
 
     public AppointmentViewModel(Application application) {
         super(application);
@@ -18,11 +18,11 @@ public class AppointmentViewModel extends AndroidViewModel {
         appointments = repository.getAllAppointsments();
     }
 
-    public LiveData<List<Appointment>> getAppointments() {
+    public LiveData<List<AppointmentContent>> getAppointments() {
         return appointments;
     }
 
-    public void insert(Appointment appointment) {
-        repository.insert(appointment);
+    public void insert(AppointmentContent content, Appointment... appointments) {
+        repository.insert(content, appointments);
     }
 }
