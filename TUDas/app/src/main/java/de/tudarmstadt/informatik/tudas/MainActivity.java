@@ -80,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             AppointmentContent content = new AppointmentContent();
+            content.setTitle("Ttiel");
+            content.setDescription("DSteadfa");
             Appointment word = new Appointment();
             /*word.setStartDay(null);
             word.setEndDay(null);*/
-            word.setStartDate(new GregorianCalendar(0, 0, 0, 11, 40));
-            word.setEndDate(new GregorianCalendar(0, 0, 0, 13, 20));
+            word.setStartDate(new GregorianCalendar(2018, 12, 2, 11, 40));
+            word.setEndDate(new GregorianCalendar(2018, 12, 30, 13, 20));
             mWordViewModel.insert(content, word);
         } else {
             Toast.makeText(

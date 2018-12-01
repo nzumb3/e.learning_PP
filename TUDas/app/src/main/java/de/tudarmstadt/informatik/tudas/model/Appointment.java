@@ -50,4 +50,12 @@ public class Appointment {
     public String toString() {
         return startDate.get(Calendar.HOUR_OF_DAY) + ":" + startDate.get(Calendar.MINUTE) + " - " + endDate.get(Calendar.HOUR_OF_DAY) + ":" + endDate.get(Calendar.MINUTE);
     }
+
+    public int getAppointmentContentId() {
+        return appointmentContentId;
+    }
+
+    public void setAppointmentContentId(int appointmentContentId) {
+        this.appointmentContentId = appointmentContentId;
+    }
 }
