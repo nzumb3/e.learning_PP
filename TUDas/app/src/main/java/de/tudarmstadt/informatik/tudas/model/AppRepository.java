@@ -10,7 +10,7 @@ public class AppRepository {
 
     private AppointmentDao appointmentDao;
 
-    private LiveData<List<Appointment>> allAppointsments;
+    private LiveData<List<AppointmentContent>> allAppointsments;
 
     AppRepository(Application application) {
         TheDatabase database = TheDatabase.getDatabase(application);
@@ -18,15 +18,26 @@ public class AppRepository {
         allAppointsments = appointmentDao.getAll();
     }
 
-    LiveData<List<Appointment>> getAllAppointsments() {
+    LiveData<List<AppointmentContent>> getAllAppointsments() {
         return allAppointsments;
     }
 
-    public void insert(Appointment appointment) {
-        new insertAsyncTask(appointmentDao).execute(appointment);
+    public void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {
+        new insertAsyncTask(appointmentDao).execute(new InsertParameters(appointmentContent, appointments));
     }
 
-    private static class insertAsyncTask extends AsyncTask<Appointment, Void, Void> {
+    private static class InsertParameters {
+        AppointmentContent content;
+
+        Appointment[] appointments;
+
+        InsertParameters(AppointmentContent content, Appointment... appointments) {
+            this.content = content;
+            this.appointments = appointments;
+        }
+    }
+
+    private static class insertAsyncTask extends AsyncTask<InsertParameters, Void, Void> {
 
         private AppointmentDao mAsyncTaskDao;
 
@@ -35,8 +46,8 @@ public class AppRepository {
         }
 
         @Override
-        protected Void doInBackground(final Appointment... params) {
-            mAsyncTaskDao.insert(params[0]);
+        protected Void doInBackground(final InsertParameters... params) {
+            mAsyncTaskDao.insert(params[0].content, params[0].appointments);
             return null;
         }
     }
