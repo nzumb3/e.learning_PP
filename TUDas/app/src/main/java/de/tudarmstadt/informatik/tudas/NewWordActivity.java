@@ -20,22 +20,25 @@ public class NewWordActivity extends AppCompatActivity {
 
     private EditText mEditWordView;
 
-    private Calendar myCalendar = Calendar.getInstance();
-    private EditText edittext;
+    private Calendar start_date_calendar = Calendar.getInstance();
+    private Calendar end_date_calendar = Calendar.getInstance();
+    private EditText start_date_input;
+    private EditText end_date_input;
 
     private void updateLabel() {
-        String myFormat = "dd/MM/yy";
+        String myFormat = "dd.MM.yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.GERMANY);
-        edittext.setText(sdf.format(myCalendar.getTime()));
+        start_date_input.setText(sdf.format(start_date_calendar.getTime()));
+        end_date_input.setText(sdf.format(end_date_calendar.getTime()));
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_word);
-        mEditWordView = findViewById(R.id.edit_word);
+        mEditWordView = findViewById(R.id.appointment_title_input);
 
-        final Button button = findViewById(R.id.button_save);
+        final Button button = findViewById(R.id.button_save_appointment);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent replyIntent = new Intent();
@@ -49,23 +52,40 @@ public class NewWordActivity extends AppCompatActivity {
                 finish();
             }
         });
-        this.edittext = (EditText) findViewById(R.id.date_input);
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        this.start_date_input = (EditText) findViewById(R.id.start_date_input);
+        DatePickerDialog.OnDateSetListener date_start = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                start_date_calendar.set(Calendar.YEAR, year);
+                start_date_calendar.set(Calendar.MONTH, month);
+                start_date_calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
             }
         };
-        edittext.setOnClickListener(new View.OnClickListener() {
+        start_date_input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(NewWordActivity.this, date, myCalendar.get(Calendar.YEAR),
-                        myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(NewWordActivity.this, date_start, start_date_calendar.get(Calendar.YEAR),
+                        start_date_calendar.get(Calendar.MONTH), start_date_calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
+        this.end_date_input = (EditText) findViewById(R.id.end_date_input);
+        DatePickerDialog.OnDateSetListener date_end = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                end_date_calendar.set(Calendar.YEAR, year);
+                end_date_calendar.set(Calendar.MONTH, month);
+                end_date_calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+        end_date_input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(NewWordActivity.this, date_end, end_date_calendar.get(Calendar.YEAR),
+                        end_date_calendar.get(Calendar.MONTH), end_date_calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        updateLabel();
     }
 }

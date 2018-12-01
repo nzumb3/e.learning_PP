@@ -13,7 +13,7 @@ public abstract class AppointmentDao {
 
     @Insert
     void insert(AppointmentContent content, Appointment... appointments) {
-        
+
     }
 
     @Insert
