@@ -16,12 +16,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://mapbox.bintray.com/mapbox" }
 }
 
 dependencies {
     def room_version = "1.1.1"
 
     implementation "android.arch.persistence.room:runtime:$room_version"
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 
     testImplementation "android.arch.persistence.room:testing:$room_version"
@@ -39,4 +49,6 @@ dependencies {
 
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
+
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.23.0'
 }

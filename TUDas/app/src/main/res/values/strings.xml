@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">TUDas</string>
-    <string name="hint_word">Word...</string>
-    <string name="button_save">Save</string>
+    <string name="appointment_title">Title</string>
+    <string name="button_save">Save Appointment</string>
+    <string name="appointment_title_default">What to do?</string>
+    <string name="appointment_description">Description</string>
+    <string name="appointment_description_default">I\'m going to...</string>
+    <string name="start_date">Start Date</string>
+    <string name="pick_date_hint">Pick a date, where you want your appointment to start</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
 </resources>
