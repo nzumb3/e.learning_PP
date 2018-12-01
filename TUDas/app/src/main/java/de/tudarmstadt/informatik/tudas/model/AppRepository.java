@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AppRepository {
@@ -23,7 +24,10 @@ public class AppRepository {
     }
 
     public void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {
-        new insertAsyncTask(appointmentDao).execute(new InsertParameters(appointmentContent, appointments));
+        AppointmentContentWithAppointments data = new AppointmentContentWithAppointments();
+        data.setContent(appointmentContent);
+        data.setAppointments(Arrays.asList(appointments));
+        new insertAsyncTask(appointmentDao).execute(data);
     }
 
     private static class InsertParameters {
@@ -37,7 +41,7 @@ public class AppRepository {
         }
     }
 
-    private static class insertAsyncTask extends AsyncTask<InsertParameters, Void, Void> {
+    private static class insertAsyncTask extends AsyncTask<AppointmentContentWithAppointments, Void, Void> {
 
         private AppointmentDao mAsyncTaskDao;
 
@@ -46,8 +50,8 @@ public class AppRepository {
         }
 
         @Override
-        protected Void doInBackground(final InsertParameters... params) {
-            mAsyncTaskDao.insert(params[0].content, params[0].appointments);
+        protected Void doInBackground(final AppointmentContentWithAppointments... params) {
+            mAsyncTaskDao.insert(params[0]);
             return null;
         }
     }

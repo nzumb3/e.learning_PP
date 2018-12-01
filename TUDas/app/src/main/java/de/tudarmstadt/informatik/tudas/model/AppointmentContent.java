@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class AppointmentContent {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     @ColumnInfo(name = "title")
     private String title;
@@ -16,11 +16,11 @@ public class AppointmentContent {
     @ColumnInfo(name = "description")
     private String description;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -42,6 +42,6 @@ public class AppointmentContent {
 
     @Override
     public String toString() {
-        return title + " - " + (description.length() > 30 ? description.substring(0, 29) + "..." : description);
+        return id + ": " + title + " - " + (description.length() > 30 ? description.substring(0, 29) + "..." : description);
     }
 }
