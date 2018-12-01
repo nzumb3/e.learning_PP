@@ -11,7 +11,7 @@ import java.util.Calendar;
 public class CalendarConverter {
 
     @SuppressLint("SimpleDateFormat")
-    private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
     @TypeConverter
     public Calendar fromString(String date) throws ParseException {
@@ -22,6 +22,6 @@ public class CalendarConverter {
 
     @TypeConverter
     public String fromCalendar(Calendar date) {
-        return format.format(date);
+        return format.format(date.getTime());
     }
 }
