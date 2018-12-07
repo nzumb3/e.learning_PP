@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = new Intent(this, Test.class);
+        startActivity(intent);
+
         mWordViewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
 
         final StringBuilder output = new StringBuilder();
