@@ -22,6 +22,10 @@ public class AppointmentViewModel extends AndroidViewModel {
         return appointments;
     }
 
+    public LiveData<List<AppointmentContentWithAppointments>> getAppointmentsInPeriod(String startDate, String endDate) {
+        return repository.getAppointmentsInPeriod(startDate, endDate);
+    }
+
     public void insert(AppointmentContent content, Appointment... appointments) {
         repository.insert(content, appointments);
     }

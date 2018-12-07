@@ -23,6 +23,10 @@ public class AppRepository {
         return allAppointsments;
     }
 
+    LiveData<List<AppointmentContentWithAppointments>> getAppointmentsInPeriod(String startDate, String endDate) {
+        return appointmentDao.getAppointmentsInPeriod(startDate, endDate);
+    }
+
     public void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {
         AppointmentContentWithAppointments data = new AppointmentContentWithAppointments();
         data.setContent(appointmentContent);

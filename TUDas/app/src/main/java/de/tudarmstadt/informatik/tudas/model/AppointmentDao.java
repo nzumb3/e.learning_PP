@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Transaction;
 import android.util.Log;
 
 import java.util.List;
@@ -35,4 +34,7 @@ public abstract class AppointmentDao {
 
     @Query("SELECT * FROM appointment_contents")
     abstract LiveData<List<AppointmentContent>> getAll();
+
+    @Query("SELECT * FROM appointment_contents JOIN appointments WHERE id = appointment_content_id AND start_date >= :startDate AND end_date <= :endDate")
+    abstract LiveData<List<AppointmentContentWithAppointments>> getAppointmentsInPeriod(String startDate, String endDate);
 }
