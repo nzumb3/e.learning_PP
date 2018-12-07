@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class AppointmentViewModel extends AndroidViewModel {

@@ -13,15 +13,33 @@ public class CalendarConverter {
     @SuppressLint("SimpleDateFormat")
     private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
+    @SuppressLint("SimpleDateFormat")
+    private static final DateFormat inputFormat = new SimpleDateFormat("dd.MM.yy hh:mm");
+
     @TypeConverter
-    public Calendar fromString(String date) throws ParseException {
+    public static Calendar fromString(String date) {
         Calendar output = Calendar.getInstance();
-        output.setTime(format.parse(date));
+        try {
+            output.setTime(format.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return output;
     }
 
     @TypeConverter
-    public String fromCalendar(Calendar date) {
+    public static String fromCalendar(Calendar date) {
         return format.format(date.getTime());
+    }
+
+    public static Calendar fromInputString(String date) {
+        Calendar output = Calendar.getInstance();
+        try {
+            output.setTime(inputFormat.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 }

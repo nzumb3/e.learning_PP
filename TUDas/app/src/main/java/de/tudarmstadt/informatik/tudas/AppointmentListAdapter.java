@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
 
 public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentListAdapter.AppointmentViewHolder> {
 
@@ -24,7 +25,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     }
 
     private final LayoutInflater mInflater;
-    private List<AppointmentContent> mWords; // Cached copy of words
+    private List<AppointmentContentWithAppointments> mWords; // Cached copy of words
 
     AppointmentListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
@@ -37,15 +38,15 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     @Override
     public void onBindViewHolder(AppointmentViewHolder holder, int position) {
         if (mWords != null) {
-            AppointmentContent current = mWords.get(position);
-            holder.appointmentItemView.setText(current.toString());
+            AppointmentContentWithAppointments current = mWords.get(position);
+            holder.appointmentItemView.setText(current.getContent().toString());
         } else {
             // Covers the case of data not being ready yet.
             holder.appointmentItemView.setText("No Word");
         }
     }
 
-    void setAppointment(List<AppointmentContent> words){
+    void setAppointment(List<AppointmentContentWithAppointments> words){
         mWords = words;
         notifyDataSetChanged();
     }

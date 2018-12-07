@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Dao
@@ -35,6 +36,6 @@ public abstract class AppointmentDao {
     @Query("SELECT * FROM appointment_contents")
     abstract LiveData<List<AppointmentContent>> getAll();
 
-    @Query("SELECT * FROM appointment_contents JOIN appointments WHERE id = appointment_content_id AND start_date >= :startDate AND end_date <= :endDate")
+    @Query("SELECT * FROM appointment_contents JOIN appointments WHERE appointment_contents.id = appointment_content_id AND start_date <= :endDate AND end_date >= :startDate")
     abstract LiveData<List<AppointmentContentWithAppointments>> getAppointmentsInPeriod(String startDate, String endDate);
 }

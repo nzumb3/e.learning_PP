@@ -9,4 +9,6 @@
     <string name="pick_date_hint">Pick a date, where you want your appointment to start</string>
     <string name="end_date">End Date</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="appointment_abbrevation">Abbreviation</string>
+    <string name="abbrevation_example">Abbr.</string>
 </resources>
