@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class AppointmentViewModel extends AndroidViewModel {
@@ -12,6 +11,8 @@ public class AppointmentViewModel extends AndroidViewModel {
     private AppRepository repository;
 
     private LiveData<List<AppointmentContent>> appointments;
+
+    public static final int pixelPerMinute = 3;
 
     public AppointmentViewModel(Application application) {
         super(application);
