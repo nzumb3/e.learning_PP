@@ -6,7 +6,10 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 //TODO Take into account, that an appointment could go over multiple days -> duration = whole day
 @Entity(tableName = "appointments", foreignKeys = @ForeignKey(entity = AppointmentContent.class, parentColumns = "id", childColumns = "appointment_content_id"), indices = {@Index("appointment_content_id")})
@@ -52,6 +55,11 @@ public class Appointment {
     @Override
     public String toString() {
         return startDate.get(Calendar.DAY_OF_MONTH) + "." + startDate.get(Calendar.MONTH) + "." + startDate.get(Calendar.YEAR) + " " + startDate.get(Calendar.HOUR_OF_DAY) + ":" + startDate.get(Calendar.MINUTE) + " - " + endDate.get(Calendar.HOUR_OF_DAY) + ":" + endDate.get(Calendar.MINUTE);
+    }
+
+    public String toTimeString() {
+        DateFormat df = new SimpleDateFormat("HH:mm", Locale.GERMANY);
+        return df.format(startDate.getTime()) + " - " + df.format(endDate.getTime());
     }
 
     public long getAppointmentContentId() {

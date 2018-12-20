@@ -16,6 +16,12 @@ public class AppointmentContent {
     @ColumnInfo(name = "description")
     private String description;
 
+    @ColumnInfo(name = "abbreviation")
+    private String abbreviation;
+
+    @ColumnInfo(name = "room")
+    private String room;
+
     public long getId() {
         return id;
     }
@@ -43,5 +49,25 @@ public class AppointmentContent {
     @Override
     public String toString() {
         return id + ": " + title + " - " + (description.length() > 30 ? description.substring(0, 29) + "..." : description);
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setColor() {
+        //TODO
     }
 }
