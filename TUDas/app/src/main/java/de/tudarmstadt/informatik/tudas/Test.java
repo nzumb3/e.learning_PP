@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.tudas;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,20 +14,26 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
+import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
+import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
 
 public class Test extends AppCompatActivity {
 
     private ListView listview;
     private ListView listview2;
+    private AppointmentViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
         setContentView(R.layout.activity_test);
         setupUIViews();
         setupListView();
@@ -38,14 +45,16 @@ public class Test extends AppCompatActivity {
     }
 
     private void setupListView() {
-        String[] title = getResources().getStringArray(R.array.Main);
-        String[] description = getResources().getStringArray(R.array.Description);
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, title, description);
+        Calendar start = Calendar.getInstance();
+        start.set(2018, 12, 26, 0, 0);
+
+        Calendar end = Calendar.getInstance();
+        end.set(2018, 12, 26, 23, 59);
+        List<AppointmentContentWithAppointments> appointments = viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).getValue();
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, appointments);
         listview.setAdapter(simpleAdapter);
-        title = getResources().getStringArray(R.array.Main2);
-        description = getResources().getStringArray(R.array.Description2);
-        SimpleAdapter simpleAdapter2 = new SimpleAdapter(this, title, description);
-        listview2.setAdapter(simpleAdapter2);
+        //SimpleAdapter simpleAdapter2 = new SimpleAdapter(this, title, description);
+        listview2.setAdapter(simpleAdapter);
     }
 
     public class SimpleAdapter extends BaseAdapter{
@@ -79,11 +88,17 @@ public class Test extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null)
-                convertView = layoutInflater.inflate(R.layout.rect, null);
+                convertView = layoutInflater.inflate(R.layout.timetable_entry, null);
 
+            RelativeLayout timetableBlock = (RelativeLayout) convertView.findViewById(R.id.timetableEntryBlock);
             TextView abbr = (TextView) convertView.findViewById(R.id.timetableEntryAbbreviation);
             TextView time = (TextView) convertView.findViewById(R.id.timetableEntryTime);
-            TextView 
+            TextView room = (TextView) convertView.findViewById(R.id.timetableEntryRoom);
+            AppointmentContentWithAppointments appointment = appointments.get(position);
+            time.setText(appointment.getAppointments().get(0).toTimeString());
+            room.setText("RoomPlace");
+            abbr.setText("Krypto");
+            timetableBlock.getLayoutParams().height = appointment.getAppointments().get(0).getDurationBeforeMidnight()*AppointmentViewModel.pixelPerMinute;
 
             /*ImageView timeSlot = (ImageView) convertView.findViewById(R.id.timeSlot);
             ImageView todaySlot = (ImageView) convertView.findViewById(R.id.todaySlot);
@@ -91,7 +106,7 @@ public class Test extends AppCompatActivity {
             timeSlot.setImageResource(R.drawable.beers);
             todaySlot.setImageResource(R.drawable.beers);
             tomorrowSlot.setImageResource(R.drawable.beers);
-            */
+
             title = (TextView) convertView.findViewById(R.id.tvMain);
             desciption = (TextView) convertView.findViewById(R.id.tvDescription);
             imageView = (ImageView) convertView.findViewById(R.id.ivMain);
@@ -112,7 +127,7 @@ public class Test extends AppCompatActivity {
                 //layoutParams.setMargins(10, 50, 10, 0);
                 //convertView.setLayoutParams(layoutParams);
             }
-
+            */
             return convertView;
         }
     }

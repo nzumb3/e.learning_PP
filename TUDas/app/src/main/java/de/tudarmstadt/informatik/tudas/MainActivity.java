@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
             }
         });
-
+        createAppointments();
         Intent intent = new Intent(this, Test.class);
         startActivity(intent);
 
