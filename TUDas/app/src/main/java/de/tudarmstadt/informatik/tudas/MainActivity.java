@@ -47,9 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
             }
         });
-        createAppointments();
-        Intent intent = new Intent(this, Test.class);
-        startActivity(intent);
 
         mWordViewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
 
@@ -83,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
         view.setText(output.toString());*/
         //this.createAppointments();
+
+        Intent intent = new Intent(this, Test.class);
+        startActivity(intent);
     }
 
     public void changeView(){

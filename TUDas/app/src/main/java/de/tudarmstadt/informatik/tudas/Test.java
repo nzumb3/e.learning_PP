@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
@@ -50,8 +51,8 @@ public class Test extends AppCompatActivity {
 
         Calendar end = Calendar.getInstance();
         end.set(2018, 12, 26, 23, 59);
-        List<AppointmentContentWithAppointments> appointments = viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).getValue();
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, appointments);
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this);
+        viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, (words) -> {simpleAdapter.setAppointments(words);});
         listview.setAdapter(simpleAdapter);
         //SimpleAdapter simpleAdapter2 = new SimpleAdapter(this, title, description);
         listview2.setAdapter(simpleAdapter);
@@ -64,10 +65,14 @@ public class Test extends AppCompatActivity {
         private List<AppointmentContentWithAppointments> appointments;
         private ImageView imageView;
 
-        public SimpleAdapter(Context context, List<AppointmentContentWithAppointments> appointments){
+        public SimpleAdapter(Context context){
             mContext = context;
-            this.appointments = appointments;
+            this.appointments = new LinkedList<>();
             layoutInflater = LayoutInflater.from(context);
+        }
+
+        void setAppointments(List<AppointmentContentWithAppointments> appointments){
+            this.appointments = appointments;
         }
 
         @Override
