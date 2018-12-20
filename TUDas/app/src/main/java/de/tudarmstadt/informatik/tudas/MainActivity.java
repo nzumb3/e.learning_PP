@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         AppointmentContent test1 = new AppointmentContent();
         test1.setTitle("Appointment 1");
         test1.setDescription("Hier mache ich etwas. Wühüüü");
+        test1.setAbbreviation("App1");
+        test1.setRoom("S202/C205");
         Appointment app1 = new Appointment();
         Calendar start1 = Calendar.getInstance();
         start1.set(2018,12,24,11,40);
@@ -138,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
         AppointmentContent test2 = new AppointmentContent();
         test2.setTitle("Appointment 2");
         test2.setDescription("Hier mache ich etwas anderes. Wühüüü!?!");
+        test2.setAbbreviation("App2");
+        test2.setRoom("S202/C205");
         Appointment app2 = new Appointment();
         Calendar start2 = Calendar.getInstance();
         start2.set(2018,12,24,17,15);
@@ -150,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
         AppointmentContent test3 = new AppointmentContent();
         test3.setTitle("Appointment 3");
         test3.setDescription("Was gibts zu essen?!!!!!?");
+        test3.setAbbreviation("App3");
+        test3.setRoom("S202/C205");
         Appointment app3 = new Appointment();
         Calendar start3 = Calendar.getInstance();
         start3.set(2018,12,25,11,40);
@@ -162,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
         AppointmentContent test4 = new AppointmentContent();
         test4.setTitle("Appointment 4");
         test4.setDescription("Essen hat geschmeckt! ;)");
+        test4.setAbbreviation("App4");
+        test4.setRoom("S202/C205");
         Appointment app4= new Appointment();
         Calendar start4 = Calendar.getInstance();
         start4.set(2018,12,25,19,0);
