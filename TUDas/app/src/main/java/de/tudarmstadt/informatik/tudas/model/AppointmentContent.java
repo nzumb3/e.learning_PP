@@ -16,8 +16,6 @@ public class AppointmentContent {
     @ColumnInfo(name = "description")
     private String description;
 
-    private String color;
-
     public long getId() {
         return id;
     }

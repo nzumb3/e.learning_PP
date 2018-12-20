@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="120px"
+    android:layout_width="150px"
+    android:id="@+id/timetableEntryBlock">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/timetableEntryAbbreviation"
+        android:text="Krypto"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/timetableEntryRoom"
+        android:id="@+id/timetableEntryTime"
+        android:text="11:20 - 13:30"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/timetableEntryAbbreviation"
+        android:id="@+id/timetableEntryRoom"
+        android:text="S202/120"/>
+
+</RelativeLayout>

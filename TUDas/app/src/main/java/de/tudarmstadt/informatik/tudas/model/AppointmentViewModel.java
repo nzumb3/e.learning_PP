@@ -12,7 +12,7 @@ public class AppointmentViewModel extends AndroidViewModel {
 
     private LiveData<List<AppointmentContent>> appointments;
 
-    public static final int pixelPerMinute = 3;
+    public static final int pixelPerMinute = 6;
 
     public AppointmentViewModel(Application application) {
         super(application);

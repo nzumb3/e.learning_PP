@@ -1,21 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:nestedScrollingEnabled="false"
     tools:context="de.tudarmstadt.informatik.tudas.Test">
 
-    <ListView
-        android:id="@+id/lvMain"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:divider="@null"
-        android:dividerHeight="50dp"></ListView>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+            android:id="@+id/lvToday"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="10dp"
+            android:scrollbars="none"
+            android:gravity="center_horizontal"
+            android:divider="@null"
+            android:dividerHeight="1dp"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+
+        <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+            android:id="@+id/lvTomorrow"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="10dp"
+            android:scrollbars="none"
+            android:gravity="center_horizontal"
+            android:divider="@null"
+            android:dividerHeight="1dp"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+
+    </LinearLayout>
+
+</ScrollView>
