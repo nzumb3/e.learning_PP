@@ -47,7 +47,7 @@ public class Test extends AppCompatActivity {
 
     private void setupListView() {
         Calendar start = Calendar.getInstance();
-        start.set(2018, 12, 26, 0, 0);
+        start.set(2018, 12, 24, 0, 0);
 
         Calendar end = Calendar.getInstance();
         end.set(2018, 12, 26, 23, 59);
@@ -72,7 +72,9 @@ public class Test extends AppCompatActivity {
         }
 
         void setAppointments(List<AppointmentContentWithAppointments> appointments){
+            Log.d("AppointmentsLength", Integer.toString(appointments.size()));
             this.appointments = appointments;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -95,15 +97,19 @@ public class Test extends AppCompatActivity {
             if (convertView == null)
                 convertView = layoutInflater.inflate(R.layout.timetable_entry, null);
 
-            RelativeLayout timetableBlock = (RelativeLayout) convertView.findViewById(R.id.timetableEntryBlock);
-            TextView abbr = (TextView) convertView.findViewById(R.id.timetableEntryAbbreviation);
-            TextView time = (TextView) convertView.findViewById(R.id.timetableEntryTime);
-            TextView room = (TextView) convertView.findViewById(R.id.timetableEntryRoom);
-            AppointmentContentWithAppointments appointment = appointments.get(position);
-            time.setText(appointment.getAppointments().get(0).toTimeString());
-            room.setText("RoomPlace");
-            abbr.setText("Krypto");
-            timetableBlock.getLayoutParams().height = appointment.getAppointments().get(0).getDurationBeforeMidnight()*AppointmentViewModel.pixelPerMinute;
+            Log.d("Zugriff", "Size = " + appointments.size() + ", Position = " + position);
+            if(appointments != null && appointments.size() >= position + 1) {
+                RelativeLayout timetableBlock = convertView.findViewById(R.id.timetableEntryBlock);
+                TextView abbr = convertView.findViewById(R.id.timetableEntryAbbreviation);
+                TextView time = convertView.findViewById(R.id.timetableEntryTime);
+                TextView room = convertView.findViewById(R.id.timetableEntryRoom);
+                AppointmentContentWithAppointments appointment = appointments.get(position);
+                time.setText(appointment.getAppointments().get(0).toTimeString());
+                room.setText(appointment.getContent().getRoom());
+                abbr.setText(appointment.getContent().getAbbreviation());
+                timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
+                timetableBlock.getLayoutParams().height = appointment.getAppointments().get(0).getDurationBeforeMidnight()*AppointmentViewModel.pixelPerMinute;
+            }
 
             /*ImageView timeSlot = (ImageView) convertView.findViewById(R.id.timeSlot);
             ImageView todaySlot = (ImageView) convertView.findViewById(R.id.todaySlot);
