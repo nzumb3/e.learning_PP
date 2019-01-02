@@ -28,8 +28,12 @@ public class AppRepository {
         return appointmentDao.getAppointmentsInPeriod(startDate, endDate);
     }
 
-    LiveData<Calendar> getEarliestBeginningInPeriod(String startDate, String endDate) {
+    LiveData<String> getEarliestBeginningInPeriod(String startDate, String endDate) {
         return appointmentDao.getEarliestBeginningInPeriod(startDate, endDate);
+    }
+
+    LiveData<List<Appointment>> getAppointmentsForDay(String date) {
+        return appointmentDao.getAppointmentsForDay(date);
     }
 
     void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {

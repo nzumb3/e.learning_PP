@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,31 +31,65 @@ import timber.log.Timber;
 
 public class Test extends AppCompatActivity {
 
-    private ListView listview;
-    private ListView listview2;
+    private List<ListView> listViews;
+    //private ListView listview2;
     private AppointmentViewModel viewModel;
+
+    private Calendar startDate;
+    private Calendar endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        startDate = Calendar.getInstance();
+        startDate.set(2018, 11, 24, 0, 0);
+        endDate = Calendar.getInstance();
+        endDate.set(2018, 11, 25, 0, 0);
+
         viewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
+
         setContentView(R.layout.activity_test);
         setupUIViews();
         setupListView();
     }
 
     private void setupUIViews() {
-        listview = (ListView) findViewById(R.id.lvToday);
-        listview2 = (ListView) findViewById(R.id.lvTomorrow);
+        viewModel.setEarliestBeginning(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate)).observe(this, new Observer<Calendar>() {
+            @Override
+            public void onChanged(@Nullable Calendar calendar) {
+                if(calendar != null)
+                    Timber.d("MyLog: " + CalendarConverter.fromCalendar(calendar));
+            }
+        });
+        listViews = new ArrayList<>();
+        listViews.add((ListView) findViewById(R.id.lvToday));
+        listViews.add((ListView) findViewById(R.id.lvTomorrow));
+
+        /*listview = (ListView) findViewById(R.id.lvToday);
+        listview2 = (ListView) findViewById(R.id.lvTomorrow);*/
+    }
+
+    private int getDaysBetweenStartAndEnd() {
+        return (int) ((endDate.getTimeInMillis() - startDate.getTimeInMillis()) / 1000 / 60 / 60 / 24);
     }
 
     private void setupListView() {
-        Calendar start = Calendar.getInstance();
-        start.set(2018, 11, 24, 0, 0);
+        Calendar date = (Calendar) startDate.clone();
+        for(int day = 0; day <= getDaysBetweenStartAndEnd(); day++) {
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this);
+            viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, new Observer<List<Appointment>>() {
+                @Override
+                public void onChanged(@Nullable List<Appointment> appointments) {
+                    Timber.d("MyLog: List for day: " + appointments);
+                    simpleAdapter.setAppointments(appointments);
+                }
+            });
+            listViews.get(day).setAdapter(simpleAdapter);
+            date.add(Calendar.DATE, 1);
+        }
 
-        Calendar end = Calendar.getInstance();
-        end.set(2018, 11, 25, 23, 59);
-        final SimpleAdapter simpleAdapter = new SimpleAdapter(this);
+        //final SimpleAdapter simpleAdapter = new SimpleAdapter(this);
         //viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, (words) -> {simpleAdapter.setAppointments(words);});
         /*viewModel.getAppointmentsForView().observe(this, new Observer<List<Appointment>>() {
 
@@ -65,19 +100,20 @@ public class Test extends AppCompatActivity {
                 Timber.d("MyLog: Called for " + count + " times; appointments = " + appointments + " (" + (appointments != null ? appointments.size() : 0) + ") items");
             }
         });*/
-        viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, new Observer<List<Appointment>>() {
+        /*viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, new Observer<List<Appointment>>() {
 
             private int count = 0;
             @Override
             public void onChanged(@Nullable List<Appointment> appointments) {
                 count++;
-                Timber.d("MyLog: AppointmentsInPeriod called for " + count + " times; appointments = " + appointments + " (" + (appointments != null ? appointments.size() : 0) + ") items");
+                simpleAdapter.setAppointments(appointments);
+                //Timber.d("MyLog: AppointmentsInPeriod called for " + count + " times; appointments = " + appointments + " (" + (appointments != null ? appointments.size() : 0) + ") items");
             }
         });
         //viewModel.getEarliestBeginningInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, (calendar) -> {simpleAdapter.setEarliestBeginning(calendar);});
         listview.setAdapter(simpleAdapter);
         //SimpleAdapter simpleAdapter2 = new SimpleAdapter(this, title, description);
-        listview2.setAdapter(simpleAdapter);
+        listview2.setAdapter(simpleAdapter);*/
     }
 
     public class SimpleAdapter extends BaseAdapter{

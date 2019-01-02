@@ -95,7 +95,7 @@ public abstract class TheDatabase extends RoomDatabase {
             test3.setRoom("S101/A101");
             Appointment app3 = new Appointment();
             Calendar start3 = Calendar.getInstance();
-            start3.set(2018,11,25,11,40);
+            start3.set(2018,11,25,8,00);
             Calendar end3 = Calendar.getInstance();
             end3.set(2018,11,25,12, 15);
             app3.setStartDate(start3);

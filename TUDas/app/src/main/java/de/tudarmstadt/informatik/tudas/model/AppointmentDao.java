@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RawQuery;
 
 import java.util.Calendar;
 import java.util.List;
@@ -44,6 +45,9 @@ public abstract class AppointmentDao {
     @Query("SELECT * FROM appointments")
     abstract LiveData<List<Appointment>> getAppointmentsInPeriod();
 
-    @Query("SELECT MIN(start_date) FROM appointments WHERE start_date <= :endDate AND end_date >= :startDate")
-    abstract LiveData<Calendar> getEarliestBeginningInPeriod(String startDate, String endDate);
+    @Query("SELECT MIN(TIME(start_date)) FROM appointments WHERE DATE(start_date) <= DATE(:endDate) AND end_date >= DATE(:startDate)")
+    abstract LiveData<String> getEarliestBeginningInPeriod(String startDate, String endDate);
+
+    @Query("SELECT * FROM appointments WHERE DATE(start_date) == :date OR DATE(end_date) == :date")
+    abstract LiveData<List<Appointment>> getAppointmentsForDay(String date);
 }

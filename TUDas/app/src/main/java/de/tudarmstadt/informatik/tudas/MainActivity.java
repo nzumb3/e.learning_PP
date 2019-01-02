@@ -60,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
         Calendar endDate = Calendar.getInstance();
         endDate.set(2018, 12, 26, 23, 59);
 
-        mWordViewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate)).observe(this, new Observer<List<Appointment>>() {
+        /*mWordViewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate)).observe(this, new Observer<List<Appointment>>() {
             @Override
             public void onChanged(@Nullable final List<Appointment> words) {
                 // Update the cached copy of the words in the adapter.
                 //output.append(words).append('\n');
                 //adapter.setAppointment(words);
             }
-        });
+        });*/
 
         /*mWordViewModel.getAppointments().observe(this, new Observer<List<AppointmentContent>>() {
             @Override
