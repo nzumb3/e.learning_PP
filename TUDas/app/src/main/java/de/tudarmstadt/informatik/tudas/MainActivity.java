@@ -23,6 +23,7 @@ import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
 import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.plant(new Timber.DebugTree());
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final AppointmentListAdapter adapter = new AppointmentListAdapter(this);
@@ -58,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
         Calendar endDate = Calendar.getInstance();
         endDate.set(2018, 12, 26, 23, 59);
 
-        mWordViewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate)).observe(this, new Observer<List<AppointmentContentWithAppointments>>() {
+        mWordViewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate)).observe(this, new Observer<List<Appointment>>() {
             @Override
-            public void onChanged(@Nullable final List<AppointmentContentWithAppointments> words) {
+            public void onChanged(@Nullable final List<Appointment> words) {
                 // Update the cached copy of the words in the adapter.
                 //output.append(words).append('\n');
-                adapter.setAppointment(words);
+                //adapter.setAppointment(words);
             }
         });
 

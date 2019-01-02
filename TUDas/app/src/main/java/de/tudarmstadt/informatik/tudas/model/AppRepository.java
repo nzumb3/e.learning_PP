@@ -12,38 +12,31 @@ public class AppRepository {
 
     private AppointmentDao appointmentDao;
 
-    private LiveData<List<AppointmentContent>> allAppointsments;
+    private LiveData<List<AppointmentContent>> allAppointments;
 
     AppRepository(Application application) {
         TheDatabase database = TheDatabase.getDatabase(application);
         appointmentDao = database.appointmentDao();
-        allAppointsments = appointmentDao.getAll();
+        allAppointments = appointmentDao.getAll();
     }
 
-    LiveData<List<AppointmentContent>> getAllAppointsments() {
-        return allAppointsments;
+    LiveData<List<AppointmentContent>> getAllAppointments() {
+        return allAppointments;
     }
 
-    LiveData<List<AppointmentContentWithAppointments>> getAppointmentsInPeriod(String startDate, String endDate) {
+    LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate) {
         return appointmentDao.getAppointmentsInPeriod(startDate, endDate);
     }
 
-    public void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {
+    LiveData<Calendar> getEarliestBeginningInPeriod(String startDate, String endDate) {
+        return appointmentDao.getEarliestBeginningInPeriod(startDate, endDate);
+    }
+
+    void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {
         AppointmentContentWithAppointments data = new AppointmentContentWithAppointments();
         data.setContent(appointmentContent);
         data.setAppointments(Arrays.asList(appointments));
         new insertAsyncTask(appointmentDao).execute(data);
-    }
-
-    private static class InsertParameters {
-        AppointmentContent content;
-
-        Appointment[] appointments;
-
-        InsertParameters(AppointmentContent content, Appointment... appointments) {
-            this.content = content;
-            this.appointments = appointments;
-        }
     }
 
     private static class insertAsyncTask extends AsyncTask<AppointmentContentWithAppointments, Void, Void> {

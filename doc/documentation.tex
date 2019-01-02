@@ -83,5 +83,11 @@ h_s = \max\{h_s \in \{0, \dots, 23\}: \forall a \in A_f: h_s \leq \hour(\start(a
 				\begin{align}
 h_e = \min\{h_e \in \{0, \dots, 23\}: \forall a \in A_f: h_e \geq \hour(\getEnd(a)) \}
 				\end{align}
+			
+			\subsection{Positionierung der Termine im Stundenplan}
+				Die Termine sollen in einem tabellenartigen Format angezeigt werden. Dabei soll jede Spalte der Tabelle einen Tag repräsentieren. Innerhalb eines Tages sollen die Termine untereinander angezeigt werden. Programmtechnisch wird jeder Tag über ein Layout beschrieben, dem Elemente vertikal hinzugefügt werden können. Für Zeiten, zu denen kein Termin existiert, wird dem Layout ein leeres Feld hinzugefügt. Damit beschränkt sich die korrekte Positionierung der Termine auf das Berechnen der Höhen der einzelnen Elemente. Dazu wird eine Konstante $L$ eingeführt, die die Anzahl der Pixel pro Minute angibt. Die Dauer eines Termins wird dann in Minuten berechnet und mit der Konstante multipliziert, um die entsprechende Höhe zu berechnen. Für die Anzeige der Termine eines Tages sind also folgende Schritte notwendig:
+				\begin{enumerate}
+					\item Laden der Termine des Tages $d$ als geordnete Menge $A_d$ nach ihren Anfangszeitpunkten.
+				\end{enumerate}
 
 \end{document}

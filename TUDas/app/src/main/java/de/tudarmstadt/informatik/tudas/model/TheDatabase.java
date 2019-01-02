@@ -26,7 +26,7 @@ public abstract class TheDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TheDatabase.class, "tudas_database")
-                            .addCallback(sRoomDatabaseCallback)
+                            //.addCallback(sRoomDatabaseCallback)
                             .build();
                 }
             }
@@ -61,9 +61,9 @@ public abstract class TheDatabase extends RoomDatabase {
             test1.setRoom("S202/C205");
             Appointment app1 = new Appointment();
             Calendar start1 = Calendar.getInstance();
-            start1.set(2018,12,24,11,40);
+            start1.set(2018,11,24,11,40);
             Calendar end1 = Calendar.getInstance();
-            end1.set(2018,12,24,13, 10);
+            end1.set(2018,11,24,13, 10);
             app1.setStartDate(start1);
             app1.setEndDate(end1);
             AppointmentContentWithAppointments input1 = new AppointmentContentWithAppointments();
@@ -78,9 +78,9 @@ public abstract class TheDatabase extends RoomDatabase {
             test2.setRoom("S103/220");
             Appointment app2 = new Appointment();
             Calendar start2 = Calendar.getInstance();
-            start2.set(2018,12,24,17,15);
+            start2.set(2018,11,24,17,15);
             Calendar end2 = Calendar.getInstance();
-            end2.set(2018, 12, 24, 18, 55);
+            end2.set(2018, 11, 24, 18, 55);
             app2.setStartDate(start2);
             app2.setEndDate(end2);
             AppointmentContentWithAppointments input2 = new AppointmentContentWithAppointments();
@@ -95,9 +95,9 @@ public abstract class TheDatabase extends RoomDatabase {
             test3.setRoom("S101/A101");
             Appointment app3 = new Appointment();
             Calendar start3 = Calendar.getInstance();
-            start3.set(2018,12,25,11,40);
+            start3.set(2018,11,25,11,40);
             Calendar end3 = Calendar.getInstance();
-            end3.set(2018,12,25,12, 15);
+            end3.set(2018,11,25,12, 15);
             app3.setStartDate(start3);
             app3.setEndDate(end3);
             AppointmentContentWithAppointments input3 = new AppointmentContentWithAppointments();
@@ -112,9 +112,9 @@ public abstract class TheDatabase extends RoomDatabase {
             test4.setRoom("S308/311");
             Appointment app4= new Appointment();
             Calendar start4 = Calendar.getInstance();
-            start4.set(2018,12,25,19,0);
+            start4.set(2018,11,25,19,0);
             Calendar end4 = Calendar.getInstance();
-            end4.set(2018,12,26,8,0);
+            end4.set(2018,11,26,8,0);
             app4.setStartDate(start4);
             app4.setEndDate(end4);
             AppointmentContentWithAppointments input4 = new AppointmentContentWithAppointments();

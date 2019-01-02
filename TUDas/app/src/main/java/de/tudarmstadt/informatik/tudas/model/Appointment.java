@@ -1,8 +1,10 @@
 package de.tudarmstadt.informatik.tudas.model;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -26,6 +28,9 @@ public class Appointment {
 
     @ColumnInfo(name = "appointment_content_id")
     private long appointmentContentId;
+
+    @Embedded(prefix = "content_")
+    private AppointmentContent appointmentContent;
 
     public long getId() {
         return id;
@@ -70,6 +75,14 @@ public class Appointment {
         this.appointmentContentId = appointmentContentId;
     }
 
+    public AppointmentContent getAppointmentContent() {
+        return appointmentContent;
+    }
+
+    public void setAppointmentContent(AppointmentContent appointmentContent) {
+        this.appointmentContent = appointmentContent;
+    }
+
     /**
      * Returns the duration of this appointment in minutes before midnight.
      * @return
@@ -109,7 +122,7 @@ public class Appointment {
                 startDate.get(Calendar.DAY_OF_MONTH) == endDate.get(Calendar.DAY_OF_MONTH);
     }
 
-    private static int millisToMinute(long millis) {
+    public static int millisToMinute(long millis) {
         return (int) (millis / 1000 / 60);
     }
 }

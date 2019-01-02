@@ -1,7 +1,9 @@
 package de.tudarmstadt.informatik.tudas;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -21,9 +23,10 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
+import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
 import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
+import timber.log.Timber;
 
 public class Test extends AppCompatActivity {
 
@@ -47,12 +50,31 @@ public class Test extends AppCompatActivity {
 
     private void setupListView() {
         Calendar start = Calendar.getInstance();
-        start.set(2018, 12, 24, 0, 0);
+        start.set(2018, 11, 24, 0, 0);
 
         Calendar end = Calendar.getInstance();
-        end.set(2018, 12, 26, 23, 59);
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this);
-        viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, (words) -> {simpleAdapter.setAppointments(words);});
+        end.set(2018, 11, 25, 23, 59);
+        final SimpleAdapter simpleAdapter = new SimpleAdapter(this);
+        //viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, (words) -> {simpleAdapter.setAppointments(words);});
+        /*viewModel.getAppointmentsForView().observe(this, new Observer<List<Appointment>>() {
+
+            private int count = 0;
+            @Override
+            public void onChanged(@Nullable List<Appointment> appointments) {
+                count++;
+                Timber.d("MyLog: Called for " + count + " times; appointments = " + appointments + " (" + (appointments != null ? appointments.size() : 0) + ") items");
+            }
+        });*/
+        viewModel.getAppointmentsInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, new Observer<List<Appointment>>() {
+
+            private int count = 0;
+            @Override
+            public void onChanged(@Nullable List<Appointment> appointments) {
+                count++;
+                Timber.d("MyLog: AppointmentsInPeriod called for " + count + " times; appointments = " + appointments + " (" + (appointments != null ? appointments.size() : 0) + ") items");
+            }
+        });
+        //viewModel.getEarliestBeginningInPeriod(CalendarConverter.fromCalendar(start), CalendarConverter.fromCalendar(end)).observe(this, (calendar) -> {simpleAdapter.setEarliestBeginning(calendar);});
         listview.setAdapter(simpleAdapter);
         //SimpleAdapter simpleAdapter2 = new SimpleAdapter(this, title, description);
         listview2.setAdapter(simpleAdapter);
@@ -62,8 +84,9 @@ public class Test extends AppCompatActivity {
 
         private Context mContext;
         private LayoutInflater layoutInflater;
-        private List<AppointmentContentWithAppointments> appointments;
+        private List<Appointment> appointments;
         private ImageView imageView;
+        //private Calendar earliestBeginning;
 
         public SimpleAdapter(Context context){
             mContext = context;
@@ -71,11 +94,16 @@ public class Test extends AppCompatActivity {
             layoutInflater = LayoutInflater.from(context);
         }
 
-        void setAppointments(List<AppointmentContentWithAppointments> appointments){
-            Log.d("AppointmentsLength", Integer.toString(appointments.size()));
+        void setAppointments(List<Appointment> appointments){
             this.appointments = appointments;
             notifyDataSetChanged();
         }
+
+        /*void setEarliestBeginning(Calendar earliestBeginning) {
+            this.earliestBeginning = (Calendar) earliestBeginning.clone();
+            this.earliestBeginning.set(Calendar.MINUTE, 0);
+            notifyDataSetChanged();
+        }*/
 
         @Override
         public int getCount() {
@@ -97,18 +125,20 @@ public class Test extends AppCompatActivity {
             if (convertView == null)
                 convertView = layoutInflater.inflate(R.layout.timetable_entry, null);
 
-            Log.d("Zugriff", "Size = " + appointments.size() + ", Position = " + position);
-            if(appointments != null && appointments.size() >= position + 1) {
+            if(/*earliestBeginning != null && */appointments != null && appointments.size() >= position + 1) {
                 RelativeLayout timetableBlock = convertView.findViewById(R.id.timetableEntryBlock);
                 TextView abbr = convertView.findViewById(R.id.timetableEntryAbbreviation);
                 TextView time = convertView.findViewById(R.id.timetableEntryTime);
                 TextView room = convertView.findViewById(R.id.timetableEntryRoom);
-                AppointmentContentWithAppointments appointment = appointments.get(position);
-                time.setText(appointment.getAppointments().get(0).toTimeString());
-                room.setText(appointment.getContent().getRoom());
-                abbr.setText(appointment.getContent().getAbbreviation());
+
+                Appointment appointment = appointments.get(position);
+
+                time.setText(appointment.toTimeString());
+                room.setText(appointment.getAppointmentContent().getRoom());
+                abbr.setText(appointment.getAppointmentContent().getAbbreviation());
+
                 timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-                timetableBlock.getLayoutParams().height = appointment.getAppointments().get(0).getDurationBeforeMidnight()*AppointmentViewModel.pixelPerMinute;
+                timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight()*AppointmentViewModel.pixelPerMinute;
             }
 
             /*ImageView timeSlot = (ImageView) convertView.findViewById(R.id.timeSlot);
