@@ -22,6 +22,9 @@ public class AppointmentContent {
     @ColumnInfo(name = "room")
     private String room;
 
+    @ColumnInfo(name = "color")
+    private String color;
+
     public long getId() {
         return id;
     }
@@ -67,7 +70,11 @@ public class AppointmentContent {
         return room;
     }
 
-    public void setColor() {
-        //TODO
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
     }
 }
