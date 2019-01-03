@@ -22,6 +22,7 @@ import java.util.List;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
 import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
+import timber.log.Timber;
 
 public class Test extends AppCompatActivity {
 
@@ -93,6 +94,7 @@ public class Test extends AppCompatActivity {
 
         public void setTimeslots(List<Calendar> calendars){
             hourCalendars = calendars;
+            Timber.d("MyLog: timeslots = " + CalendarConverter.fromCalendar(calendars.get(calendars.size() - 1)));
             notifyDataSetChanged();
         }
 
@@ -116,7 +118,7 @@ public class Test extends AppCompatActivity {
             if (convertView == null)
                 convertView = layoutInflater.inflate(R.layout.timeslot_layout, null);
 
-            if(hourCalendars != null && hourCalendars.size() > position + 1){
+            if(hourCalendars != null && hourCalendars.size() >= position + 1){
                 RelativeLayout timeslotBlock = convertView.findViewById(R.id.timeslotBlock);
                 TextView time = convertView.findViewById(R.id.timeslotText);
 

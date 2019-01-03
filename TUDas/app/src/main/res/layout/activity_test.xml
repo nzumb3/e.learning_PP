@@ -11,9 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:divider="@color/GREY"
-        android:showDividers="middle">
+        android:orientation="horizontal">
 
         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
             android:id="@+id/lvTimeSlots"

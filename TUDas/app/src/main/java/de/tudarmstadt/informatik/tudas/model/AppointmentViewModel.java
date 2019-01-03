@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class AppointmentViewModel extends AndroidViewModel {
 
     private AppRepository repository;
@@ -91,9 +93,11 @@ public class AppointmentViewModel extends AndroidViewModel {
                 for(int hour = firstHour.get(Calendar.HOUR) + 1; hour < 24; hour++) {
                     Calendar hourToAdd = (Calendar) firstHour.clone();
                     hourToAdd.set(Calendar.HOUR, hour);
+                    //Timber.d("MyLog: hourToAdd = " + CalendarConverter.fromCalendar(hourToAdd));
                     output.add(hourToAdd);
                 }
             }
+            //Timber.d("MyLog: Num of elements = " + output.size());
             return output;
         }));
     }
