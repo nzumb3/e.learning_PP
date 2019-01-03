@@ -11,44 +11,50 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:divider="@color/GREY"
+        android:showDividers="middle">
 
         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
             android:id="@+id/lvTimeSlots"
-            android:layout_width="60dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="0dp"
-            android:layout_marginBottom="10dp"
-            android:scrollbars="none">
+            android:layout_marginBottom="0dp"
+            android:scrollbars="none"
+            android:dividerHeight="0dp"
+            android:layout_weight="1">
         </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 
         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
             android:id="@+id/lvToday"
-            android:layout_width="120dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="0dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:scrollbars="none"
             android:gravity="center_horizontal"
             android:divider="@null"
-            android:dividerHeight="1dp"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+            android:dividerHeight="0dp"
+            android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 
         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
             android:id="@+id/lvTomorrow"
-            android:layout_width="120dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="0dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:scrollbars="none"
             android:gravity="center_horizontal"
             android:divider="@null"
-            android:dividerHeight="1dp"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+            android:dividerHeight="0dp"
+            android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 
     </LinearLayout>
 

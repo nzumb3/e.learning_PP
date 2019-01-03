@@ -76,7 +76,7 @@ public class Test extends AppCompatActivity {
             date.add(Calendar.DATE, 1);
         }
         TimeSlotAdapter adapter= new TimeSlotAdapter(this);
-        //TODO: Observe List
+        viewModel.getTimeSlots().observe(this, adapter::setTimeslots);
         timeSlotView.setAdapter(adapter);
     }
 
@@ -89,6 +89,11 @@ public class Test extends AppCompatActivity {
         TimeSlotAdapter(Context context){
             hourCalendars = new LinkedList<>();
             layoutInflater = LayoutInflater.from(context);
+        }
+
+        public void setTimeslots(List<Calendar> calendars){
+            hourCalendars = calendars;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -121,6 +126,7 @@ public class Test extends AppCompatActivity {
 
                 timeslotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
                 timeslotBlock.getLayoutParams().height = 60*AppointmentViewModel.pixelPerMinute;
+                timeslotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
             }
 
             return convertView;
@@ -179,6 +185,7 @@ public class Test extends AppCompatActivity {
 
                 timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
                 timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight()*AppointmentViewModel.pixelPerMinute;
+                timetableBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
             }
 
             return convertView;
