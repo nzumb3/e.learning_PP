@@ -135,4 +135,16 @@ public class AppointmentViewModel extends AndroidViewModel {
         output.set(Calendar.HOUR, Math.max(0, earliestBeginning.get(Calendar.HOUR) - 1));
         return output;
     }
+
+    private static String getComplementaryColor(String hexColor) {
+        if(hexColor.indexOf('#') == 0)
+            hexColor = hexColor.substring(1);
+
+        if(hexColor.length() == 3)
+            hexColor = (new StringBuilder()).append(hexColor.charAt(0)).append(hexColor.charAt(0)).append(hexColor.charAt(1)).append(hexColor.charAt(1)).append(hexColor.charAt(2)).append(hexColor.charAt(2)).toString();
+
+        int r = Integer.parseInt(hexColor.substring(0, 2), 16), g = Integer.parseInt(hexColor.substring(2, 4), 16), b = Integer.parseInt(hexColor.substring(4, 6), 16);
+
+        return (r * 0.299 + g * 0.587 + b * 0.114) > 186 ? "#000000" : "#FFFFFF";
+    }
 }
