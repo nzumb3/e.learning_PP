@@ -9,6 +9,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,6 +80,21 @@ public class AppointmentViewModel extends AndroidViewModel {
             }
         }));
         return appointmentsForView;
+    }
+
+    public LiveData<List<Calendar>> getTimeSlots() {
+        return Transformations.map(earliestBeginning, (calendar -> {
+            List<Calendar> output = new ArrayList<>();
+            if(earliestBeginning != null && earliestBeginning.getValue() != null) {
+                Calendar firstHour = getMaxTimeBeforeAppointment(earliestBeginning.getValue());
+                output.add(firstHour);
+                for(int hour = firstHour.get(Calendar.HOUR) + 1; hour < 24; hour++) {
+                    firstHour.set(Calendar.HOUR, hour);
+                    output.add(firstHour);
+                }
+            }
+            return output;
+        }));
     }
 
     private static List<Appointment> fillList(List<Appointment> appointments, Calendar earliestBeginning) {
