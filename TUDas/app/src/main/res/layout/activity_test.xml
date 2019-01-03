@@ -8,6 +8,19 @@
     android:nestedScrollingEnabled="false"
     tools:context="de.tudarmstadt.informatik.tudas.Test">
 
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clipChildren="false">
+
+    <View
+        android:id="@+id/currentTimeSlider"
+        android:layout_width="fill_parent"
+        android:layout_height="4px"
+        android:background="#AAFF0000"
+        android:layout_marginTop="50px"
+        android:elevation="0.5mm"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +36,7 @@
             android:layout_marginBottom="0dp"
             android:scrollbars="none"
             android:dividerHeight="0dp"
+            android:divider="@null"
             android:layout_weight="1">
         </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 
@@ -55,5 +69,6 @@
             android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 
     </LinearLayout>
+</RelativeLayout>
 
 </ScrollView>

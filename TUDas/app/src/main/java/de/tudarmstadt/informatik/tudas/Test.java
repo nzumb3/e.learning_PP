@@ -3,6 +3,8 @@ package de.tudarmstadt.informatik.tudas;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
@@ -47,6 +51,16 @@ public class Test extends AppCompatActivity {
         setContentView(R.layout.activity_test);
         setupUIViews();
         setupListView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
     }
 
     private void setupUIViews() {
@@ -79,6 +93,14 @@ public class Test extends AppCompatActivity {
         TimeSlotAdapter adapter= new TimeSlotAdapter(this);
         viewModel.getTimeSlots().observe(this, adapter::setTimeslots);
         timeSlotView.setAdapter(adapter);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+                handler.postDelayed(this, 60*1000);
+            }
+        }, 60*1000);
     }
 
     private class TimeSlotAdapter extends BaseAdapter{
@@ -92,9 +114,32 @@ public class Test extends AppCompatActivity {
             layoutInflater = LayoutInflater.from(context);
         }
 
+        private int getRelativeSliderPosition(Calendar current, Calendar beginning){
+            int currentMinutes = current.get(Calendar.HOUR_OF_DAY)*60+current.get(Calendar.MINUTE);
+            int earlyMinutes = beginning.get(Calendar.HOUR_OF_DAY)*60+beginning.get(Calendar.MINUTE);
+            return currentMinutes-earlyMinutes;
+        }
+
+        private void setTimeSlider(){
+            View timeslider = (View) findViewById(R.id.currentTimeSlider);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) timeslider.getLayoutParams();
+            Calendar current = Calendar.getInstance();
+            int sliderPosition = -1;
+            if (hourCalendars != null && hourCalendars.size() > 0){
+
+                sliderPosition = getRelativeSliderPosition(current, hourCalendars.get(0));
+            }
+            if (sliderPosition >= 0) {
+                p.setMargins(0, sliderPosition * AppointmentViewModel.pixelPerMinute, 0, 0);
+                timeslider.setVisibility(View.VISIBLE);
+            }
+            else
+                timeslider.setVisibility(View.INVISIBLE);
+            timeslider.requestLayout();
+        }
+
         public void setTimeslots(List<Calendar> calendars){
             hourCalendars = calendars;
-            Timber.d("MyLog: timeslots = " + CalendarConverter.fromCalendar(calendars.get(calendars.size() - 1)));
             notifyDataSetChanged();
         }
 
@@ -118,17 +163,28 @@ public class Test extends AppCompatActivity {
             if (convertView == null)
                 convertView = layoutInflater.inflate(R.layout.timeslot_layout, null);
 
-            if(hourCalendars != null && hourCalendars.size() >= position + 1){
+            if(hourCalendars != null && hourCalendars.size() >= position + 1) {
                 RelativeLayout timeslotBlock = convertView.findViewById(R.id.timeslotBlock);
                 TextView time = convertView.findViewById(R.id.timeslotText);
 
                 Calendar calendar = hourCalendars.get(position);
                 timeslotBlock.setBackgroundColor(Color.WHITE);
                 time.setText(timeFormat.format(calendar.getTime()));
-
+                /*
+                int gridlinePosition = getRelativeSliderPosition(calendar, hourCalendars.get(0));
+                if (gridlinePosition > 0){
+                    Drawable gridline = getResources().getDrawable(R.id.layoutGridLine);
+                    gridline.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, 2));
+                    ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
+                    p.setMargins(0, gridlinePosition*AppointmentViewModel.pixelPerMinute, 0, 0);
+                    gridline.requestLayout();
+                    timeslotBlock.addView(gridline);
+                }
+                */
                 timeslotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-                timeslotBlock.getLayoutParams().height = 60*AppointmentViewModel.pixelPerMinute;
+                timeslotBlock.getLayoutParams().height = 60 * AppointmentViewModel.pixelPerMinute;
                 timeslotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
+                setTimeSlider();
             }
 
             return convertView;
