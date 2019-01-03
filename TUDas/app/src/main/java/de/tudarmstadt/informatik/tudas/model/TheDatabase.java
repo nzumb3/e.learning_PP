@@ -26,7 +26,7 @@ public abstract class TheDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TheDatabase.class, "tudas_database")
-                            //.addCallback(sRoomDatabaseCallback)
+                            .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
             }
@@ -59,6 +59,7 @@ public abstract class TheDatabase extends RoomDatabase {
             test1.setDescription("Hier mache ich etwas. Wühüüü");
             test1.setAbbreviation("App1");
             test1.setRoom("S202/C205");
+            test1.setColor("#FF00FF");
             Appointment app1 = new Appointment();
             Calendar start1 = Calendar.getInstance();
             start1.set(2018,11,24,11,40);
@@ -76,6 +77,7 @@ public abstract class TheDatabase extends RoomDatabase {
             test2.setDescription("Hier mache ich etwas anderes. Wühüüü!?!");
             test2.setAbbreviation("App2");
             test2.setRoom("S103/220");
+            test2.setColor("#FF00FF");
             Appointment app2 = new Appointment();
             Calendar start2 = Calendar.getInstance();
             start2.set(2018,11,24,17,15);
@@ -93,6 +95,7 @@ public abstract class TheDatabase extends RoomDatabase {
             test3.setDescription("Was gibts zu essen?!!!!!?");
             test3.setAbbreviation("App3");
             test3.setRoom("S101/A101");
+            test3.setColor("#FF00FF");
             Appointment app3 = new Appointment();
             Calendar start3 = Calendar.getInstance();
             start3.set(2018,11,25,8,00);
@@ -110,6 +113,7 @@ public abstract class TheDatabase extends RoomDatabase {
             test4.setDescription("Essen hat geschmeckt! ;)");
             test4.setAbbreviation("App4");
             test4.setRoom("S308/311");
+            test4.setColor("#FF00FF");
             Appointment app4= new Appointment();
             Calendar start4 = Calendar.getInstance();
             start4.set(2018,11,25,19,0);

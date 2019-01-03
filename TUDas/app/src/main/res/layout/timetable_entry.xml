@@ -10,7 +10,17 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/timetableEntryAbbreviation"
+        android:layout_above="@id/timetableEntryRoom"
         android:text="Krypto"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/timetableEntryRoom"
+        android:text="S202/120"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,13 +29,5 @@
         android:layout_below="@id/timetableEntryRoom"
         android:id="@+id/timetableEntryTime"
         android:text="11:20 - 13:30"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/timetableEntryAbbreviation"
-        android:id="@+id/timetableEntryRoom"
-        android:text="S202/120"/>
 
 </RelativeLayout>

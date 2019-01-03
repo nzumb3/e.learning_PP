@@ -2,6 +2,7 @@ package de.tudarmstadt.informatik.tudas;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -24,6 +26,7 @@ import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
 public class Test extends AppCompatActivity {
 
     private List<ListView> listViews;
+    private ListView timeSlotView;
     private AppointmentViewModel viewModel;
 
     private Calendar startDate;
@@ -50,6 +53,7 @@ public class Test extends AppCompatActivity {
         listViews = new ArrayList<>();
         listViews.add((ListView) findViewById(R.id.lvToday));
         listViews.add((ListView) findViewById(R.id.lvTomorrow));
+        timeSlotView = (ListView) findViewById(R.id.lvTimeSlots);
     }
 
     private int getDaysBetweenStartAndEnd() {
@@ -70,6 +74,56 @@ public class Test extends AppCompatActivity {
             });*/
             listViews.get(day).setAdapter(simpleAdapter);
             date.add(Calendar.DATE, 1);
+        }
+        TimeSlotAdapter adapter= new TimeSlotAdapter(this);
+        //TODO: Observe List
+        timeSlotView.setAdapter(adapter);
+    }
+
+    private class TimeSlotAdapter extends BaseAdapter{
+
+        private LayoutInflater layoutInflater;
+        private List<Calendar> hourCalendars;
+        private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+        TimeSlotAdapter(Context context){
+            hourCalendars = new LinkedList<>();
+            layoutInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return hourCalendars.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return hourCalendars.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null)
+                convertView = layoutInflater.inflate(R.layout.timeslot_layout, null);
+
+            if(hourCalendars != null && hourCalendars.size() > position + 1){
+                RelativeLayout timeslotBlock = convertView.findViewById(R.id.timeslotBlock);
+                TextView time = convertView.findViewById(R.id.timeslotText);
+
+                Calendar calendar = hourCalendars.get(position);
+                timeslotBlock.setBackgroundColor(Color.WHITE);
+                time.setText(timeFormat.format(calendar.getTime()));
+
+                timeslotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
+                timeslotBlock.getLayoutParams().height = 60*AppointmentViewModel.pixelPerMinute;
+            }
+
+            return convertView;
         }
     }
 
@@ -117,6 +171,7 @@ public class Test extends AppCompatActivity {
                 TextView room = convertView.findViewById(R.id.timetableEntryRoom);
 
                 Appointment appointment = appointments.get(position);
+                timetableBlock.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
 
                 time.setText(appointment.toTimeString());
                 room.setText(appointment.getAppointmentContent().getRoom());

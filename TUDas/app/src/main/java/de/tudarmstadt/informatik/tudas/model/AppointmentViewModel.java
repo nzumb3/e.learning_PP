@@ -87,6 +87,7 @@ public class AppointmentViewModel extends AndroidViewModel {
         emptyContent.setAbbreviation("");
         emptyContent.setDescription("");
         emptyContent.setTitle("");
+        emptyContent.setColor("#FFFFFF");
 
         List<Appointment> outputAppointments = new LinkedList<>();
 

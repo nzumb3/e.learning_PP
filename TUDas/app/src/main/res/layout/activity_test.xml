@@ -14,6 +14,17 @@
         android:orientation="horizontal">
 
         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+            android:id="@+id/lvTimeSlots"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="10dp"
+            android:scrollbars="none">
+        </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+
+        <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
             android:id="@+id/lvToday"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
