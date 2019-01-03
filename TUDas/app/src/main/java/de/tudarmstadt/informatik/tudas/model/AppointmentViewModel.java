@@ -89,8 +89,9 @@ public class AppointmentViewModel extends AndroidViewModel {
                 Calendar firstHour = getMaxTimeBeforeAppointment(earliestBeginning.getValue());
                 output.add(firstHour);
                 for(int hour = firstHour.get(Calendar.HOUR) + 1; hour < 24; hour++) {
-                    firstHour.set(Calendar.HOUR, hour);
-                    output.add(firstHour);
+                    Calendar hourToAdd = (Calendar) firstHour.clone();
+                    hourToAdd.set(Calendar.HOUR, hour);
+                    output.add(hourToAdd);
                 }
             }
             return output;

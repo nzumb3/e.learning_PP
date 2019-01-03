@@ -40,6 +40,9 @@ abstract class AppointmentDao {
     @Query("SELECT MIN(TIME(start_date)) FROM appointments WHERE DATE(start_date) <= DATE(:endDate) AND end_date >= DATE(:startDate)")
     abstract LiveData<String> getEarliestBeginningInPeriod(String startDate, String endDate);
 
+    @Query("SELECT MAX(TIME(end_date)) FROM appointments WHERE DATE(start_date) <= DATE(:endDate) AND end_date >= DATE(:startDate)")
+    abstract LiveData<String> getLatestEndingInPeriod(String startDate, String endDate);
+
     @Query("SELECT * FROM appointments WHERE DATE(start_date) == :date OR DATE(end_date) == :date")
     abstract LiveData<List<Appointment>> getAppointmentsForDay(String date);
 }
