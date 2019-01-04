@@ -3,8 +3,6 @@ package de.tudarmstadt.informatik.tudas;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class NewWordActivity extends AppCompatActivity {
+public class NewAppointmentActivity extends AppCompatActivity {
 
     public static final String EXTRA_TITLE = "appointment_title";
     public static final String EXTRA_DESCRIPTION = "appointment_description";
@@ -41,7 +39,7 @@ public class NewWordActivity extends AppCompatActivity {
         String myTimeFormat;
         SimpleDateFormat dateFormat;
         SimpleDateFormat timeFormat;
-        if (android.text.format.DateFormat.is24HourFormat(NewWordActivity.this)){
+        if (android.text.format.DateFormat.is24HourFormat(NewAppointmentActivity.this)){
             myTimeFormat = "HH:mm";
             this.hour24Format = true;
         } else {
@@ -62,7 +60,7 @@ public class NewWordActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_word);
+        setContentView(R.layout.activity_new_appointment);
         mEditWordView = findViewById(R.id.appointment_title_input);
         descriptionInput = findViewById(R.id.appointment_description_input);
 
@@ -99,7 +97,7 @@ public class NewWordActivity extends AppCompatActivity {
         start_date_input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(NewWordActivity.this, date_start, start_date_calendar.get(Calendar.YEAR),
+                new DatePickerDialog(NewAppointmentActivity.this, date_start, start_date_calendar.get(Calendar.YEAR),
                         start_date_calendar.get(Calendar.MONTH), start_date_calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -116,7 +114,7 @@ public class NewWordActivity extends AppCompatActivity {
         end_date_input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(NewWordActivity.this, date_end, end_date_calendar.get(Calendar.YEAR),
+                new DatePickerDialog(NewAppointmentActivity.this, date_end, end_date_calendar.get(Calendar.YEAR),
                         end_date_calendar.get(Calendar.MONTH), end_date_calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -132,7 +130,7 @@ public class NewWordActivity extends AppCompatActivity {
         start_time_input.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                new TimePickerDialog(NewWordActivity.this, time_start, start_date_calendar.get(Calendar.HOUR_OF_DAY), start_date_calendar.get(Calendar.MINUTE), hour24Format).show();
+                new TimePickerDialog(NewAppointmentActivity.this, time_start, start_date_calendar.get(Calendar.HOUR_OF_DAY), start_date_calendar.get(Calendar.MINUTE), hour24Format).show();
             }
         });
         this.end_time_input = (EditText) findViewById(R.id.end_time_input);
@@ -147,7 +145,7 @@ public class NewWordActivity extends AppCompatActivity {
         end_time_input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                new TimePickerDialog(NewWordActivity.this, time_end, end_date_calendar.get(Calendar.HOUR_OF_DAY), end_date_calendar.get(Calendar.MINUTE), hour24Format).show();
+                new TimePickerDialog(NewAppointmentActivity.this, time_end, end_date_calendar.get(Calendar.HOUR_OF_DAY), end_date_calendar.get(Calendar.MINUTE), hour24Format).show();
             }
         });
         updateLabel();

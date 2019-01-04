@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".TimeTableActivity" />
         <activity android:name=".Test2" />
-        <activity android:name=".NewWordActivity" />
+        <activity android:name=".NewAppointmentActivity" />
     </application>
 
 </manifest>
