@@ -2,12 +2,7 @@ package de.tudarmstadt.informatik.tudas;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,15 +19,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
 import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
-import timber.log.Timber;
 
-public class Test extends AppCompatActivity {
+public class TimeTableActivity extends AppCompatActivity {
 
     private List<ListView> listViews;
     private ListView timeSlotView;
@@ -52,7 +44,7 @@ public class Test extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
 
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_timetable);
         setupUIViews();
         setupListView();
     }

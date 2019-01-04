@@ -1,9 +1,7 @@
 package de.tudarmstadt.informatik.tudas;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,18 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
-import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
-import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
         view.setText(output.toString());*/
         //this.createAppointments();
 
-        Intent intent = new Intent(this, Test.class);
+        Intent intent = new Intent(this, TimeTableActivity.class);
         startActivity(intent);
     }
 
     public void changeView(){
-        Intent intent = new Intent(this, Test.class);
+        Intent intent = new Intent(this, TimeTableActivity.class);
         startActivity(intent);
     }
 
