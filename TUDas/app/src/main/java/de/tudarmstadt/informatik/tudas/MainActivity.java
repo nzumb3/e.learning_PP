@@ -76,11 +76,9 @@ public class MainActivity extends AppCompatActivity {
         view.setText(output.toString());*/
         //this.createAppointments();
 
-        Intent intent = new Intent(this, NewAppointmentActivity.class);
+        //Intent intent = new Intent(this, NewAppointmentActivity.class);
+        Intent intent = new Intent(this, TimeTableActivity.class);
         startActivity(intent);
-
-        //Intent intent = new Intent(this, TimeTableActivity.class);
-        //startActivity(intent);
     }
 
     public void changeView(){

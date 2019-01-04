@@ -23,12 +23,14 @@ import java.util.List;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
 import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
+import timber.log.Timber;
 
 public class TimeTableActivity extends AppCompatActivity {
 
     private List<ListView> listViews;
     private ListView timeSlotView;
     private AppointmentViewModel viewModel;
+    private int titleHeight;
 
     private Calendar startDate;
     private Calendar endDate;
@@ -45,6 +47,9 @@ public class TimeTableActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
 
         setContentView(R.layout.activity_timetable);
+        TextView title = findViewById(R.id.tvTimeFrame);
+        //titleHeight = title.getLayout().getHeight();
+        //Timber.d("MyLog: title Height -> " + titleHeight);
         setupUIViews();
         setupListView();
     }
@@ -127,7 +132,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 sliderPosition = getRelativeSliderPosition(current, hourCalendars.get(0));
             }
             if (sliderPosition >= 0) {
-                p.setMargins(0, sliderPosition * AppointmentViewModel.pixelPerMinute, 0, 0);
+                p.setMargins(0, sliderPosition * AppointmentViewModel.pixelPerMinute + titleHeight, 0, 0);
                 timeslider.setVisibility(View.VISIBLE);
             }
             else
@@ -177,7 +182,7 @@ public class TimeTableActivity extends AppCompatActivity {
                     ));
                     gridline.setBackgroundColor(getResources().getColor(R.color.GREY));
                     ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
-                    p.setMargins(0, gridlinePosition*AppointmentViewModel.pixelPerMinute, 0, 0);
+                    p.setMargins(0, gridlinePosition*AppointmentViewModel.pixelPerMinute+titleHeight, 0, 0);
                     gridline.requestLayout();
                     RelativeLayout timetable = (RelativeLayout) findViewById(R.id.rlTimeTable);
                     timetable.addView(gridline);
