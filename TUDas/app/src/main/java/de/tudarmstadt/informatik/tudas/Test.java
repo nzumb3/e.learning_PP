@@ -2,8 +2,12 @@ package de.tudarmstadt.informatik.tudas;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.Shape;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -170,17 +174,22 @@ public class Test extends AppCompatActivity {
                 Calendar calendar = hourCalendars.get(position);
                 timeslotBlock.setBackgroundColor(Color.WHITE);
                 time.setText(timeFormat.format(calendar.getTime()));
-                /*
+
                 int gridlinePosition = getRelativeSliderPosition(calendar, hourCalendars.get(0));
                 if (gridlinePosition > 0){
-                    Drawable gridline = getResources().getDrawable(R.id.layoutGridLine);
-                    gridline.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, 2));
+                    View gridline = new View(findViewById(R.id.rlTimeTable).getContext());
+                    gridline.setLayoutParams(new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.FILL_PARENT,
+                            2
+                    ));
+                    gridline.setBackgroundColor(getResources().getColor(R.color.GREY));
                     ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
                     p.setMargins(0, gridlinePosition*AppointmentViewModel.pixelPerMinute, 0, 0);
                     gridline.requestLayout();
-                    timeslotBlock.addView(gridline);
+                    RelativeLayout timetable = (RelativeLayout) findViewById(R.id.rlTimeTable);
+                    timetable.addView(gridline);
                 }
-                */
+
                 timeslotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
                 timeslotBlock.getLayoutParams().height = 60 * AppointmentViewModel.pixelPerMinute;
                 timeslotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
@@ -193,12 +202,10 @@ public class Test extends AppCompatActivity {
 
     private class SimpleAdapter extends BaseAdapter{
 
-        //private Context mContext;
         private LayoutInflater layoutInflater;
         private List<Appointment> appointments;
 
         SimpleAdapter(Context context){
-            //mContext = context;
             appointments = new LinkedList<>();
             layoutInflater = LayoutInflater.from(context);
         }
@@ -238,8 +245,12 @@ public class Test extends AppCompatActivity {
                 timetableBlock.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
 
                 time.setText(appointment.toTimeString());
+                int color = Color.parseColor(AppointmentViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
+                time.setTextColor(color);
                 room.setText(appointment.getAppointmentContent().getRoom());
+                room.setTextColor(color);
                 abbr.setText(appointment.getAppointmentContent().getAbbreviation());
+                abbr.setTextColor(color);
 
                 timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
                 timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * AppointmentViewModel.pixelPerMinute;

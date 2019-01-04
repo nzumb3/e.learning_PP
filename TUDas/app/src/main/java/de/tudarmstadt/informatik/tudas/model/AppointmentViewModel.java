@@ -219,7 +219,7 @@ public class AppointmentViewModel extends AndroidViewModel {
         return output;
     }
 
-    private static String getComplementaryColor(String hexColor) {
+    public static String getComplementaryColor(String hexColor) {
         if(hexColor.indexOf('#') == 0)
             hexColor = hexColor.substring(1);
 
