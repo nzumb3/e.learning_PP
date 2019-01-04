@@ -59,11 +59,17 @@ public class AppointmentViewModel extends AndroidViewModel {
         //earliestBeginning = Transformations.map(repository.getEarliestBeginningInPeriod(startDate, endDate), (time -> CalendarConverter.fromString(dateFormat.format(CalendarConverter.fromString(startDate).getTime()) + time)));
     }
 
-    /*public void setLatestEnding(String startDate, String endDate) {
+    public void setLatestEnding(String startDate, String endDate) {
         latestEnding = Transformations.map(repository.getAppointmentsInPeriod(startDate, endDate), (appointments -> {
-            Calendar output =
-        }))
-    }*/
+            Calendar output = CalendarConverter.fromString(endDate);
+            output.set(Calendar.HOUR_OF_DAY, 23);
+            output.set(Calendar.MINUTE, 59);
+
+            if(appointments != null && !appointments.isEmpty()) {
+                
+            }
+        }));
+    }
 
     /*public LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate) {
         appointmentsFromDatabase = repository.getAppointmentsInPeriod(startDate, endDate);
