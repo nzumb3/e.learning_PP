@@ -14,12 +14,16 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import timber.log.Timber;
+
 
 public class AppointmentViewModel extends AndroidViewModel {
 
     private AppRepository repository;
 
     private LiveData<Calendar> earliestBeginning;
+
+    private LiveData<Calendar> latestEnding;
 
     /*@SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'");*/
@@ -30,6 +34,7 @@ public class AppointmentViewModel extends AndroidViewModel {
         super(application);
         repository = new AppRepository(application);
         earliestBeginning = new MutableLiveData<>();
+        latestEnding = new MutableLiveData<>();
     }
 
     public void setEarliestBeginning(String startDate, String endDate) {
@@ -53,6 +58,12 @@ public class AppointmentViewModel extends AndroidViewModel {
         }));
         //earliestBeginning = Transformations.map(repository.getEarliestBeginningInPeriod(startDate, endDate), (time -> CalendarConverter.fromString(dateFormat.format(CalendarConverter.fromString(startDate).getTime()) + time)));
     }
+
+    /*public void setLatestEnding(String startDate, String endDate) {
+        latestEnding = Transformations.map(repository.getAppointmentsInPeriod(startDate, endDate), (appointments -> {
+            Calendar output =
+        }))
+    }*/
 
     /*public LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate) {
         appointmentsFromDatabase = repository.getAppointmentsInPeriod(startDate, endDate);
@@ -141,9 +152,8 @@ public class AppointmentViewModel extends AndroidViewModel {
         while(appointments.size() > position && getDate(appointments.get(position).getStartDate()).compareTo(requestedDay) < 0) {
             if(getDate(appointments.get(position).getEndDate()).compareTo(requestedDay) > 0)
                 outerAppointments.add(appointments.get(position));
-            else {
+            else
                 outputAppointments.add(getAppointment(getDate(appointments.get(position).getEndDate()), appointments.get(position).getEndDate(), appointments.get(position).getAppointmentContent()));
-            }
             position++;
         }
 
@@ -197,7 +207,7 @@ public class AppointmentViewModel extends AndroidViewModel {
     }
 
     private static Calendar getDate(String date) {
-        return CalendarConverter.fromString(date + "'T'00:00:00");
+        return CalendarConverter.fromString(date + "T00:00:00");
     }
 
     private static Calendar getDate(Calendar calendar) {
