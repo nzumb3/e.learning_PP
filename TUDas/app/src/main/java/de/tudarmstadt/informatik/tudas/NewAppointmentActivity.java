@@ -3,6 +3,9 @@ package de.tudarmstadt.informatik.tudas;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,11 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class NewAppointmentActivity extends AppCompatActivity {
 
@@ -22,8 +29,9 @@ public class NewAppointmentActivity extends AppCompatActivity {
     public static final String EXTRA_DESCRIPTION = "appointment_description";
     public static final String EXTRA_STARTTIME = "appointment_starttime";
     public static final String EXTRA_ENDTIME = "appointment_endtime";
+    public static final String EXTRA_COLOR = "appointment color";
 
-
+    private View colorPreview;
     private EditText mEditWordView;
     private Calendar start_date_calendar = Calendar.getInstance();
     private Calendar end_date_calendar = Calendar.getInstance();
@@ -57,12 +65,37 @@ public class NewAppointmentActivity extends AppCompatActivity {
         end_time_input.setText(timeFormat.format(end_date_calendar.getTime()));
     }
 
+    private void openColorPicker(boolean alphaSupport){
+        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, ContextCompat.getColor(this, R.color.colorPrimary), new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                Toast.makeText(NewAppointmentActivity.this, "Color Picker closed", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                colorPreview.setBackgroundColor(color);
+            }
+        });
+        dialog.show();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_appointment);
         mEditWordView = findViewById(R.id.appointment_title_input);
         descriptionInput = findViewById(R.id.appointment_description_input);
+
+
+        //COLOR CHANGER
+        colorPreview = findViewById(R.id.appointment_color_preview);
+        colorPreview.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openColorPicker(false);
+            }
+        });
 
         final Button button = findViewById(R.id.button_save_appointment);
         button.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +113,9 @@ public class NewAppointmentActivity extends AppCompatActivity {
                     String endTime = end_date_input.getText().toString() + " " + end_time_input.getText().toString();
                     replyIntent.putExtra(EXTRA_ENDTIME, end_date_calendar);
                     setResult(RESULT_OK, replyIntent);
+                    int background = ((ColorDrawable) findViewById(R.id.appointment_color_preview).getBackground()).getColor();
+                    String colorStr = "#" + Integer.toHexString(background & 0x00ffffff);
+                    replyIntent.putExtra(EXTRA_COLOR, colorStr);
                 }
                 finish();
             }
