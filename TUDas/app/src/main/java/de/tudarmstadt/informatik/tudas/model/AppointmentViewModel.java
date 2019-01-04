@@ -1,6 +1,5 @@
 package de.tudarmstadt.informatik.tudas.model;
 
-//import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
@@ -8,13 +7,10 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 
-//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-
-import timber.log.Timber;
 
 
 public class AppointmentViewModel extends AndroidViewModel {
@@ -24,9 +20,6 @@ public class AppointmentViewModel extends AndroidViewModel {
     private LiveData<Calendar> earliestBeginning;
 
     private LiveData<Calendar> latestEnding;
-
-    /*@SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'");*/
 
     public static final int pixelPerMinute = 3;
 
@@ -56,63 +49,51 @@ public class AppointmentViewModel extends AndroidViewModel {
 
             return output;
         }));
-        //earliestBeginning = Transformations.map(repository.getEarliestBeginningInPeriod(startDate, endDate), (time -> CalendarConverter.fromString(dateFormat.format(CalendarConverter.fromString(startDate).getTime()) + time)));
     }
 
     public void setLatestEnding(String startDate, String endDate) {
         latestEnding = Transformations.map(repository.getAppointmentsInPeriod(startDate, endDate), (appointments -> {
-            Calendar output = CalendarConverter.fromString(endDate);
-            output.set(Calendar.HOUR_OF_DAY, 23);
-            output.set(Calendar.MINUTE, 59);
+            Calendar start = getDate(CalendarConverter.fromString(startDate));
+            Calendar output = getDate(CalendarConverter.fromString(endDate));
+            output.add(Calendar.DATE, 1);
 
             if(appointments != null && !appointments.isEmpty()) {
-                
+                for(Appointment appointment : appointments) {
+                    if(getDate(appointment.getStartDate()).compareTo(start) >= 0 && !appointment.atSameDay()) {
+                        output.set(Calendar.HOUR_OF_DAY, 0);
+                        break;
+                    } else {
+                        int newHour = Math.min(24, appointment.getEndDate().get(Calendar.HOUR_OF_DAY + 1)) % 24;
+                        if (newHour == 0) {
+                            output.set(Calendar.HOUR_OF_DAY, 0);
+                            break;
+                        } else if (newHour > output.get(Calendar.HOUR_OF_DAY))
+                            output.set(Calendar.HOUR_OF_DAY, newHour);
+                    }
+                }
             }
+
+            return output;
         }));
     }
-
-    /*public LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate) {
-        appointmentsFromDatabase = repository.getAppointmentsInPeriod(startDate, endDate);
-        earliestBeginning = repository.getEarliestBeginningInPeriod(startDate, endDate);*/
-
-        /*appointmentsForView = Transformations.switchMap(appointmentsFromDatabase, new Function<List<Appointment>, MutableLiveData<List<Appointment>>>() {
-            @Override
-            public MutableLiveData<List<Appointment>> apply(List<Appointment> input) {
-                Timber.d("MyLog: In Transformations.map()");
-                appointmentsForView.setValue(input);
-                return appointmentsForView;
-            }
-        });*/
-        /*appointmentsForView.addSource(appointmentsFromDatabase, (appointments -> {
-            if(earliestBeginning != null && earliestBeginning.getValue() != null && appointmentsFromDatabase != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue()));
-            }
-        }));
-        appointmentsForView.addSource(earliestBeginning, (calendar -> {
-            if(earliestBeginning != null && earliestBeginning.getValue() != null && appointmentsFromDatabase != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue()));
-            }
-        }));*/
-        /*return Transformations.switchMap(appointmentsFromDatabase, (appointments) -> {
-            if(appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty())
-                appointmentsForView.setValue(fillList(appointments, null));
-            return appointmentsForView;
-        });*/
-        /*return appointmentsForView;
-    }*/
 
     public LiveData<List<Appointment>> getAppointmentsForDay(String day) {
         LiveData<List<Appointment>> appointmentsFromDatabase = repository.getAppointmentsForDay(day);
 
         MediatorLiveData<List<Appointment>> appointmentsForView = new MediatorLiveData<>();
         appointmentsForView.addSource(appointmentsFromDatabase, (appointments -> {
-            if(earliestBeginning != null && earliestBeginning.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), day));
+            if(earliestBeginning != null && earliestBeginning.getValue() != null && latestEnding != null && latestEnding.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
+                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), latestEnding.getValue(), day));
             }
         }));
         appointmentsForView.addSource(earliestBeginning, (calendar -> {
-            if(earliestBeginning != null && earliestBeginning.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), day));
+            if(earliestBeginning != null && earliestBeginning.getValue() != null && latestEnding != null && latestEnding.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
+                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), latestEnding.getValue(), day));
+            }
+        }));
+        appointmentsForView.addSource(latestEnding, (calendar -> {
+            if(earliestBeginning != null && earliestBeginning.getValue() != null && latestEnding != null && latestEnding.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
+                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), latestEnding.getValue(), day));
             }
         }));
         return appointmentsForView;
@@ -134,7 +115,7 @@ public class AppointmentViewModel extends AndroidViewModel {
         }));
     }
 
-    private static List<Appointment> fillList(List<Appointment> appointments, Calendar earliestBeginning, String day) {
+    private static List<Appointment> fillList(List<Appointment> appointments, Calendar earliestBeginning, Calendar latestEnding, String day) {
         Calendar requestedDay = getDate(day);
 
         AppointmentContent emptyContent = new AppointmentContent();
@@ -181,6 +162,17 @@ public class AppointmentViewModel extends AndroidViewModel {
 
             outputAppointments.add(appointments.get(i));
         }
+
+        latestEnding = (Calendar) latestEnding.clone();
+        latestEnding.set(Calendar.MONTH, requestedDay.get(Calendar.MONTH));
+        latestEnding.set(Calendar.YEAR, requestedDay.get(Calendar.YEAR));
+        if(latestEnding.get(Calendar.HOUR_OF_DAY) == 0 && latestEnding.get(Calendar.MINUTE) == 0)
+            latestEnding.set(Calendar.DATE, requestedDay.get(Calendar.DATE) + 1);
+        else
+            latestEnding.set(Calendar.DATE, requestedDay.get(Calendar.DATE));
+
+        if(outputAppointments.get(outputAppointments.size() - 1).atSameDay())
+            outputAppointments.add(getAppointment(outputAppointments.get(outputAppointments.size() - 1).getEndDate(), latestEnding, emptyContent));
 
         return outputAppointments;
     }
