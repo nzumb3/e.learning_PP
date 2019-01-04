@@ -1,6 +1,6 @@
 package de.tudarmstadt.informatik.tudas.model;
 
-import android.annotation.SuppressLint;
+//import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
@@ -8,13 +8,12 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import timber.log.Timber;
 
 public class AppointmentViewModel extends AndroidViewModel {
 
@@ -22,8 +21,8 @@ public class AppointmentViewModel extends AndroidViewModel {
 
     private LiveData<Calendar> earliestBeginning;
 
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'");
+    /*@SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'");*/
 
     public static final int pixelPerMinute = 3;
 
@@ -34,7 +33,25 @@ public class AppointmentViewModel extends AndroidViewModel {
     }
 
     public void setEarliestBeginning(String startDate, String endDate) {
-        earliestBeginning = Transformations.map(repository.getEarliestBeginningInPeriod(startDate, endDate), (time -> CalendarConverter.fromString(dateFormat.format(CalendarConverter.fromString(startDate).getTime()) + time)));
+        earliestBeginning = Transformations.map(repository.getAppointmentsInPeriod(startDate, endDate), (appointments -> {
+            Calendar output = getDate(CalendarConverter.fromString(startDate));
+
+            if(appointments != null && !appointments.isEmpty()) {
+                for(Appointment appointment : appointments) {
+                    if(appointment.atSameDay()) {
+                        output.set(Calendar.HOUR_OF_DAY, 0);
+                        break;
+                    } else {
+                        int newHour = Math.max(0, appointment.getStartDate().get(Calendar.HOUR_OF_DAY) - 1);
+                        if(newHour < output.get(Calendar.HOUR_OF_DAY))
+                            output.set(Calendar.HOUR_OF_DAY, newHour);
+                    }
+                }
+            }
+
+            return output;
+        }));
+        //earliestBeginning = Transformations.map(repository.getEarliestBeginningInPeriod(startDate, endDate), (time -> CalendarConverter.fromString(dateFormat.format(CalendarConverter.fromString(startDate).getTime()) + time)));
     }
 
     /*public LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate) {
@@ -73,12 +90,12 @@ public class AppointmentViewModel extends AndroidViewModel {
         MediatorLiveData<List<Appointment>> appointmentsForView = new MediatorLiveData<>();
         appointmentsForView.addSource(appointmentsFromDatabase, (appointments -> {
             if(earliestBeginning != null && earliestBeginning.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue()));
+                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), day));
             }
         }));
         appointmentsForView.addSource(earliestBeginning, (calendar -> {
             if(earliestBeginning != null && earliestBeginning.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue()));
+                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), day));
             }
         }));
         return appointmentsForView;
@@ -90,19 +107,19 @@ public class AppointmentViewModel extends AndroidViewModel {
             if(earliestBeginning != null && earliestBeginning.getValue() != null) {
                 Calendar firstHour = getMaxTimeBeforeAppointment(earliestBeginning.getValue());
                 output.add(firstHour);
-                for(int hour = firstHour.get(Calendar.HOUR) + 1; hour < 24; hour++) {
+                for(int hour = firstHour.get(Calendar.HOUR_OF_DAY) + 1; hour < 24; hour++) {
                     Calendar hourToAdd = (Calendar) firstHour.clone();
-                    hourToAdd.set(Calendar.HOUR, hour);
-                    //Timber.d("MyLog: hourToAdd = " + CalendarConverter.fromCalendar(hourToAdd));
+                    hourToAdd.set(Calendar.HOUR_OF_DAY, hour);
                     output.add(hourToAdd);
                 }
             }
-            //Timber.d("MyLog: Num of elements = " + output.size());
             return output;
         }));
     }
 
-    private static List<Appointment> fillList(List<Appointment> appointments, Calendar earliestBeginning) {
+    private static List<Appointment> fillList(List<Appointment> appointments, Calendar earliestBeginning, String day) {
+        Calendar requestedDay = getDate(day);
+
         AppointmentContent emptyContent = new AppointmentContent();
         emptyContent.setRoom("");
         emptyContent.setAbbreviation("");
@@ -111,18 +128,36 @@ public class AppointmentViewModel extends AndroidViewModel {
         emptyContent.setColor("#FFFFFF");
 
         List<Appointment> outputAppointments = new LinkedList<>();
+        List<Appointment> outerAppointments = new LinkedList<>();
 
-        earliestBeginning = getMaxTimeBeforeAppointment(earliestBeginning);
-        earliestBeginning.set(Calendar.DATE, appointments.get(0).getStartDate().get(Calendar.DATE));
+        earliestBeginning = (Calendar) earliestBeginning.clone();
+        earliestBeginning.set(Calendar.DATE, requestedDay.get(Calendar.DATE));
+        earliestBeginning.set(Calendar.MONTH, requestedDay.get(Calendar.MONTH));
+        earliestBeginning.set(Calendar.YEAR, requestedDay.get(Calendar.YEAR));
 
-        int minutes = Appointment.millisToMinute(diff(earliestBeginning, appointments.get(0).getStartDate()));
-        if(minutes > 0) {
-            outputAppointments.add(getAppointment(earliestBeginning, appointments.get(0).getStartDate(), emptyContent));
+        int minutes;
+        int position = 0;
+
+        while(appointments.size() > position && getDate(appointments.get(position).getStartDate()).compareTo(requestedDay) < 0) {
+            if(getDate(appointments.get(position).getEndDate()).compareTo(requestedDay) > 0)
+                outerAppointments.add(appointments.get(position));
+            else {
+                outputAppointments.add(getAppointment(getDate(appointments.get(position).getEndDate()), appointments.get(position).getEndDate(), appointments.get(position).getAppointmentContent()));
+            }
+            position++;
         }
 
-        outputAppointments.add(appointments.get(0));
+        if(outputAppointments.isEmpty()) {
+            minutes = Appointment.millisToMinute(diff(earliestBeginning, appointments.get(position).getStartDate()));
+            if (minutes > 0) {
+                outputAppointments.add(getAppointment(earliestBeginning, appointments.get(position).getStartDate(), emptyContent));
+            }
+        }
 
-        for(int i = 1; i < appointments.size(); i++) {
+        if(appointments.size() > position)
+            outputAppointments.add(appointments.get(position));
+
+        for(int i = position + 1; i < appointments.size(); i++) {
             minutes = Appointment.millisToMinute(diff(appointments.get(i - 1).getEndDate(), appointments.get(i).getStartDate()));
             if(minutes > 0) {
                 outputAppointments.add(getAppointment(appointments.get(i - 1).getEndDate(), appointments.get(i).getStartDate(), emptyContent));
@@ -153,7 +188,24 @@ public class AppointmentViewModel extends AndroidViewModel {
     private static Calendar getMaxTimeBeforeAppointment(Calendar earliestBeginning) {
         Calendar output = (Calendar) earliestBeginning.clone();
         output.set(Calendar.MINUTE, 0);
-        output.set(Calendar.HOUR, Math.max(0, earliestBeginning.get(Calendar.HOUR) - 1));
+        output.set(Calendar.HOUR_OF_DAY, Math.max(0, earliestBeginning.get(Calendar.HOUR_OF_DAY) - 1));
+        return output;
+    }
+
+    public LiveData<Calendar> getEarliestBeginning() {
+        return earliestBeginning;
+    }
+
+    private static Calendar getDate(String date) {
+        return CalendarConverter.fromString(date + "'T'00:00:00");
+    }
+
+    private static Calendar getDate(Calendar calendar) {
+        Calendar output = (Calendar) calendar.clone();
+        output.set(Calendar.HOUR_OF_DAY, 0);
+        output.set(Calendar.MINUTE, 0);
+        output.set(Calendar.SECOND, 0);
+        output.set(Calendar.MILLISECOND, 0);
         return output;
     }
 

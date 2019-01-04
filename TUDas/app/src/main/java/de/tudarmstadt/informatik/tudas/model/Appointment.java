@@ -4,7 +4,6 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -94,7 +93,7 @@ public class Appointment {
         else {
             Calendar midnight = (Calendar) startDate.clone();
             midnight.add(Calendar.DAY_OF_MONTH, 1);
-            midnight.set(Calendar.HOUR, 0);
+            midnight.set(Calendar.HOUR_OF_DAY, 0);
             midnight.set(Calendar.MINUTE, 0);
             millis = midnight.getTimeInMillis() - startDate.getTimeInMillis();
         }
@@ -108,7 +107,7 @@ public class Appointment {
             millis = endDate.getTimeInMillis() - startDate.getTimeInMillis();
         else {
             Calendar midnight = (Calendar) endDate.clone();
-            midnight.set(Calendar.HOUR, 0);
+            midnight.set(Calendar.HOUR_OF_DAY, 0);
             midnight.set(Calendar.MINUTE, 0);
             millis = endDate.getTimeInMillis() - midnight.getTimeInMillis();
         }
@@ -116,7 +115,7 @@ public class Appointment {
         return millisToMinute(millis);
     }
 
-    private boolean atSameDay() {
+    public boolean atSameDay() {
         return  startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR) &&
                 startDate.get(Calendar.MONTH) == endDate.get(Calendar.MONTH) &&
                 startDate.get(Calendar.DAY_OF_MONTH) == endDate.get(Calendar.DAY_OF_MONTH);

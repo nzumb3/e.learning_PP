@@ -38,9 +38,9 @@ public class Test extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         startDate = Calendar.getInstance();
-        startDate.set(2018, 11, 24, 0, 0);
+        startDate.set(2018, 11, 25, 0, 0);
         endDate = Calendar.getInstance();
-        endDate.set(2018, 11, 25, 0, 0);
+        endDate.set(2018, 11, 26, 0, 0);
 
         viewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
 
@@ -186,7 +186,7 @@ public class Test extends AppCompatActivity {
                 abbr.setText(appointment.getAppointmentContent().getAbbreviation());
 
                 timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-                timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight()*AppointmentViewModel.pixelPerMinute;
+                timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * AppointmentViewModel.pixelPerMinute;
                 timetableBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
             }
 
