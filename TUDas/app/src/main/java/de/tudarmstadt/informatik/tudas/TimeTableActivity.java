@@ -61,6 +61,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private void setupUIViews() {
         viewModel.setEarliestBeginning(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate));
+        viewModel.setLatestEnding(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate));
         listViews = new ArrayList<>();
         listViews.add((ListView) findViewById(R.id.lvToday));
         listViews.add((ListView) findViewById(R.id.lvTomorrow));
