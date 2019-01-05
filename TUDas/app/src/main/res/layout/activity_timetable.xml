@@ -22,10 +22,18 @@
         android:layout_marginTop="50px"
         android:elevation="0.5mm"/>
 
+    <TextView
+        android:id="@+id/tvTimeFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="1-2 Jan"
+        android:layout_centerHorizontal="true"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/tvTimeFrame">
 
         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
             android:id="@+id/lvTimeSlots"

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewAppointmentActivity.class);
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         view.setText(output.toString());*/
         //this.createAppointments();
 
+        //Intent intent = new Intent(this, NewAppointmentActivity.class);
         Intent intent = new Intent(this, TimeTableActivity.class);
         startActivity(intent);
     }
