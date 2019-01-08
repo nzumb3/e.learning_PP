@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlDailyAppointment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5px"
+    android:layout_marginRight="5px"
+    android:background="#992255">
+
+    <TextView
+        android:id="@+id/dailyAppointmentTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Natrual Language Processing for the Web"
+        android:textAlignment="center"
+        android:layout_marginBottom="2px"/>
+
+    <TextView
+        android:id="@+id/dailyAppointmentAbbrevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NLP4W"
+        android:layout_below="@id/dailyAppointmentTitle"
+        android:layout_marginLeft="5px"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="S202/120"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/dailyAppointmentTitle"
+        android:layout_marginRight="5px"/>
+
+</RelativeLayout>
