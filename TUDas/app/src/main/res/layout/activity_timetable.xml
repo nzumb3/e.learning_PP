@@ -1,83 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:nestedScrollingEnabled="false"
-    tools:context="de.tudarmstadt.informatik.tudas.TimeTableActivity">
-
 <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:clipChildren="false"
-    android:id="@+id/rlTimeTable">
-
-    <View
-        android:id="@+id/currentTimeSlider"
-        android:layout_width="fill_parent"
-        android:layout_height="4px"
-        android:background="#AAFF0000"
-        android:layout_marginTop="50px"
-        android:elevation="0.5mm"/>
+    android:layout_height="fill_parent">
 
     <TextView
         android:id="@+id/tvTimeFrame"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="1-2 Jan"
-        android:layout_centerHorizontal="true"/>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/tvTimeFrame">
+        android:text="1-2 Jan"
+        android:textAlignment="center"
+        android:background="#FFFFFF"/>
 
-        <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
-            android:id="@+id/lvTimeSlots"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:scrollbars="none"
-            android:dividerHeight="0dp"
-            android:divider="@null"
-            android:layout_weight="1">
-        </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+    <View
+        android:id="@+id/separatorLine"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_below="@id/tvTimeFrame"
+        android:background="#000000"/>
 
-        <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
-            android:id="@+id/lvToday"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:scrollbars="none"
-            android:gravity="center_horizontal"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:nestedScrollingEnabled="false"
+        tools:context="de.tudarmstadt.informatik.tudas.TimeTableActivity"
+        android:layout_below="@id/separatorLine">
 
-        <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
-            android:id="@+id/lvTomorrow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:scrollbars="none"
-            android:gravity="center_horizontal"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clipChildren="false"
+            android:id="@+id/rlTimeTable">
 
-    </LinearLayout>
+            <View
+                android:id="@+id/currentTimeSlider"
+                android:layout_width="fill_parent"
+                android:layout_height="4px"
+                android:background="#AAFF0000"
+                android:layout_marginTop="50px"
+                android:elevation="0.5mm"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+                    android:id="@+id/lvTimeSlots"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:scrollbars="none"
+                    android:dividerHeight="0dp"
+                    android:divider="@null"
+                    android:layout_weight="1">
+                </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+
+                <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+                    android:id="@+id/lvToday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:scrollbars="none"
+                    android:gravity="center_horizontal"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+
+                <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+                    android:id="@+id/lvTomorrow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:scrollbars="none"
+                    android:gravity="center_horizontal"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
 </RelativeLayout>
 
-</ScrollView>
+

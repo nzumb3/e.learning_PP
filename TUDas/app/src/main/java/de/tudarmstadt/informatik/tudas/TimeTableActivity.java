@@ -30,7 +30,7 @@ public class TimeTableActivity extends AppCompatActivity {
     private List<ListView> listViews;
     private ListView timeSlotView;
     private AppointmentViewModel viewModel;
-    private int titleHeight;
+    private int titleHeight = 0;
 
     private Calendar startDate;
     private Calendar endDate;
@@ -47,9 +47,6 @@ public class TimeTableActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
 
         setContentView(R.layout.activity_timetable);
-        TextView title = findViewById(R.id.tvTimeFrame);
-        //titleHeight = title.getLayout().getHeight();
-        //Timber.d("MyLog: title Height -> " + titleHeight);
         setupUIViews();
         setupListView();
     }
