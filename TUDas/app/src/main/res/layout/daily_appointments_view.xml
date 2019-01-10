@@ -32,4 +32,28 @@
         android:layout_below="@id/dailyAppointmentTitle"
         android:layout_marginRight="5px"/>
 
+    <RelativeLayout
+        android:id="@+id/rlAppointmentTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dailyAppointmentTitle"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11:20 -"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tvAppointmentStartTime"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13:10"
+            android:layout_below="@id/tvAppointmentStartTime"/>
+
+    </RelativeLayout>
+
+
+
 </RelativeLayout>
