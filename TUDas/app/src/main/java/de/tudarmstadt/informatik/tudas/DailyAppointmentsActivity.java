@@ -9,7 +9,7 @@ import android.view.View;
 
 import timber.log.Timber;
 
-public class DailyAppointments extends AppCompatActivity {
+public class DailyAppointmentsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

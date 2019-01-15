@@ -28,7 +28,7 @@
         <activity android:name=".Test2" />
         <activity android:name=".NewAppointmentActivity" />
         <activity
-            android:name=".DailyAppointments"
+            android:name=".DailyAppointmentsActivity"
             android:label="@string/title_activity_daily_appointments"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

@@ -13,16 +13,17 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import de.tudarmstadt.informatik.tudas.adapters.AppointmentListAdapter;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
-import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
+import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
-    private AppointmentViewModel mWordViewModel;
+    private TimeTableViewModel mWordViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mWordViewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
+        mWordViewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
 
         final StringBuilder output = new StringBuilder();
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Intent intent = new Intent(this, NewAppointmentActivity.class);
         //Intent intent = new Intent(this, TimeTableActivity.class);
-        Intent intent = new Intent(this, DailyAppointments.class);
+        Intent intent = new Intent(this, DailyAppointmentsActivity.class);
         startActivity(intent);
     }
 
