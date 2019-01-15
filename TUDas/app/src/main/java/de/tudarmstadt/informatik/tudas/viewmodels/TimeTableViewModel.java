@@ -1,4 +1,4 @@
-package de.tudarmstadt.informatik.tudas.model;
+package de.tudarmstadt.informatik.tudas.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -12,10 +12,15 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.tudarmstadt.informatik.tudas.model.Appointment;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
+import de.tudarmstadt.informatik.tudas.repositories.DataRepository;
 
-public class AppointmentViewModel extends AndroidViewModel {
 
-    private AppRepository repository;
+public class TimeTableViewModel extends AndroidViewModel {
+
+    private DataRepository repository;
 
     private LiveData<Calendar> earliestBeginning;
 
@@ -23,9 +28,9 @@ public class AppointmentViewModel extends AndroidViewModel {
 
     public static final int pixelPerMinute = 3;
 
-    public AppointmentViewModel(Application application) {
+    public TimeTableViewModel(Application application) {
         super(application);
-        repository = new AppRepository(application);
+        repository = new DataRepository(application);
         earliestBeginning = new MutableLiveData<>();
         latestEnding = new MutableLiveData<>();
     }
@@ -200,9 +205,9 @@ public class AppointmentViewModel extends AndroidViewModel {
         return output;
     }
 
-    public LiveData<Calendar> getEarliestBeginning() {
+    /*public LiveData<Calendar> getEarliestBeginning() {
         return earliestBeginning;
-    }
+    }*/
 
     private static Calendar getDate(String date) {
         return CalendarConverter.fromString(date + "T00:00:00");

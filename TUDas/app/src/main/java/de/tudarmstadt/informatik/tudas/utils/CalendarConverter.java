@@ -1,4 +1,4 @@
-package de.tudarmstadt.informatik.tudas.model;
+package de.tudarmstadt.informatik.tudas.utils;
 
 import android.annotation.SuppressLint;
 import android.arch.persistence.room.TypeConverter;

@@ -21,14 +21,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
-import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
-import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
+import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
+import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 
 public class TimeTableActivity extends AppCompatActivity {
 
     private List<ListView> listViews;
     private ListView timeSlotView;
-    private AppointmentViewModel viewModel;
+    private TimeTableViewModel viewModel;
     private int titleHeight = 0;
 
     private Calendar startDate;
@@ -43,7 +43,7 @@ public class TimeTableActivity extends AppCompatActivity {
         endDate = Calendar.getInstance();
         endDate.set(2018, 11, 26, 0, 0);
 
-        viewModel = ViewModelProviders.of(this).get(AppointmentViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
 
         setContentView(R.layout.activity_timetable);
         setupUIViews();
@@ -128,7 +128,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 sliderPosition = getRelativeSliderPosition(current, hourCalendars.get(0));
             }
             if (sliderPosition >= 0) {
-                p.setMargins(0, sliderPosition * AppointmentViewModel.pixelPerMinute + titleHeight, 0, 0);
+                p.setMargins(0, sliderPosition * TimeTableViewModel.pixelPerMinute + titleHeight, 0, 0);
                 timeslider.setVisibility(View.VISIBLE);
             }
             else
@@ -178,14 +178,14 @@ public class TimeTableActivity extends AppCompatActivity {
                     ));
                     gridline.setBackgroundColor(getResources().getColor(R.color.GREY));
                     ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
-                    p.setMargins(0, gridlinePosition*AppointmentViewModel.pixelPerMinute+titleHeight, 0, 0);
+                    p.setMargins(0, gridlinePosition*TimeTableViewModel.pixelPerMinute+titleHeight, 0, 0);
                     gridline.requestLayout();
                     RelativeLayout timetable = (RelativeLayout) findViewById(R.id.rlTimeTable);
                     timetable.addView(gridline);
                 }
 
                 timeslotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-                timeslotBlock.getLayoutParams().height = 60 * AppointmentViewModel.pixelPerMinute;
+                timeslotBlock.getLayoutParams().height = 60 * TimeTableViewModel.pixelPerMinute;
                 timeslotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
                 setTimeSlider();
             }
@@ -239,7 +239,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 timetableBlock.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
 
                 time.setText(appointment.toTimeString());
-                int color = Color.parseColor(AppointmentViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
+                int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
                 time.setTextColor(color);
                 room.setText(appointment.getAppointmentContent().getRoom());
                 room.setTextColor(color);
@@ -247,7 +247,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 abbr.setTextColor(color);
 
                 timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-                timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * AppointmentViewModel.pixelPerMinute;
+                timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * TimeTableViewModel.pixelPerMinute;
                 timetableBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
             }
 

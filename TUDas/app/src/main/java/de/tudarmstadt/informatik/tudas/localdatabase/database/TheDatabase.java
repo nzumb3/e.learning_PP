@@ -1,4 +1,4 @@
-package de.tudarmstadt.informatik.tudas.model;
+package de.tudarmstadt.informatik.tudas.localdatabase.database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -12,6 +12,12 @@ import android.support.annotation.NonNull;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import de.tudarmstadt.informatik.tudas.localdatabase.daos.AppointmentDao;
+import de.tudarmstadt.informatik.tudas.model.Appointment;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
+import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
+
 @Database(entities = {Appointment.class, AppointmentContent.class}, version = 1, exportSchema = false)
 @TypeConverters({CalendarConverter.class})
 public abstract class TheDatabase extends RoomDatabase {
@@ -20,7 +26,7 @@ public abstract class TheDatabase extends RoomDatabase {
 
     private static volatile TheDatabase INSTANCE;
 
-    static TheDatabase getDatabase(final Context context) {
+    public static TheDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (TheDatabase.class) {
                 if (INSTANCE == null) {

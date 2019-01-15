@@ -1,4 +1,4 @@
-package de.tudarmstadt.informatik.tudas.model;
+package de.tudarmstadt.informatik.tudas.repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
@@ -7,13 +7,19 @@ import android.os.AsyncTask;
 import java.util.Arrays;
 import java.util.List;
 
-public class AppRepository {
+import de.tudarmstadt.informatik.tudas.localdatabase.daos.AppointmentDao;
+import de.tudarmstadt.informatik.tudas.localdatabase.database.TheDatabase;
+import de.tudarmstadt.informatik.tudas.model.Appointment;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
+
+public class DataRepository {
 
     private AppointmentDao appointmentDao;
 
     private LiveData<List<AppointmentContent>> allAppointments;
 
-    AppRepository(Application application) {
+    public DataRepository(Application application) {
         TheDatabase database = TheDatabase.getDatabase(application);
         appointmentDao = database.appointmentDao();
         allAppointments = appointmentDao.getAll();
@@ -23,7 +29,7 @@ public class AppRepository {
         return allAppointments;
     }
 
-    LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate) {
+    public LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate) {
         return appointmentDao.getAppointmentsInPeriod(startDate, endDate);
     }
 
@@ -35,11 +41,11 @@ public class AppRepository {
         return appointmentDao.getLatestEndingInPeriod(startDate, endDate);
     }
 
-    LiveData<List<Appointment>> getAppointmentsForDay(String date) {
+    public LiveData<List<Appointment>> getAppointmentsForDay(String date) {
         return appointmentDao.getAppointmentsForDay(date);
     }
 
-    void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {
+    public void insert(final AppointmentContent appointmentContent, final Appointment... appointments) {
         AppointmentContentWithAppointments data = new AppointmentContentWithAppointments();
         data.setContent(appointmentContent);
         data.setAppointments(Arrays.asList(appointments));

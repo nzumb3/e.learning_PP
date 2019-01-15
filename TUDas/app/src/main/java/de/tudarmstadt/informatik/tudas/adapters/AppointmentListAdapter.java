@@ -1,4 +1,4 @@
-package de.tudarmstadt.informatik.tudas;
+package de.tudarmstadt.informatik.tudas.adapters;
 
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
 
 public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentListAdapter.AppointmentViewHolder> {
