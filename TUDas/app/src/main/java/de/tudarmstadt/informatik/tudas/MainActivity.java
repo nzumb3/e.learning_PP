@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
         //this.createAppointments();
 
         //Intent intent = new Intent(this, NewAppointmentActivity.class);
-        Intent intent = new Intent(this, TimeTableActivity.class);
+        //Intent intent = new Intent(this, TimeTableActivity.class);
+        Intent intent = new Intent(this, DailyAppointments.class);
         startActivity(intent);
     }
 

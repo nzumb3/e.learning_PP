@@ -19,7 +19,8 @@
         <item>Resources</item>
         <item>Resources</item>
         <item>Resources</item>
-    </string-array>>
+    </string-array>
+    >
     <string-array name="Description">
         <item>Desc1</item>
         <item>Desc2</item>
@@ -27,7 +28,8 @@
         <item>Desc4</item>
         <item>Desc5</item>
         <item>Desc6</item>
-    </string-array>>
+    </string-array>
+    >
 
     <string-array name="Main2">
         <item>Timetable</item>
@@ -35,13 +37,15 @@
         <item>Faculty</item>
         <item>Resources</item>
         <item>Resources</item>
-    </string-array>>
+    </string-array>
+    >
     <string-array name="Description2">
         <item>Desc1</item>
         <item>Desc2</item>
         <item>Desc3</item>
         <item>Desc4</item>
         <item>Desc5</item>
-    </string-array>>
+    </string-array>
+    <string name="title_activity_daily_appointments">DailyAppointments</string>>
 
 </resources>
