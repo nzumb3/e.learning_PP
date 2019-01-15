@@ -25,7 +25,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".TimeTableActivity" />
-        <activity android:name=".Test2" />
         <activity android:name=".NewAppointmentActivity" />
         <activity
             android:name=".DailyAppointmentsActivity"
