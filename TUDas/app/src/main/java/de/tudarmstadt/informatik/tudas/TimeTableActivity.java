@@ -23,7 +23,6 @@ import java.util.List;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentViewModel;
 import de.tudarmstadt.informatik.tudas.model.CalendarConverter;
-import timber.log.Timber;
 
 public class TimeTableActivity extends AppCompatActivity {
 
@@ -160,7 +159,7 @@ public class TimeTableActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null)
-                convertView = layoutInflater.inflate(R.layout.timeslot_layout, null);
+                convertView = layoutInflater.inflate(R.layout.component_timeslot_layout, null);
 
             if(hourCalendars != null && hourCalendars.size() >= position + 1) {
                 RelativeLayout timeslotBlock = convertView.findViewById(R.id.timeslotBlock);
@@ -228,7 +227,7 @@ public class TimeTableActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null)
-                convertView = layoutInflater.inflate(R.layout.timetable_entry, null);
+                convertView = layoutInflater.inflate(R.layout.component_timetable_entry_item, null);
 
             if(appointments != null && appointments.size() >= position + 1) {
                 RelativeLayout timetableBlock = convertView.findViewById(R.id.timetableEntryBlock);
