@@ -1,26 +1,28 @@
 package de.tudarmstadt.informatik.tudas;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.graphics.Color;
+/*import android.content.Context;
+import android.graphics.Color;*/
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+/*import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.BaseAdapter;*/
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+/*import android.widget.RelativeLayout;
+import android.widget.TextView;*/
 
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedList;
+//import java.util.LinkedList;
 import java.util.List;
 
-import de.tudarmstadt.informatik.tudas.model.Appointment;
+import de.tudarmstadt.informatik.tudas.adapters.AppointmentAdapter;
+import de.tudarmstadt.informatik.tudas.adapters.HourAdapter;
+//import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 
@@ -29,7 +31,7 @@ public class TimeTableActivity extends AppCompatActivity {
     private List<ListView> listViews;
     private ListView timeSlotView;
     private TimeTableViewModel viewModel;
-    private int titleHeight = 0;
+    //private int titleHeight = 0;
 
     private Calendar startDate;
     private Calendar endDate;
@@ -69,15 +71,12 @@ public class TimeTableActivity extends AppCompatActivity {
         timeSlotView = (ListView) findViewById(R.id.lvTimeSlots);
     }
 
-    private int getDaysBetweenStartAndEnd() {
-        return (int) ((endDate.getTimeInMillis() - startDate.getTimeInMillis()) / 1000 / 60 / 60 / 24);
-    }
-
     private void setupListView() {
         Calendar date = (Calendar) startDate.clone();
-        for(int day = 0; day <= getDaysBetweenStartAndEnd(); day++) {
-            SimpleAdapter simpleAdapter = new SimpleAdapter(this);
-            viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, simpleAdapter::setAppointments);
+        for(int day = 0; day <= TimeTableViewModel.getDaysBetweenStartAndEnd(startDate, endDate); day++) {
+            AppointmentAdapter adapter = new AppointmentAdapter(this);
+            //SimpleAdapter simpleAdapter = new SimpleAdapter(this);
+            viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, adapter::setList);
             //viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, (appointments -> simpleAdapter.setAppointments(appointments)));
             /*viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, new Observer<List<Appointment>>() {
                 @Override
@@ -85,11 +84,13 @@ public class TimeTableActivity extends AppCompatActivity {
                     simpleAdapter.setAppointments(appointments);
                 }
             });*/
-            listViews.get(day).setAdapter(simpleAdapter);
+            listViews.get(day).setAdapter(adapter);
             date.add(Calendar.DATE, 1);
         }
-        TimeSlotAdapter adapter= new TimeSlotAdapter(this);
-        viewModel.getTimeSlots().observe(this, adapter::setTimeslots);
+        HourAdapter adapter = new HourAdapter(this, this);
+        //TimeSlotAdapter adapter= new TimeSlotAdapter(this);
+        //viewModel.getTimeSlots().observe(this, adapter::setTimeslots);
+        viewModel.getTimeSlots().observe(this, adapter::setList);
         timeSlotView.setAdapter(adapter);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -101,7 +102,7 @@ public class TimeTableActivity extends AppCompatActivity {
         }, 60*1000);
     }
 
-    private class TimeSlotAdapter extends BaseAdapter{
+    /*private class TimeSlotAdapter extends BaseAdapter{
 
         private LayoutInflater layoutInflater;
         private List<Calendar> hourCalendars;
@@ -128,7 +129,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 sliderPosition = getRelativeSliderPosition(current, hourCalendars.get(0));
             }
             if (sliderPosition >= 0) {
-                p.setMargins(0, sliderPosition * TimeTableViewModel.pixelPerMinute + titleHeight, 0, 0);
+                p.setMargins(0, sliderPosition * TimeTableViewModel.PIXEL_PER_MINUTE + titleHeight, 0, 0);
                 timeslider.setVisibility(View.VISIBLE);
             }
             else
@@ -178,23 +179,23 @@ public class TimeTableActivity extends AppCompatActivity {
                     ));
                     gridline.setBackgroundColor(getResources().getColor(R.color.GREY));
                     ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
-                    p.setMargins(0, gridlinePosition*TimeTableViewModel.pixelPerMinute+titleHeight, 0, 0);
+                    p.setMargins(0, gridlinePosition*TimeTableViewModel.PIXEL_PER_MINUTE+titleHeight, 0, 0);
                     gridline.requestLayout();
                     RelativeLayout timetable = (RelativeLayout) findViewById(R.id.rlTimeTable);
                     timetable.addView(gridline);
                 }
 
                 timeslotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-                timeslotBlock.getLayoutParams().height = 60 * TimeTableViewModel.pixelPerMinute;
+                timeslotBlock.getLayoutParams().height = 60 * TimeTableViewModel.PIXEL_PER_MINUTE;
                 timeslotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
                 setTimeSlider();
             }
 
             return convertView;
         }
-    }
+    }*/
 
-    private class SimpleAdapter extends BaseAdapter{
+    /*private class SimpleAdapter extends BaseAdapter{
 
         private LayoutInflater layoutInflater;
         private List<Appointment> appointments;
@@ -247,12 +248,12 @@ public class TimeTableActivity extends AppCompatActivity {
                 abbr.setTextColor(color);
 
                 timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-                timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * TimeTableViewModel.pixelPerMinute;
+                timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * TimeTableViewModel.PIXEL_PER_MINUTE;
                 timetableBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
             }
 
             return convertView;
         }
-    }
+    }*/
 
 }

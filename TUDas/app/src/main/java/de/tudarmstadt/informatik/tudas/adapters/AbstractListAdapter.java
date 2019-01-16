@@ -20,7 +20,7 @@ public abstract class AbstractListAdapter<T> extends BaseAdapter {
         layoutInflater = LayoutInflater.from(context);
     }
 
-    void setList(List<T> list) {
+    public void setList(List<T> list) {
         this.list = list;
         notifyDataSetChanged();
     }

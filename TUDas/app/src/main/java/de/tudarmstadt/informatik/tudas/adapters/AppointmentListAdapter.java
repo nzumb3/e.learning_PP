@@ -27,7 +27,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     private final LayoutInflater mInflater;
     private List<AppointmentContentWithAppointments> mWords; // Cached copy of words
 
-    AppointmentListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    public AppointmentListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
     @Override
     public AppointmentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

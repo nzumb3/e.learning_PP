@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
@@ -36,19 +35,19 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
     }
 
     private void setTimeSlider() {
-        View timeslider = (View) activity.findViewById(R.id.currentTimeSlider);
-        ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) timeslider.getLayoutParams();
+        View timeSlider = activity.findViewById(R.id.currentTimeSlider);
+        ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) timeSlider.getLayoutParams();
         Calendar current = Calendar.getInstance();
         int sliderPosition = -1;
         if(list != null && list.size() > 0)
             sliderPosition = getRelativeSliderPosition(current, list.get(0));
         if (sliderPosition >= 0) {
-            p.setMargins(0, sliderPosition * TimeTableViewModel.pixelPerMinute, 0, 0);
-            timeslider.setVisibility(View.VISIBLE);
+            p.setMargins(0, sliderPosition * TimeTableViewModel.PIXEL_PER_MINUTE, 0, 0);
+            timeSlider.setVisibility(View.VISIBLE);
         }
         else
-            timeslider.setVisibility(View.INVISIBLE);
-        timeslider.requestLayout();
+            timeSlider.setVisibility(View.INVISIBLE);
+        timeSlider.requestLayout();
     }
 
     @Override
@@ -57,31 +56,35 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
             convertView = layoutInflater.inflate(R.layout.component_timeslot_layout, null);
 
         if(list != null && list.size() >= position + 1) {
-            RelativeLayout timeslotBlock = convertView.findViewById(R.id.timeslotBlock);
+            RelativeLayout timeSlotBlock = convertView.findViewById(R.id.timeslotBlock);
             TextView time = convertView.findViewById(R.id.timeslotText);
+            RelativeLayout rLTimeTable = activity.findViewById(R.id.rlTimeTable);
 
             Calendar calendar = list.get(position);
-            timeslotBlock.setBackgroundColor(Color.WHITE);
+            timeSlotBlock.setBackgroundColor(Color.WHITE);
             time.setText(timeFormat.format(calendar.getTime()));
 
             int gridlinePosition = getRelativeSliderPosition(calendar, list.get(0));
             if (gridlinePosition > 0){
-                View gridline = new View(activity.findViewById(R.id.rlTimeTable).getContext());
+                //View gridline = new View(activity.findViewById(R.id.rlTimeTable).getContext());
+                View gridline = new View(rLTimeTable.getContext());
                 gridline.setLayoutParams(new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.FILL_PARENT,
                         2
                 ));
                 gridline.setBackgroundColor(activity.getResources().getColor(R.color.GREY));
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
-                p.setMargins(0, gridlinePosition*TimeTableViewModel.pixelPerMinute, 0, 0);
+                p.setMargins(0, gridlinePosition*TimeTableViewModel.PIXEL_PER_MINUTE, 0, 0);
                 gridline.requestLayout();
-                RelativeLayout timetable = (RelativeLayout) activity.findViewById(R.id.rlTimeTable);
-                timetable.addView(gridline);
+                //RelativeLayout timetable = (RelativeLayout) activity.findViewById(R.id.rlTimeTable);
+                //RelativeLayout timetable = rLTimeTable;
+                rLTimeTable.addView(gridline);
+                //timetable.addView(gridline);
             }
 
-            timeslotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-            timeslotBlock.getLayoutParams().height = 60 * TimeTableViewModel.pixelPerMinute;
-            timeslotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
+            timeSlotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
+            timeSlotBlock.getLayoutParams().height = 60 * TimeTableViewModel.PIXEL_PER_MINUTE;
+            timeSlotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
             setTimeSlider();
         }
 

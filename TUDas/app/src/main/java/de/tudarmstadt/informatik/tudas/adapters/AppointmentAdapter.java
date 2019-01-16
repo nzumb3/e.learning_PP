@@ -40,7 +40,7 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
             abbr.setTextColor(color);
 
             timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-            timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * TimeTableViewModel.pixelPerMinute;
+            timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * TimeTableViewModel.PIXEL_PER_MINUTE;
             timetableBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
         }
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
@@ -26,7 +27,7 @@ public class TimeTableViewModel extends AndroidViewModel {
 
     private LiveData<Calendar> latestEnding;
 
-    public static final int pixelPerMinute = 3;
+    public static final int PIXEL_PER_MINUTE = 3;
 
     public TimeTableViewModel(Application application) {
         super(application);
@@ -220,6 +221,10 @@ public class TimeTableViewModel extends AndroidViewModel {
         output.set(Calendar.SECOND, 0);
         output.set(Calendar.MILLISECOND, 0);
         return output;
+    }
+
+    public static int getDaysBetweenStartAndEnd(Calendar startDate, Calendar endDate) {
+        return (int) TimeUnit.DAYS.convert(endDate.getTimeInMillis() - startDate.getTimeInMillis(), TimeUnit.MILLISECONDS);
     }
 
     public static String getComplementaryColor(String hexColor) {
