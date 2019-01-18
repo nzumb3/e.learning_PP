@@ -25,6 +25,7 @@
         android:layout_marginLeft="5px"/>
 
     <TextView
+        android:id = "@+id/dailyAppointmentRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="S202/120"
@@ -47,6 +48,7 @@
             android:id="@+id/tvAppointmentStartTime"/>
 
         <TextView
+            android:id="@+id/tvAppointmentEndTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="13:10"
