@@ -21,12 +21,11 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
     private LayoutInflater layoutInflater;
     private List<Appointment> appointments;
 
-    public DailyAppointmentsListViewAdapter(Context context, List<Appointment> appointments) {
+    public DailyAppointmentsListViewAdapter(Context context) {
         super(context);
-        this.appointments = appointments;
     }
 
-    private void setAppointments(List<Appointment> appointments){
+    public void setAppointments(List<Appointment> appointments){
         this.appointments = appointments;
     }
 

@@ -7,6 +7,7 @@ import android.arch.lifecycle.LiveData;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.repositories.DataRepository;
 
 public class DailyAppointmentsViewModel extends AndroidViewModel {
@@ -20,5 +21,9 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
 
     public LiveData<List<Appointment>> getAppointmentsForDay(String day) {
         return repository.getAppointmentsForDay(day);
+    }
+
+    public void insert(AppointmentContent content, Appointment... appointments) {
+        repository.insert(content, appointments);
     }
 }

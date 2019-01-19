@@ -16,6 +16,7 @@ import java.util.Calendar;
 import de.tudarmstadt.informatik.tudas.adapters.AppointmentListAdapter;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.viewmodels.DailyAppointmentsViewModel;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import timber.log.Timber;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
     private TimeTableViewModel mWordViewModel;
+    //private DailyAppointmentsViewModel mWordViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mWordViewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
+        //mWordViewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
 
         final StringBuilder output = new StringBuilder();
 
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         /*TextView view = findViewById(R.id.textView3);
 
         view.setText(output.toString());*/
-        //this.createAppointments();
+        this.createAppointments();
 
         //Intent intent = new Intent(this, NewAppointmentActivity.class);
         Intent intent = new Intent(this, TimeTableActivity.class);
