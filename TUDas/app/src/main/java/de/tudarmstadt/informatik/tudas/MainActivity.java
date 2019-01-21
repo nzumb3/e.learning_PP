@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         /*TextView view = findViewById(R.id.textView3);
 
         view.setText(output.toString());*/
-        this.createAppointments();
+        //this.createAppointments();
 
         //Intent intent = new Intent(this, NewAppointmentActivity.class);
         Intent intent = new Intent(this, TimeTableActivity.class);
