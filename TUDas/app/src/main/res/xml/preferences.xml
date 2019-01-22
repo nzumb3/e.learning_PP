@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        android:key="notifications"
+        android:title="Enable Notification Messages"
+        android:defaultValue="False"/>
+
+    <android.support.v7.preference.DropDownPreference
+        android:key="language"
+        android:title="Language"
+        android:defaultValue="@strings:Description"/>
+
+</PreferenceScreen>
