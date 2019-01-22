@@ -43,10 +43,10 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         startDate = Calendar.getInstance();
-        //startDate.set(2018, 11, 25, 0, 0);
+        startDate.set(2018, 11, 25, 0, 0);
         endDate = Calendar.getInstance();
-        //endDate.set(2018, 11, 26, 0, 0);
-        endDate.set(Calendar.DAY_OF_MONTH, startDate.get(Calendar.DAY_OF_MONTH) + 1);
+        endDate.set(2018, 11, 26, 0, 0);
+        //endDate.set(Calendar.DAY_OF_MONTH, startDate.get(Calendar.DAY_OF_MONTH) + 1);
 
         viewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
 

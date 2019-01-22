@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.tudas.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Layout;
@@ -10,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.R;
@@ -18,15 +20,11 @@ import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 
 public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appointment> {
 
-    private LayoutInflater layoutInflater;
-    private List<Appointment> appointments;
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     public DailyAppointmentsListViewAdapter(Context context) {
         super(context);
-    }
-
-    public void setAppointments(List<Appointment> appointments){
-        this.appointments = appointments;
     }
 
     @Override
@@ -34,7 +32,7 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
         if (convertView == null)
             convertView = layoutInflater.inflate(R.layout.component_daily_appointments_item, null);
 
-        if (appointments != null && appointments.size() >= position + 1){
+        if (list != null && list.size() >= position + 1){
             Appointment appointment = list.get(position);
             RelativeLayout entry = convertView.findViewById(R.id.rlDailyAppointment);
             TextView title = convertView.findViewById(R.id.dailyAppointmentTitle);
@@ -50,9 +48,9 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             abbr.setTextColor(color);
             room.setText(appointment.getAppointmentContent().getRoom());
             room.setTextColor(color);
-            start.setText(appointment.getStartDate().getTime().toString());
+            start.setText(timeFormat.format(appointment.getStartDate().getTime()) + " - ");
             start.setTextColor(color);
-            end.setText(appointment.getEndDate().getTime().toString());
+            end.setText(timeFormat.format(appointment.getEndDate().getTime()));
             end.setTextColor(color);
         }
         return convertView;

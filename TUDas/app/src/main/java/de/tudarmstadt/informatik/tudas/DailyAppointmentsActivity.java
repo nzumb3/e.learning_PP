@@ -33,17 +33,17 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
         dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
         startDate = Calendar.getInstance();
-        startDate.set(2018, 11, 24, 0, 0);
+        startDate.set(2018, 11, 25, 0, 0);
         Calendar date = Calendar.getInstance();
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this);
-        viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setAppointments);
-
+        viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
+        dailyAppointmentsListView.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Timber.d("MyLog: " + viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).getValue().toString());
+                Timber.d("MyLog: BUTTON!!!" );
             }
         });
     }
