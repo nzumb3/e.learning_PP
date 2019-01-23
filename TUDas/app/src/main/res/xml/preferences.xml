@@ -8,9 +8,11 @@
         android:title="Enable Notification Messages"
         android:defaultValue="False"/>
 
-    <android.support.v7.preference.DropDownPreference
+    <ListPreference
         android:key="language"
         android:title="Language"
-        android:defaultValue="@strings:Description"/>
+        android:entries="@array/languages"
+        android:entryValues="@array/languages"
+        android:defaultValue="@string/lan_english"/>
 
 </PreferenceScreen>
