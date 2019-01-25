@@ -27,4 +27,5 @@
         <item name="default_lan_code">@string/default_lan_code</item>
         <item>de_</item>
     </string-array>
+    <string name="nav_timetable_title">Timetable</string>
 </resources>

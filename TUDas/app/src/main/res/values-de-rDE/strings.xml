@@ -19,4 +19,5 @@
     <string name="notification_settings">Benachrichtigungen Aktivieren</string>
     <string name="hourSizeTitle">Größe der Stundenblöcke (mm)</string>
     <string name="nav_settings_title">Einstellungen</string>
+    <string name="nav_timetable_title">Stundenplan</string>
 </resources>
