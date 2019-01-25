@@ -47,7 +47,6 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
-        SettingsActivity.update_locale(this, prefs.getString(getResources().getString(R.string.language), getResources().getString(R.string.default_lan_code)));
 
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this);
         viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
