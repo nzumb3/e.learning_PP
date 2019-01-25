@@ -3,16 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:key="notifications"
         android:title="Enable Notification Messages"
-        android:defaultValue="False"/>
+        android:defaultValue="@bool/default_notifications"/>
 
-    <ListPreference
-        android:key="language"
-        android:title="Language"
-        android:entries="@array/languages"
-        android:entryValues="@array/languages"
-        android:defaultValue="@string/lan_english"/>
+    <EditTextPreference
+        android:key="hourSize"
+        android:title="@string/hourSizeTitle"
+        android:defaultValue="@string/default_hourSize"/>
 
 </PreferenceScreen>

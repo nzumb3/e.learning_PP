@@ -1,0 +1,5 @@
+<resources>
+    <bool name="default_notifications">true</bool>
+    <string name="default_language" translatable="false">@string/lan_english</string>
+    <string name="default_hourSize" translatable="false">180</string>
+</resources>

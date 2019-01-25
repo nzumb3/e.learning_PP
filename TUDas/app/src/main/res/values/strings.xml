@@ -20,5 +20,11 @@
         <item name="lan_german">@string/lan_german</item>
     </string-array>
     <string name="notification_settings">Enable Notification Messages</string>
-
+    <string name="hourSizeTitle">Size per Hour (px)</string>
+    <string name="nav_settings_title">Settings</string>
+    <string name="default_lan_code" translatable="false">en_</string>
+    <string-array name="lan_codes">
+        <item name="default_lan_code">@string/default_lan_code</item>
+        <item>de_</item>
+    </string-array>
 </resources>
