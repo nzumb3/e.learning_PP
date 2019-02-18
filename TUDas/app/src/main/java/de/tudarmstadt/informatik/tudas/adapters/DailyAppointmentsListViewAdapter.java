@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Layout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,14 +19,19 @@ import java.util.List;
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
+import de.tudarmstadt.informatik.tudas.views.DailyAppointmentPopupView;
+import timber.log.Timber;
 
 public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appointment> {
+
+    DailyAppointmentPopupView popUp;
 
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-    public DailyAppointmentsListViewAdapter(Context context) {
+    public DailyAppointmentsListViewAdapter(Context context, DailyAppointmentPopupView popUp) {
         super(context);
+        this.popUp = popUp;
     }
 
     @Override
@@ -52,6 +59,21 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             start.setTextColor(color);
             end.setText(timeFormat.format(appointment.getEndDate().getTime()));
             end.setTextColor(color);
+
+            entry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (popUp.getClick()){
+                        TextView popTitle = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupTitle);
+                        popTitle.setText(appointment.getAppointmentContent().getTitle());
+                        TextView popDescription = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupDescription);
+                        popDescription.setText(appointment.getAppointmentContent().getDescription());
+                        popUp.showAtLocation(popUp.getContentView(), Gravity.BOTTOM, 10, 10);
+                        popUp.update(20, 50, 300, 300);
+                        popUp.setClick(false);
+                    }
+                }
+            });
         }
         return convertView;
     }
