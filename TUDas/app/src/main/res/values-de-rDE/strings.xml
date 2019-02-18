@@ -20,4 +20,8 @@
     <string name="hourSizeTitle">Größe der Stundenblöcke (mm)</string>
     <string name="nav_settings_title">Einstellungen</string>
     <string name="nav_timetable_title">Stundenplan</string>
+    <string name="font_size_title">Schriftgröße</string>
+    <string name="font_size_small_text">Klein</string>
+    <string name="font_size_medium_text">Mittel</string>
+    <string name="font_size_large_text">Groß</string>
 </resources>

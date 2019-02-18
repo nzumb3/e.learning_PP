@@ -15,17 +15,27 @@
     <string name="lan_english">English</string>
     <string name="lan_german">German</string>
     <string name="language">Language</string>
-    <string-array name="languages">
-        <item name="lan_english">@string/lan_english</item>
-        <item name="lan_german">@string/lan_german</item>
-    </string-array>
     <string name="notification_settings">Enable Notification Messages</string>
     <string name="hourSizeTitle">Size per Hour (px)</string>
     <string name="nav_settings_title">Settings</string>
     <string name="default_lan_code" translatable="false">en_</string>
-    <string-array name="lan_codes">
-        <item name="default_lan_code">@string/default_lan_code</item>
-        <item>de_</item>
-    </string-array>
     <string name="nav_timetable_title">Timetable</string>
+    <string name="font_size_title">Fontsize</string>
+    <string name="font_size_small_text">Small</string>
+    <string name="font_size_medium_text">Medium</string>
+    <string name="font_size_large_text">Large</string>
+    <string-array name="font_sizes">
+        <item name="font_size_small_text">@string/font_size_small_text</item>
+        <item name="font_size_medium_text">@string/font_size_medium_text</item>
+        <item name="font_size_large_text">@string/font_size_large_text</item>
+    </string-array>
+
+    <string name="font_size_small_value">12</string>
+    <string name="font_size_medium_value">16</string>
+    <string name="font_size_large_value">20</string>
+    <string-array name="font_size_values">
+        <item name="font_size_small_value">@string/font_size_small_value</item>
+        <item name="font_size_medium_value">@string/font_size_medium_value</item>
+        <item name="font_size_large_value">@string/font_size_large_value</item>
+    </string-array>
 </resources>
