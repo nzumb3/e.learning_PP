@@ -2,6 +2,8 @@ package de.tudarmstadt.informatik.tudas;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -21,6 +23,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import de.tudarmstadt.informatik.tudas.model.Appointment;
+import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
+import de.tudarmstadt.informatik.tudas.viewmodels.NewAppointmentViewModel;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class NewAppointmentActivity extends AppCompatActivity {
@@ -31,6 +37,8 @@ public class NewAppointmentActivity extends AppCompatActivity {
     public static final String EXTRA_ENDTIME = "appointment_endtime";
     public static final String EXTRA_COLOR = "appointment color";
 
+    private NewAppointmentViewModel viewModel;
+
     private View colorPreview;
     private EditText mEditWordView;
     private Calendar start_date_calendar = Calendar.getInstance();
@@ -40,6 +48,8 @@ public class NewAppointmentActivity extends AppCompatActivity {
     private EditText descriptionInput;
     private EditText start_time_input;
     private EditText end_time_input;
+    private EditText abbrInput;
+    private EditText roomInput;
 
     private boolean hour24Format;
 
@@ -83,10 +93,12 @@ public class NewAppointmentActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(NewAppointmentViewModel.class);
         setContentView(R.layout.activity_new_appointment);
         mEditWordView = findViewById(R.id.appointment_title_input);
         descriptionInput = findViewById(R.id.appointment_description_input);
-
+        abbrInput = findViewById(R.id.appointment_abbrevation_input);
+        //roomInput = findViewById("S202/C120");
 
         //COLOR CHANGER
         colorPreview = findViewById(R.id.appointment_color_preview);
@@ -100,6 +112,20 @@ public class NewAppointmentActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.button_save_appointment);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                AppointmentContent content = new AppointmentContent();
+                content.setTitle(mEditWordView.getText().toString());
+                content.setDescription(descriptionInput.getText().toString());
+                content.setAbbreviation(abbrInput.getText().toString());
+                int background = ((ColorDrawable) findViewById(R.id.appointment_color_preview).getBackground()).getColor();
+                String colorStr = "#" + Integer.toHexString(background & 0x00ffffff);
+                content.setColor(colorStr);
+                //TODO!!!
+                content.setRoom("S202/C120");
+                Appointment app = new Appointment();
+                app.setStartDate(start_date_calendar);
+                app.setEndDate(end_date_calendar);
+                viewModel.insert(content, app);
+                /*
                 Intent replyIntent = new Intent();
                 if (TextUtils.isEmpty(mEditWordView.getText())) {
                     setResult(RESULT_CANCELED, replyIntent);
@@ -118,6 +144,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
                     replyIntent.putExtra(EXTRA_COLOR, colorStr);
                 }
                 finish();
+                */
             }
         });
         this.start_date_input = (EditText) findViewById(R.id.start_date_input);

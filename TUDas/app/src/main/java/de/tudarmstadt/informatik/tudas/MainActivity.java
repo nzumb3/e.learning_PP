@@ -2,6 +2,8 @@ package de.tudarmstadt.informatik.tudas;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import java.util.Calendar;
 import de.tudarmstadt.informatik.tudas.adapters.AppointmentListAdapter;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
+import de.tudarmstadt.informatik.tudas.viewmodels.DailyAppointmentsViewModel;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import timber.log.Timber;
 
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
     private TimeTableViewModel mWordViewModel;
+    //private DailyAppointmentsViewModel mWordViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +43,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewAppointmentActivity.class);
-                startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+                //Intent intent = new Intent(MainActivity.this, NewAppointmentActivity.class);
+                //startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                Timber.d("MyLog: Shared Prefs: " + prefs.getAll().toString());
             }
         });
 
         mWordViewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
+        //mWordViewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
 
         final StringBuilder output = new StringBuilder();
 
@@ -78,8 +85,9 @@ public class MainActivity extends AppCompatActivity {
         //this.createAppointments();
 
         //Intent intent = new Intent(this, NewAppointmentActivity.class);
-        Intent intent = new Intent(this, TimeTableActivity.class);
+        //Intent intent = new Intent(this, TimeTableActivity.class);
         //Intent intent = new Intent(this, DailyAppointmentsActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:key="notifications"
+        android:title="Enable Notification Messages"
+        android:defaultValue="@bool/default_notifications"/>
+
+    <EditTextPreference
+        android:key="hourSize"
+        android:title="@string/hourSizeTitle"
+        android:defaultValue="@string/default_hourSize"/>
+
+</PreferenceScreen>

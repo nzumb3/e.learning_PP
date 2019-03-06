@@ -3,15 +3,15 @@ package de.tudarmstadt.informatik.tudas;
 import android.arch.lifecycle.ViewModelProviders;
 /*import android.content.Context;
 import android.graphics.Color;*/
+import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 /*import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;*/
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 /*import android.widget.RelativeLayout;
@@ -49,12 +49,22 @@ public class TimeTableActivity extends AppCompatActivity {
         startDate.set(2018, 11, 25, 0, 0);
         endDate = Calendar.getInstance();
         endDate.set(2018, 11, 26, 0, 0);
+        //endDate.set(Calendar.DAY_OF_MONTH, startDate.get(Calendar.DAY_OF_MONTH) + 1);
 
         viewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
 
         setContentView(R.layout.activity_timetable);
         setupUIViews();
         setupListView();
+
+        FloatingActionButton fab = findViewById(R.id.fabNewAppointmentButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TimeTableActivity.this, NewAppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

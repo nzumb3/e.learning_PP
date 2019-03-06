@@ -6,8 +6,13 @@
 
     <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lvDailyAppointments">
+        android:layout_height="wrap_content"
+        android:id="@+id/lvDailyAppointments"
+        android:layout_marginTop="10px"
+        android:layout_marginLeft="15px"
+        android:layout_marginRight="15px"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10px">
 
     </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 

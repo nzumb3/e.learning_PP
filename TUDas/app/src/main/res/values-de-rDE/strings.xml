@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TUDas</string>
+    <string name="appointment_title">Titel</string>
+    <string name="button_save">Termin Speichern</string>
+    <string name="appointment_title_default">Termin Titel eingeben...</string>
+    <string name="appointment_description">Beschreibung</string>
+    <string name="appointment_description_default">Termin Beschreibung eingeben...</string>
+    <string name="start_date">Erster Termin</string>
+    <string name="pick_date_hint">Wähle einen Tag, an dem der Termin anfangen soll...</string>
+    <string name="end_date">Letzter Termin</string>
+    <string name="empty_not_saved">Leerer Termin!</string>
+    <string name="appointment_abbrevation">Abkürzung</string>
+    <string name="abbrevation_example">Abkz.</string>
+    <string name="title_activity_daily_appointments">Termine: Heute</string>
+    <string name="lan_english">Englisch</string>
+    <string name="lan_german">Deutsch</string>
+    <string name="language">Sprache</string>
+    <string name="notification_settings">Benachrichtigungen Aktivieren</string>
+    <string name="hourSizeTitle">Größe der Stundenblöcke (mm)</string>
+    <string name="nav_settings_title">Einstellungen</string>
+</resources>

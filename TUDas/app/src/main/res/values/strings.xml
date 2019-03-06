@@ -1,51 +1,30 @@
 <resources>
-    <string name="app_name">TUDas</string>
+    <string name="app_name" translatable="false">TUDas</string>
     <string name="appointment_title">Title</string>
     <string name="button_save">Save Appointment</string>
     <string name="appointment_title_default">What to do?</string>
     <string name="appointment_description">Description</string>
     <string name="appointment_description_default">I\'m going to...</string>
-    <string name="start_date">Start Date</string>
     <string name="pick_date_hint">Pick a date, where you want your appointment to start</string>
     <string name="end_date">End Date</string>
-    <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="empty_not_saved">Appointment not saved because it is empty.</string>
     <string name="appointment_abbrevation">Abbreviation</string>
     <string name="abbrevation_example">Abbr.</string>
-
-    <string-array name="Main">
-        <item>Timetable</item>
-        <item>Subjects</item>
-        <item>Faculty</item>
-        <item>Resources</item>
-        <item>Resources</item>
-        <item>Resources</item>
+    <string name="title_activity_daily_appointments">DailyAppointments</string>
+    <string name="start_date">Start Date</string>
+    <string name="lan_english">English</string>
+    <string name="lan_german">German</string>
+    <string name="language">Language</string>
+    <string-array name="languages">
+        <item name="lan_english">@string/lan_english</item>
+        <item name="lan_german">@string/lan_german</item>
     </string-array>
-    >
-    <string-array name="Description">
-        <item>Desc1</item>
-        <item>Desc2</item>
-        <item>Desc3</item>
-        <item>Desc4</item>
-        <item>Desc5</item>
-        <item>Desc6</item>
+    <string name="notification_settings">Enable Notification Messages</string>
+    <string name="hourSizeTitle">Size per Hour (px)</string>
+    <string name="nav_settings_title">Settings</string>
+    <string name="default_lan_code" translatable="false">en_</string>
+    <string-array name="lan_codes">
+        <item name="default_lan_code">@string/default_lan_code</item>
+        <item>de_</item>
     </string-array>
-    >
-
-    <string-array name="Main2">
-        <item>Timetable</item>
-        <item>Subjects</item>
-        <item>Faculty</item>
-        <item>Resources</item>
-        <item>Resources</item>
-    </string-array>
-    >
-    <string-array name="Description2">
-        <item>Desc1</item>
-        <item>Desc2</item>
-        <item>Desc3</item>
-        <item>Desc4</item>
-        <item>Desc5</item>
-    </string-array>
-    <string name="title_activity_daily_appointments">DailyAppointments</string>>
-
 </resources>
