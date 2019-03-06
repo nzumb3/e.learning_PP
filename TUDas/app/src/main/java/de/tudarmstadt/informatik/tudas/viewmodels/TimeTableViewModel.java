@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 import de.tudarmstadt.informatik.tudas.repositories.DataRepository;
+import de.tudarmstadt.informatik.tudas.utils.LiveDataTransformations;
+import timber.log.Timber;
 
 
 public class TimeTableViewModel extends AndroidViewModel {
@@ -27,10 +28,31 @@ public class TimeTableViewModel extends AndroidViewModel {
 
     private LiveData<Calendar> latestEnding;
 
+    private List<LiveData<List<Appointment>>> appointments;
+
+    private MutableLiveData<Calendar> startDate;
+
+    private MutableLiveData<Integer> numDays;
+
+    private LiveData<List<List<Appointment>>> appointmentsForView;
+
     public static final int PIXEL_PER_MINUTE = 3;
 
     public TimeTableViewModel(Application application) {
         super(application);
+
+        startDate = new MutableLiveData<>();
+        appointmentsForView = new MutableLiveData<>();
+        numDays = new MutableLiveData<>();
+        appointments = new LinkedList<>();
+
+        //setupAppointments();
+
+        Calendar startDateTemp = Calendar.getInstance();
+        startDateTemp.set(2018, 11, 25, 0, 0);
+        startDate.setValue(getDate(startDateTemp));
+        numDays.setValue(1);
+
         repository = new DataRepository(application);
         earliestBeginning = new MutableLiveData<>();
         latestEnding = new MutableLiveData<>();
@@ -81,6 +103,42 @@ public class TimeTableViewModel extends AndroidViewModel {
 
             return output;
         }));
+    }
+
+    private void setupAppointments() {
+
+        //LiveData<LiveDataTransformations.Tuple5> intermediate = LiveDataTransformations.ifNotNull(numDays, startDate, earliestBeginning, latestEnding, appointments);
+        //appointmentsForView = Transformations.map(intermediate, (tuple -> getPreprocessedAppointments(tuple.numDays, tuple.startDate, tuple.earliestBeginning, tuple.latestEnding, tuple.appointments)));
+        /*appointmentsForView.addSource(numDays, (numberOfDays -> {
+            if(numberOfDays != null) {
+                List<List<Appointment>> appointments = new ArrayList<>();
+                for(int i = 0; i < numberOfDays; i++) {
+                    appointments.add(new ArrayList<>());
+                }
+                appointmentsForView.setValue(appointments);
+            }
+        }));*/
+        /*List<LiveData<List<Appointment>>> appointmentsFromDatabase = new ArrayList<>();
+        Calendar date = (Calendar) startDate.
+        for(int i = 0; i < numDays; i++) {
+
+        }*/
+    }
+
+    private static List<List<Appointment>> getPreprocessedAppointments(int numDays, Calendar startDate, Calendar earliestBeginning, Calendar latestEnding, List<List<Appointment>> appointments) {
+        List<List<Appointment>> output = new LinkedList<>();
+
+        Calendar date = (Calendar) startDate.clone();
+        for(List<Appointment> appointmentsForDay : appointments) {
+            output.add(fillList(appointmentsForDay, earliestBeginning, latestEnding, CalendarConverter.toDateString(date)));
+            date.add(Calendar.DATE, 1);
+        }
+
+        return output;
+    }
+
+    public LiveData<List<List<Appointment>>> getAppointments() {
+        return appointmentsForView;
     }
 
     public LiveData<List<Appointment>> getAppointmentsForDay(String day) {
@@ -195,6 +253,32 @@ public class TimeTableViewModel extends AndroidViewModel {
         repository.insert(content, appointments);
     }
 
+    public void swipeLeft(){
+        Calendar startDateValue = startDate.getValue();
+        if(startDateValue != null) {
+            startDateValue.add(Calendar.DATE, 1);
+            startDate.setValue(startDateValue);
+        }
+    }
+
+    public void swipeRight() {
+        Calendar startDateValue = startDate.getValue();
+        if(startDateValue != null) {
+            startDateValue.add(Calendar.DATE, -1);
+            startDate.setValue(startDateValue);
+        }
+    }
+
+    private Calendar getEndDate() {
+        Calendar startDateValue = startDate.getValue();
+        Calendar output = Calendar.getInstance();
+        if(startDateValue != null && numDays.getValue() != null) {
+            output = (Calendar) startDateValue.clone();
+            output.add(Calendar.DATE, numDays.getValue() - 1);
+        }
+        return output;
+    }
+
     private static long diff(Calendar first, Calendar second) {
         return second.getTimeInMillis() - first.getTimeInMillis();
     }
@@ -223,8 +307,8 @@ public class TimeTableViewModel extends AndroidViewModel {
         return output;
     }
 
-    public static int getDaysBetweenStartAndEnd(Calendar startDate, Calendar endDate) {
-        return (int) TimeUnit.DAYS.convert(endDate.getTimeInMillis() - startDate.getTimeInMillis(), TimeUnit.MILLISECONDS);
+    public int getDaysBetweenStartAndEnd() {
+        return numDays.getValue() != null ? numDays.getValue() : 0;
     }
 
     public static String getComplementaryColor(String hexColor) {

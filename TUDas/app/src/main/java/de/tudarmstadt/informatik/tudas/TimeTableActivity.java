@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;*/
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ListView;
 /*import android.widget.RelativeLayout;
 import android.widget.TextView;*/
@@ -25,12 +28,14 @@ import de.tudarmstadt.informatik.tudas.adapters.HourAdapter;
 //import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
+import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModelNew;
 
 public class TimeTableActivity extends AppCompatActivity {
 
     private List<ListView> listViews;
     private ListView timeSlotView;
     private TimeTableViewModel viewModel;
+    private TimeTableViewModelNew viewModelNew;
     //private int titleHeight = 0;
 
     private Calendar startDate;
@@ -65,6 +70,13 @@ public class TimeTableActivity extends AppCompatActivity {
     private void setupUIViews() {
         viewModel.setEarliestBeginning(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate));
         viewModel.setLatestEnding(CalendarConverter.fromCalendar(startDate), CalendarConverter.fromCalendar(endDate));
+
+        viewModelNew = ViewModelProviders.of(this).get(TimeTableViewModelNew.class);
+
+        /*viewModelNew.getAppointments().observe(this, (appointments -> {
+            Timber.d("MyLog: There are " + appointments.size() + " days.");
+        }));*/
+
         listViews = new ArrayList<>();
         listViews.add((ListView) findViewById(R.id.lvToday));
         listViews.add((ListView) findViewById(R.id.lvTomorrow));
@@ -72,11 +84,23 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     private void setupListView() {
+        /*viewModel.getAppointments().observe(this, (lists -> {
+            Timber.d("MyLog: Number of days = " + lists.size());
+        }));*/
         Calendar date = (Calendar) startDate.clone();
-        for(int day = 0; day <= TimeTableViewModel.getDaysBetweenStartAndEnd(startDate, endDate); day++) {
+        viewModelNew.getAppointments().observe(this, (appointments) -> {
+            if(appointments != null) {
+                for(int day = 0; day < appointments.size(); day++) {
+                    AppointmentAdapter adapter = new AppointmentAdapter(this);
+                    adapter.setList(appointments.get(day));
+                    listViews.get(day).setAdapter(adapter);
+                }
+            }
+        });
+        /*for(int day = 0; day < viewModel.getDaysBetweenStartAndEnd(); day++) {
             AppointmentAdapter adapter = new AppointmentAdapter(this);
             //SimpleAdapter simpleAdapter = new SimpleAdapter(this);
-            viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, adapter::setList);
+            viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, adapter::setList);*/
             //viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, (appointments -> simpleAdapter.setAppointments(appointments)));
             /*viewModel.getAppointmentsForDay(CalendarConverter.toDateString(date)).observe(this, new Observer<List<Appointment>>() {
                 @Override
@@ -84,9 +108,9 @@ public class TimeTableActivity extends AppCompatActivity {
                     simpleAdapter.setAppointments(appointments);
                 }
             });*/
-            listViews.get(day).setAdapter(adapter);
+            /*listViews.get(day).setAdapter(adapter);
             date.add(Calendar.DATE, 1);
-        }
+        }*/
         HourAdapter adapter = new HourAdapter(this, this);
         //TimeSlotAdapter adapter= new TimeSlotAdapter(this);
         //viewModel.getTimeSlots().observe(this, adapter::setTimeslots);
