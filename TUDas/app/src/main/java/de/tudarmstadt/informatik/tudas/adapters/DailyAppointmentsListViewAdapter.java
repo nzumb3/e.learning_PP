@@ -3,16 +3,12 @@ package de.tudarmstadt.informatik.tudas.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.model.Appointment;

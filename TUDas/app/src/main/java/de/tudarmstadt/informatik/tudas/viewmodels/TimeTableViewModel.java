@@ -1,12 +1,13 @@
 package de.tudarmstadt.informatik.tudas.viewmodels;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -14,169 +15,159 @@ import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
-import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 import de.tudarmstadt.informatik.tudas.repositories.DataRepository;
+import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 import de.tudarmstadt.informatik.tudas.utils.LiveDataTransformations;
-import timber.log.Timber;
-
 
 public class TimeTableViewModel extends AndroidViewModel {
 
-    private DataRepository repository;
-
-    private LiveData<Calendar> earliestBeginning;
-
-    private LiveData<Calendar> latestEnding;
-
-    private List<LiveData<List<Appointment>>> appointments;
+    private LiveData<List<List<Appointment>>> appointmentsForView;
 
     private MutableLiveData<Calendar> startDate;
 
     private MutableLiveData<Integer> numDays;
 
-    private LiveData<List<List<Appointment>>> appointmentsForView;
+    private LiveData<List<Calendar>> timeSlots;
+
+    private DataRepository repository;
 
     public static final int PIXEL_PER_MINUTE = 3;
 
     public TimeTableViewModel(Application application) {
         super(application);
 
-        startDate = new MutableLiveData<>();
-        appointmentsForView = new MutableLiveData<>();
-        numDays = new MutableLiveData<>();
-        appointments = new LinkedList<>();
-
-        //setupAppointments();
-
-        Calendar startDateTemp = Calendar.getInstance();
-        startDateTemp.set(2018, 11, 25, 0, 0);
-        startDate.setValue(getDate(startDateTemp));
-        numDays.setValue(1);
+        //Decomment if Log is needed
+        //Timber.plant(new Timber.DebugTree());
 
         repository = new DataRepository(application);
-        earliestBeginning = new MutableLiveData<>();
-        latestEnding = new MutableLiveData<>();
-    }
 
-    public void setEarliestBeginning(String startDate, String endDate) {
-        earliestBeginning = Transformations.map(repository.getAppointmentsInPeriod(startDate, endDate), (appointments -> {
-            Calendar output = getDate(CalendarConverter.fromString(startDate));
+        startDate = new MutableLiveData<>();
+        Calendar _startDate = Calendar.getInstance();
+        _startDate.set(2018, Calendar.DECEMBER, 25, 0, 0, 0);
+        _startDate.set(Calendar.MILLISECOND, 0);
+        startDate.setValue(_startDate);
 
-            if(appointments != null && !appointments.isEmpty()) {
-                for(Appointment appointment : appointments) {
-                    if(appointment.atSameDay()) {
-                        output.set(Calendar.HOUR_OF_DAY, 0);
-                        break;
-                    } else {
-                        int newHour = Math.max(0, appointment.getStartDate().get(Calendar.HOUR_OF_DAY) - 1);
-                        if(newHour < output.get(Calendar.HOUR_OF_DAY))
-                            output.set(Calendar.HOUR_OF_DAY, newHour);
-                    }
-                }
+        numDays = new MutableLiveData<>();
+        numDays.setValue(2);
+
+        LiveData<LiveDataTransformations.Tuple2<Calendar, Integer>> intermediate = LiveDataTransformations.ifNotNull(startDate, numDays);
+
+        LiveData<List<Appointment>> appointmentsInPeriod = Transformations.switchMap(intermediate, (tuple) -> repository.getAppointmentsInPeriod(CalendarConverter.fromCalendar(tuple.first), CalendarConverter.fromCalendar(getEndDate(tuple.first, tuple.second))));
+
+        LiveData<LiveDataTransformations.Tuple3<Calendar, Integer, List<Appointment>>> intermediate2 = LiveDataTransformations.ifNotNull(startDate, numDays, appointmentsInPeriod);
+
+        LiveData<List<List<Appointment>>> appointmentsFromDatabase = Transformations.map(intermediate2, (tuple) -> {
+           Calendar startDate = (Calendar) tuple.first.clone();
+           int numDays = tuple.second;
+           List<Appointment> _appointmentsInPeriod = tuple.third;
+
+           List<List<Appointment>> output = new LinkedList<>();
+
+           for(int dayOffset = 0; dayOffset < numDays; dayOffset++) {
+               List<Appointment> listForDay = new ArrayList<>();
+               for(Appointment appointment : _appointmentsInPeriod) {
+                   if(onSameDay(appointment.getStartDate(), startDate) || onSameDay(appointment.getEndDate(), startDate) || (getDate(appointment.getStartDate()).compareTo(startDate) < 0 && getDate(appointment.getEndDate()).compareTo(startDate) > 0)) {
+                       listForDay.add(appointment);
+                   }
+               }
+               output.add(listForDay);
+               startDate.add(Calendar.DATE, 1);
+           }
+
+           return output;
+        });
+
+        LiveData<Calendar> earliestBeginning = Transformations.map(intermediate2, (tuple) -> {
+            Calendar output = (Calendar) tuple.first.clone();
+
+            int hour = Integer.MAX_VALUE;
+
+            for(Appointment appointment : tuple.third) {
+                if(!appointment.atSameDay() && getDate(appointment.getEndDate()).compareTo(getEndDate(tuple.first, tuple.second)) <= 0) {
+                    hour = 0;
+                    output.set(Calendar.HOUR_OF_DAY, 0);
+                    break;
+                } else
+                    hour = Math.min(hour, Math.max(0, appointment.getStartDate().get(Calendar.HOUR_OF_DAY) - 1));
             }
+
+            output.set(Calendar.HOUR_OF_DAY, hour != Integer.MAX_VALUE ? hour : 0);
 
             return output;
-        }));
-    }
+        });
 
-    public void setLatestEnding(String startDate, String endDate) {
-        latestEnding = Transformations.map(repository.getAppointmentsInPeriod(startDate, endDate), (appointments -> {
-            Calendar start = getDate(CalendarConverter.fromString(startDate));
-            Calendar output = getDate(CalendarConverter.fromString(endDate));
-            output.add(Calendar.DATE, 1);
+        LiveData<Calendar> latestEnding = Transformations.map(intermediate2, (tuple) -> {
+            Calendar output = (Calendar) getEndDate(tuple.first, tuple.second).clone();
 
-            if(appointments != null && !appointments.isEmpty()) {
-                for(Appointment appointment : appointments) {
-                    if(getDate(appointment.getStartDate()).compareTo(start) >= 0 && !appointment.atSameDay()) {
-                        output.set(Calendar.HOUR_OF_DAY, 0);
+            int hour = Integer.MIN_VALUE;
+
+            for(Appointment appointment : tuple.third) {
+                if(getDate(appointment.getStartDate()).compareTo(tuple.first) >= 0 && !appointment.atSameDay()) {
+                    hour = 0;
+                    break;
+                } else {
+                    int newHour = Math.min(24, appointment.getEndDate().get(Calendar.HOUR_OF_DAY) + 1) % 24;
+                    if (newHour == 0) {
+                        hour = 0;
                         break;
-                    } else {
-                        int newHour = Math.min(24, appointment.getEndDate().get(Calendar.HOUR_OF_DAY + 1)) % 24;
-                        if (newHour == 0) {
-                            output.set(Calendar.HOUR_OF_DAY, 0);
-                            break;
-                        } else if (newHour > output.get(Calendar.HOUR_OF_DAY))
-                            output.set(Calendar.HOUR_OF_DAY, newHour);
-                    }
+                    } else
+                        hour = Math.max(hour, newHour);
                 }
             }
+
+            output.set(Calendar.HOUR_OF_DAY, hour);
 
             return output;
-        }));
-    }
+        });
 
-    private void setupAppointments() {
+        LiveData<LiveDataTransformations.Tuple2<Calendar, Calendar>> intermediate4 = LiveDataTransformations.ifNotNull(earliestBeginning, latestEnding);
 
-        //LiveData<LiveDataTransformations.Tuple5> intermediate = LiveDataTransformations.ifNotNull(numDays, startDate, earliestBeginning, latestEnding, appointments);
-        //appointmentsForView = Transformations.map(intermediate, (tuple -> getPreprocessedAppointments(tuple.numDays, tuple.startDate, tuple.earliestBeginning, tuple.latestEnding, tuple.appointments)));
-        /*appointmentsForView.addSource(numDays, (numberOfDays -> {
-            if(numberOfDays != null) {
-                List<List<Appointment>> appointments = new ArrayList<>();
-                for(int i = 0; i < numberOfDays; i++) {
-                    appointments.add(new ArrayList<>());
-                }
-                appointmentsForView.setValue(appointments);
-            }
-        }));*/
-        /*List<LiveData<List<Appointment>>> appointmentsFromDatabase = new ArrayList<>();
-        Calendar date = (Calendar) startDate.
-        for(int i = 0; i < numDays; i++) {
+        timeSlots = Transformations.map(intermediate4, (tuple) -> {
+            Calendar firstHour = tuple.first;
+            Calendar lastHour = tuple.second;
 
-        }*/
-    }
+            int hourOffset = lastHour.get(Calendar.HOUR_OF_DAY) == 0 ? 24 - firstHour.get(Calendar.HOUR_OF_DAY) : lastHour.get(Calendar.HOUR_OF_DAY) - firstHour.get(Calendar.HOUR_OF_DAY);
 
-    private static List<List<Appointment>> getPreprocessedAppointments(int numDays, Calendar startDate, Calendar earliestBeginning, Calendar latestEnding, List<List<Appointment>> appointments) {
-        List<List<Appointment>> output = new LinkedList<>();
-
-        Calendar date = (Calendar) startDate.clone();
-        for(List<Appointment> appointmentsForDay : appointments) {
-            output.add(fillList(appointmentsForDay, earliestBeginning, latestEnding, CalendarConverter.toDateString(date)));
-            date.add(Calendar.DATE, 1);
-        }
-
-        return output;
-    }
-
-    public LiveData<List<List<Appointment>>> getAppointments() {
-        return appointmentsForView;
-    }
-
-    public LiveData<List<Appointment>> getAppointmentsForDay(String day) {
-        LiveData<List<Appointment>> appointmentsFromDatabase = repository.getAppointmentsForDay(day);
-
-        MediatorLiveData<List<Appointment>> appointmentsForView = new MediatorLiveData<>();
-        appointmentsForView.addSource(appointmentsFromDatabase, (appointments -> {
-            if(earliestBeginning != null && earliestBeginning.getValue() != null && latestEnding != null && latestEnding.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), latestEnding.getValue(), day));
-            }
-        }));
-        appointmentsForView.addSource(earliestBeginning, (calendar -> {
-            if(earliestBeginning != null && earliestBeginning.getValue() != null && latestEnding != null && latestEnding.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), latestEnding.getValue(), day));
-            }
-        }));
-        appointmentsForView.addSource(latestEnding, (calendar -> {
-            if(earliestBeginning != null && earliestBeginning.getValue() != null && latestEnding != null && latestEnding.getValue() != null && appointmentsFromDatabase.getValue() != null && !appointmentsFromDatabase.getValue().isEmpty()) {
-                appointmentsForView.setValue(fillList(appointmentsFromDatabase.getValue(), earliestBeginning.getValue(), latestEnding.getValue(), day));
-            }
-        }));
-        return appointmentsForView;
-    }
-
-    public LiveData<List<Calendar>> getTimeSlots() {
-        return Transformations.map(earliestBeginning, (calendar -> {
             List<Calendar> output = new ArrayList<>();
-            if(earliestBeginning != null && earliestBeginning.getValue() != null) {
-                Calendar firstHour = getMaxTimeBeforeAppointment(earliestBeginning.getValue());
-                output.add(firstHour);
-                for(int hour = firstHour.get(Calendar.HOUR_OF_DAY) + 1; hour < 24; hour++) {
-                    Calendar hourToAdd = (Calendar) firstHour.clone();
-                    hourToAdd.set(Calendar.HOUR_OF_DAY, hour);
-                    output.add(hourToAdd);
-                }
+
+            output.add(firstHour);
+
+            for(int hour = 1; hour < hourOffset; hour++) {
+                Calendar hourToAdd = (Calendar) firstHour.clone();
+                hourToAdd.set(Calendar.HOUR_OF_DAY, firstHour.get(Calendar.HOUR_OF_DAY) + hour);
+                output.add(hourToAdd);
             }
+
             return output;
-        }));
+        });
+
+        LiveData<LiveDataTransformations.Tuple5<Calendar, Integer, Calendar, Calendar, List<List<Appointment>>>> intermediate3 = LiveDataTransformations.ifNotNull(startDate, numDays, earliestBeginning, latestEnding, appointmentsFromDatabase);
+
+        appointmentsForView = Transformations.map(intermediate3, (tuple) -> {
+            Calendar startDate = tuple.first;
+            Integer numDays = tuple.second;
+            Calendar _earliestBeginning = tuple.third;
+            Calendar _latestEnding = tuple.fourth;
+            List<List<Appointment>> _appointmentsFromDatabase = tuple.fifth;
+
+            List<List<Appointment>> output = new LinkedList<>();
+
+            for(int dayOffset = 0; dayOffset < numDays; dayOffset++) {
+                Calendar day = (Calendar) startDate.clone();
+                day.add(Calendar.DATE, dayOffset);
+                String dayString = CalendarConverter.toDateString(day);
+                if(_appointmentsFromDatabase.get(dayOffset).isEmpty())
+                    output.add(new ArrayList<>());
+                else
+                    output.add(fillList(_appointmentsFromDatabase.get(dayOffset), _earliestBeginning, _latestEnding, dayString));
+            }
+
+            return output;
+        });
+    }
+
+    public LiveData<Calendar> getStartDate() {
+        return startDate;
     }
 
     private static List<Appointment> fillList(List<Appointment> appointments, Calendar earliestBeginning, Calendar latestEnding, String day) {
@@ -249,50 +240,39 @@ public class TimeTableViewModel extends AndroidViewModel {
         return output;
     }
 
-    public void insert(AppointmentContent content, Appointment... appointments) {
-        repository.insert(content, appointments);
-    }
-
-    public void swipeLeft(){
-        Calendar startDateValue = startDate.getValue();
-        if(startDateValue != null) {
-            startDateValue.add(Calendar.DATE, 1);
-            startDate.setValue(startDateValue);
-        }
-    }
-
-    public void swipeRight() {
-        Calendar startDateValue = startDate.getValue();
-        if(startDateValue != null) {
-            startDateValue.add(Calendar.DATE, -1);
-            startDate.setValue(startDateValue);
-        }
-    }
-
-    private Calendar getEndDate() {
-        Calendar startDateValue = startDate.getValue();
-        Calendar output = Calendar.getInstance();
-        if(startDateValue != null && numDays.getValue() != null) {
-            output = (Calendar) startDateValue.clone();
-            output.add(Calendar.DATE, numDays.getValue() - 1);
-        }
-        return output;
-    }
-
     private static long diff(Calendar first, Calendar second) {
         return second.getTimeInMillis() - first.getTimeInMillis();
     }
 
-    private static Calendar getMaxTimeBeforeAppointment(Calendar earliestBeginning) {
-        Calendar output = (Calendar) earliestBeginning.clone();
-        output.set(Calendar.MINUTE, 0);
-        output.set(Calendar.HOUR_OF_DAY, Math.max(0, earliestBeginning.get(Calendar.HOUR_OF_DAY) - 1));
-        return output;
+    public LiveData<List<List<Appointment>>> getAppointments() {
+        return appointmentsForView;
     }
 
-    /*public LiveData<Calendar> getEarliestBeginning() {
-        return earliestBeginning;
-    }*/
+    public void setStartDate(Calendar startDate) {
+        this.startDate.setValue(startDate);
+    }
+
+    public LiveData<String> getPeriodString() {
+        LiveData<LiveDataTransformations.Tuple2<Calendar, Integer>> intermediate = LiveDataTransformations.ifNotNull(startDate, numDays);
+
+        return Transformations.map(intermediate, tuple -> {
+            Calendar endDate = getEndDate(tuple.first, tuple.second);
+
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd. MMM");
+
+            return format.format(tuple.first.getTime()) + " - " + format.format(endDate.getTime());
+        });
+    }
+
+    public LiveData<List<Calendar>> getTimeSlots() {
+        return timeSlots;
+    }
+
+    private static Calendar getEndDate(Calendar startDate, int numDays) {
+        Calendar endDate = (Calendar) startDate.clone();
+        endDate.add(Calendar.DATE, numDays - 1);
+        return endDate;
+    }
 
     private static Calendar getDate(String date) {
         return CalendarConverter.fromString(date + "T00:00:00");
@@ -307,8 +287,18 @@ public class TimeTableViewModel extends AndroidViewModel {
         return output;
     }
 
-    public int getDaysBetweenStartAndEnd() {
-        return numDays.getValue() != null ? numDays.getValue() : 0;
+    public void insert(AppointmentContent content, Appointment... appointments) {
+        repository.insert(content, appointments);
+    }
+
+    private static boolean onSameDay(Calendar date1, Calendar date2) {
+        return date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
+                date1.get(Calendar.MONTH) == date2.get(Calendar.MONTH) &&
+                date1.get(Calendar.DATE) == date2.get(Calendar.DATE);
+    }
+
+    private static int getDaysBetweenDates(Calendar date1, Calendar date2) {
+        return (int) (date2.getTimeInMillis() - date1.getTimeInMillis()) / 1000 / 60 / 60 / 24;
     }
 
     public static String getComplementaryColor(String hexColor) {
