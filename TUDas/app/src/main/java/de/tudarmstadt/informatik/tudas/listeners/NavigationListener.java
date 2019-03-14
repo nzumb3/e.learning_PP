@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import de.tudarmstadt.informatik.tudas.DailyAppointmentsActivity;
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.SettingsActivity;
+import de.tudarmstadt.informatik.tudas.TimeTableActivity;
 import timber.log.Timber;
 
 public class NavigationListener implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +42,12 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
                     //((Activity)context).finish();
                 }
                 break;
+            case R.id.nav_timeTable:
+                if (!(context instanceof TimeTableActivity)){
+                    Intent intent = new Intent(this.context, TimeTableActivity.class);
+                    context.startActivity(intent);
+                    //((Activity)context).finish();
+                }
         }
         return false;
     }

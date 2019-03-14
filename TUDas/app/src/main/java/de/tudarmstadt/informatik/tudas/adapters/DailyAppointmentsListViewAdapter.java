@@ -2,9 +2,11 @@ package de.tudarmstadt.informatik.tudas.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,14 +15,19 @@ import java.text.SimpleDateFormat;
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
+import de.tudarmstadt.informatik.tudas.views.DailyAppointmentPopupView;
+import timber.log.Timber;
 
 public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appointment> {
+
+    DailyAppointmentPopupView popUp;
 
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-    public DailyAppointmentsListViewAdapter(Context context) {
+    public DailyAppointmentsListViewAdapter(Context context, DailyAppointmentPopupView popUp) {
         super(context);
+        this.popUp = popUp;
     }
 
     @Override
@@ -48,6 +55,22 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             start.setTextColor(color);
             end.setText(timeFormat.format(appointment.getEndDate().getTime()));
             end.setTextColor(color);
+
+            entry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView popTitle = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupTitle);
+                    popTitle.setText(appointment.getAppointmentContent().getTitle());
+                    TextView popDescription = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupDescription);
+                    popDescription.setText(appointment.getAppointmentContent().getDescription());
+                    popUp.showAtLocation(popUp.getContentView(), Gravity.CENTER, 0, 0);
+                    //popUp.showAtLocation(popUp.getContentView(), Gravity.BOTTOM, 10, 10);
+                    //popUp.update(20, 50, 300,300);
+                    int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+                    int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+                    popUp.update(width-40, height-300);
+                }
+            });
         }
         return convertView;
     }

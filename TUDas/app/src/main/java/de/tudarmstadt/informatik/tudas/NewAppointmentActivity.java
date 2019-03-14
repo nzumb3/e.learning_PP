@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -88,6 +89,11 @@ public class NewAppointmentActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+        //Following code fixes a bug, which resulted in an incomplete dialog view while in lanscape mode
+        View view = dialog.getDialog().findViewById(yuku.ambilwarna.R.id.ambilwarna_viewSatBri);
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.width -= 48;
+        view.setLayoutParams(params);
     }
 
     @Override
@@ -147,7 +153,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
                 */
             }
         });
-        this.start_date_input = (EditText) findViewById(R.id.start_date_input);
+        start_date_input = (EditText) findViewById(R.id.start_date_input);
         DatePickerDialog.OnDateSetListener date_start = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -164,7 +170,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
                         start_date_calendar.get(Calendar.MONTH), start_date_calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        this.end_date_input = (EditText) findViewById(R.id.end_date_input);
+        end_date_input = (EditText) findViewById(R.id.end_date_input);
         DatePickerDialog.OnDateSetListener date_end = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -181,7 +187,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
                         end_date_calendar.get(Calendar.MONTH), end_date_calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        this.start_time_input = (EditText) findViewById(R.id.start_time_input);
+        start_time_input = (EditText) findViewById(R.id.start_time_input);
         TimePickerDialog.OnTimeSetListener time_start = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
