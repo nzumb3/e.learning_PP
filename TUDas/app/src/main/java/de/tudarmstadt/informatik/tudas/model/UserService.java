@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 
 public interface UserService {
 
-    @GET("users")
-    public Call<List<User>> getUsers();
+    @GET("appointments/{label}")
+    Call<List<User>> getUsers();
 }

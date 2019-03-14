@@ -1,8 +1,30 @@
 package de.tudarmstadt.informatik.tudas.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class User {
 
+    private static final DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+
     private int id;
+
+    private String username;
+
+    private String password;
+
+    private String email;
+
+    private Calendar birthday;
+
+    public Calendar getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Calendar birthday) {
+        this.birthday = birthday;
+    }
 
     public int getId() {
         return id;
@@ -12,28 +34,32 @@ public class User {
         this.id = id;
     }
 
-    public String getPrename() {
-        return prename;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPrename(String prename) {
-        this.prename = prename;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    private String prename;
+    public String getEmail() {
+        return email;
+    }
 
-    private String surname;
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public String toString() {
-        return prename + " " + surname;
+        return username + " (Birthday: " + dateFormat.format(birthday.getTime()) + ")";
     }
 }

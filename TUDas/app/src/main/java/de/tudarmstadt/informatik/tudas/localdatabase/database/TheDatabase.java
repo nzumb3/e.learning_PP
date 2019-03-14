@@ -13,16 +13,20 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import de.tudarmstadt.informatik.tudas.localdatabase.daos.AppointmentDao;
+import de.tudarmstadt.informatik.tudas.localdatabase.daos.LabelDao;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
+import de.tudarmstadt.informatik.tudas.model.Label;
 import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 
-@Database(entities = {Appointment.class, AppointmentContent.class}, version = 1, exportSchema = false)
+@Database(entities = {Appointment.class, AppointmentContent.class, Label.class}, version = 1, exportSchema = false)
 @TypeConverters({CalendarConverter.class})
 public abstract class TheDatabase extends RoomDatabase {
 
     public abstract AppointmentDao appointmentDao();
+
+    public abstract LabelDao labelDao();
 
     private static volatile TheDatabase INSTANCE;
 
@@ -54,8 +58,11 @@ public abstract class TheDatabase extends RoomDatabase {
 
         private final AppointmentDao mDao;
 
+        private final LabelDao labelDao;
+
         PopulateDbAsync(TheDatabase db) {
             mDao = db.appointmentDao();
+            labelDao = db.labelDao();
         }
 
         @Override
@@ -131,6 +138,38 @@ public abstract class TheDatabase extends RoomDatabase {
             input4.setContent(test4);
             input4.setAppointments(Arrays.asList(new Appointment[]{app4}));
             mDao.insert(input4);
+
+            AppointmentContent test5 = new AppointmentContent();
+            test5.setTitle("Appointment 5");
+            test5.setDescription("Content for testing the merging of local and distributed appointments");
+            test5.setAbbreviation("App5");
+            test5.setRoom("S308/311");
+            test5.setColor("#000000");
+            Appointment app5= new Appointment();
+            Calendar start5 = Calendar.getInstance();
+            start5.set(2019,Calendar.MARCH,15,13,0, 0);
+            Calendar end5 = Calendar.getInstance();
+            end5.set(2019,Calendar.MARCH,15,14,0, 0);
+            app5.setStartDate(start5);
+            app5.setEndDate(end5);
+            Appointment app6= new Appointment();
+            Calendar start6 = Calendar.getInstance();
+            start6.set(2019,Calendar.MARCH,16,9,0, 0);
+            Calendar end6 = Calendar.getInstance();
+            end6.set(2019,Calendar.MARCH,16,9,30, 0);
+            app6.setStartDate(start6);
+            app6.setEndDate(end6);
+            AppointmentContentWithAppointments input5 = new AppointmentContentWithAppointments();
+            input5.setContent(test5);
+            input5.setAppointments(Arrays.asList(new Appointment[]{app5, app6}));
+            mDao.insert(input5);
+
+
+
+            Label label1 = new Label();
+            label1.setName("test");
+            labelDao.insertLabel(label1);
+
             return null;
         }
     }

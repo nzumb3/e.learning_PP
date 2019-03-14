@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.tudas.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -9,19 +10,21 @@ import retrofit2.Response;
 public class TestMain {
 
     public static void main(String[] args) {
-        UserService service = TudasServiceGenerator.createService(UserService.class);
-        Call<List<User>> callAsync = service.getUsers();
+        AppointmentService service = TudasServiceGenerator.createService(AppointmentService.class);
+        Call<List<Appointment>> callAsync = service.getAppointments("2019-03-15", "test/bla");
 
-        callAsync.enqueue(new Callback<List<User>>() {
+        callAsync.enqueue(new Callback<List<Appointment>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                List<User> users = response.body();
-                System.out.println(users);
+            public void onResponse(Call<List<Appointment>> call, Response<List<Appointment>> response) {
+                System.out.println(call.request());
+                List<Appointment> appointments = response.body();
+                System.out.println("Drin: " + appointments);
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                System.out.println(t);
+            public void onFailure(Call<List<Appointment>> call, Throwable t) {
+                System.out.println("Request: " + call.request());
+                System.out.println("Fehler: " + t);
             }
         });
     }

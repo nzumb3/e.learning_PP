@@ -42,8 +42,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
         dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
         startDate = Calendar.getInstance();
-        startDate.set(2018, 11, 25, 0, 0);
-        Calendar date = Calendar.getInstance();
+        startDate.set(2019, Calendar.MARCH, 15, 0, 0, 0);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);

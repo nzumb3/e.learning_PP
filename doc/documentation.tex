@@ -36,15 +36,19 @@
 		\section{Campus-Navigation}\label{sec:campus_navigation}
 		
 		\section{Stundenplan}\label{sec:timetable}
-			Im Stundenplan sollen die Termine des Nutzers angezeigt werden. Dies sind sowohl die selbst erstellten Einträge des Nutzers als auch die Termine von abbonierten Veranstaltungen. Üblicherweise beinhaltet ein Stundenplan Einträge, die sich wöchentlich wiederholen. Fristen oder Termine in abbonierten Listen haben einen überwiegend einmaligen Charakter. Daher können hier zwei grundsätzliche Typen von Terminen unterschieden werden:
+			Im Stundenplan werden die selbst erstellten Termine des Nutzers angezeigt. Hier können grundsätzlich zwei Typen von Terminen unterschieden werden:
 			\begin{itemize}
 				\item Einfache Termine
 				
 				\item Wiederholende Termine
 			\end{itemize}
-			Die Charakteristik der wiederholenden Termine impliziert eine einmalige Anzeige im Stundenplan an einem bestimmten Datum. Daher ist es sinnvoll, den Stundenplan datumsabhängig anzuzeigen. Da die Bildschirmbreite des Smartphones in der vertikalen Ausrichtung deutlich begrenzt ist, muss auch die Anzahl der angezeigten Tage beschränkt werden. Zwei Tage, das heißt also der aktuelle Tag und der darauffolgende Tag, scheint eine sinnvolle Wahl zu sein, da man an diesen Tagen gegenwärtig am meisten interessiert ist. Der entsprechende Wochentag mit dem dazugehörigen Datum wird in einer Kopfzeile angezeigt. Auf der linken Seite sind in vertikaler Ausrichtung die Uhrzeiten in stündlichem Abstand untereinander angeordnet. Dabei beginnt der Stundenplan oben mit der maximalen ganzen Stunde, die kleiner als oder gleich allen Anfangsuhrzeiten von Terminen im angezeigten Zeitraum ist und endet unten mit der minimalen ganzen Stunde, die größer als oder gleich allen Enduhrzeiten der gleichen Termine sind.
+			Die Charakteristik der einfachen Termine impliziert eine einmalige Anzeige im Stundenplan an einem bestimmten Datum. Daher ist es sinnvoll, den Stundenplan datumsabhängig anzuzeigen. Da die Bildschirmbreite des Smartphones in der vertikalen Ausrichtung deutlich begrenzt ist, muss auch die Anzahl der angezeigten Tage beschränkt werden. Zwei Tage, das heißt also der aktuelle Tag und der darauffolgende Tag, scheint eine sinnvolle Wahl zu sein, da man an diesen Tagen gegenwärtig am meisten interessiert ist. Der ausgewählte Zeitraum wird in einer Kopfzeile über den Tageslisten angezeigt. Auf der linken Seite sind in vertikaler Ausrichtung die Uhrzeiten in stündlichem Abstand untereinander angeordnet. Dabei beginnt der Stundenplan oben mit der maximalen ganzen Stunde, die kleiner als oder gleich allen Anfangsuhrzeiten von Terminen im angezeigten Zeitraum ist und endet unten mit der minimalen ganzen Stunde, die größer als oder gleich allen Enduhrzeiten der gleichen Termine sind.\\\\
+			Viele Nutzer verwenden üblicherweise eine andere Applikation zur Verwaltung ihres Kalenders. Daher soll TUDAS bei Einstellen eines persönlichen Termins zumindest für den Google-Kalender überprüfen, ob sich der Termin nicht mit einem bereits erstellten Termin überschneidet.
 		
 		\section{Variabel einsetzbare, moderierbare Aufgabenlisten}\label{sec:todo_list}
+			Da Erstsemesterstudenten oft nicht wissen, welche Termine und Veranstaltung für sie wichtig sind, ist es sinnvoll, diese Termine bereitzustellen. Dies setzt voraus, dass solche Termine von einer externen Institution erstellt und editiert werden. Eine solche Funktionalität benötigt einen zentralen Speicherort, wo die erstellten Termine gespeichert und von der App abgerufen werden können.\\
+			Auf der anderen Seite gibt es spezifische Termine, die nicht jeder Student angezeigt bekommen soll, um nicht mit Informationen überflutet zu werden. Hierfür soll eine Art Abonnement-System etabliert werden, mittels dem Studenten verschiedene Labels abonnieren können, unter denen Informationen zu dem gleichen Thema zusammengefasst werden. Diese Labels können vollkommen frei gewählt werden und können beispielsweise für verschiedene Lehrveranstaltungen (z.B. eine Vorlesung) aber auch für die Termine der Orientierungsphase stehen.\\
+			Um solche Termine zu erstellen und zu bearbeiten, wird ein Webinterface mit einer zugrundeliegenden Datenbank verwendet, welches über einen herkömmlichen Browser erreichbar ist. Fachschaften und andere Institutionen benutzen oftmals schon eine Software für die Verwaltung ihrer Termine. Daher soll das Webinterface auch eine Importfunktion besitzen, die das Hochladen von Kalenderdateien ermöglicht und für verschiedene Dateiformate erweiterbar ist.
 		
 	\chapter{Dokumentation der Implementierung}\label{chap:documentation}
 		\section{Stundenplan}
@@ -89,5 +93,11 @@ h_e = \min\{h_e \in \{0, \dots, 23\}: \forall a \in A_f: h_e \geq \hour(\getEnd(
 				\begin{enumerate}
 					\item Laden der Termine des Tages $d$ als geordnete Menge $A_d$ nach ihren Anfangszeitpunkten.
 				\end{enumerate}
+	
+	\chapter{Codespezifische Dokumentation}
+		In diesem Kapitel soll ein konkreter Überblick über und mit wichtigen Anmerkungen zu dem Code gegeben werden.
+		
+		\section{Übersicht}
+			
 
 \end{document}

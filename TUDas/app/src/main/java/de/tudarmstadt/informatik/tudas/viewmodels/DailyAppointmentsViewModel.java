@@ -20,7 +20,12 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Appointment>> getAppointmentsForDay(String day) {
-        return repository.getAppointmentsForDay(day);
+        //return repository.getAppointmentsForDay(day);
+        return repository.getDailyAppointments(day);
+    }
+
+    public LiveData<List<String>> getLabels() {
+        return repository.getLabels();
     }
 
     public void insert(AppointmentContent content, Appointment... appointments) {
