@@ -2,6 +2,7 @@ package de.tudarmstadt.informatik.tudas.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.Layout;
 import android.view.Gravity;
@@ -63,15 +64,16 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             entry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (popUp.getClick()){
-                        TextView popTitle = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupTitle);
-                        popTitle.setText(appointment.getAppointmentContent().getTitle());
-                        TextView popDescription = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupDescription);
-                        popDescription.setText(appointment.getAppointmentContent().getDescription());
-                        popUp.showAtLocation(popUp.getContentView(), Gravity.BOTTOM, 10, 10);
-                        popUp.update(20, 50, 300, 300);
-                        popUp.setClick(false);
-                    }
+                    TextView popTitle = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupTitle);
+                    popTitle.setText(appointment.getAppointmentContent().getTitle());
+                    TextView popDescription = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupDescription);
+                    popDescription.setText(appointment.getAppointmentContent().getDescription());
+                    popUp.showAtLocation(popUp.getContentView(), Gravity.CENTER, 0, 0);
+                    //popUp.showAtLocation(popUp.getContentView(), Gravity.BOTTOM, 10, 10);
+                    //popUp.update(20, 50, 300,300);
+                    int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+                    int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+                    popUp.update(width-40, height-300);
                 }
             });
         }

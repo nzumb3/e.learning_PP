@@ -59,9 +59,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
 
-        popUp = new DailyAppointmentPopupView();
-        popUpLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.component_daily_appointment_popup, null);
-        popUp.setContentView(popUpLayout);
+        popUp = new DailyAppointmentPopupView(this);
 
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
         viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
@@ -85,11 +83,6 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
                     popUp.dismiss();
                     clicked = true;
                 }*/
-                Timber.d("MyLog: Click: " + popUp.getClick());
-                if (!popUp.getClick()){
-                    popUp.dismiss();
-                    popUp.setClick(true);
-                }
             }
         });
 
