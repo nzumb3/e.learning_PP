@@ -2,22 +2,17 @@ package de.tudarmstadt.informatik.tudas;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -27,17 +22,10 @@ import java.util.Locale;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
-import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 import de.tudarmstadt.informatik.tudas.viewmodels.NewAppointmentViewModel;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class NewAppointmentActivity extends AppCompatActivity {
-
-    public static final String EXTRA_TITLE = "appointment_title";
-    public static final String EXTRA_DESCRIPTION = "appointment_description";
-    public static final String EXTRA_STARTTIME = "appointment_starttime";
-    public static final String EXTRA_ENDTIME = "appointment_endtime";
-    public static final String EXTRA_COLOR = "appointment color";
 
     private NewAppointmentViewModel viewModel;
 
@@ -68,9 +56,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
             this.hour24Format = false;
         }
         String myDateFormat = "dd.MM.yy";
-        //dateFormat = new SimpleDateFormat(myDateFormat, Locale.GERMANY);
         dateFormat = new SimpleDateFormat(myDateFormat, Locale.getDefault());
-        //timeFormat = new SimpleDateFormat(myTimeFormat, Locale.GERMANY);
         timeFormat = new SimpleDateFormat(myTimeFormat, Locale.getDefault());
         start_date_input.setText(dateFormat.format(start_date_calendar.getTime()));
         start_time_input.setText(timeFormat.format(start_date_calendar.getTime()));
@@ -136,26 +122,6 @@ public class NewAppointmentActivity extends AppCompatActivity {
                 app.setEndDate(end_date_calendar);
                 viewModel.insert(content, app);
                 saveBar.show();
-                /*
-                Intent replyIntent = new Intent();
-                if (TextUtils.isEmpty(mEditWordView.getText())) {
-                    setResult(RESULT_CANCELED, replyIntent);
-                } else {
-                    String title = mEditWordView.getText().toString();
-                    replyIntent.putExtra(EXTRA_TITLE, title);
-                    String description = descriptionInput.getText().toString();
-                    replyIntent.putExtra(EXTRA_DESCRIPTION, description);
-                    String startTime = start_date_input.getText().toString() + " " + start_time_input.getText().toString();
-                    replyIntent.putExtra(EXTRA_STARTTIME, start_date_calendar);
-                    String endTime = end_date_input.getText().toString() + " " + end_time_input.getText().toString();
-                    replyIntent.putExtra(EXTRA_ENDTIME, end_date_calendar);
-                    setResult(RESULT_OK, replyIntent);
-                    int background = ((ColorDrawable) findViewById(R.id.appointment_color_preview).getBackground()).getColor();
-                    String colorStr = "#" + Integer.toHexString(background & 0x00ffffff);
-                    replyIntent.putExtra(EXTRA_COLOR, colorStr);
-                }
-                finish();
-                */
             }
         });
         start_date_input = (EditText) findViewById(R.id.start_date_input);
