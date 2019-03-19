@@ -22,4 +22,5 @@
     <string name="nav_timetable_title">Timetable</string>
     <string name="appointment_room">Room</string>
     <string name="appointment_save">Appointment saved!</string>
+    <string name="title_activity_timetable">Timetable</string>
 </resources>
