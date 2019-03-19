@@ -5,5 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="buttonLabel">#d3d3d3</color>
     <color name="GREY">#10CCCCCC</color>
-    <color name="popupBackground">#10CCCCCC</color>
+    <color name="popupBackground">#AACCCCCC</color>
 </resources>

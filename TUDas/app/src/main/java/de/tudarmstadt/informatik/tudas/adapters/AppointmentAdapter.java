@@ -1,20 +1,28 @@
 package de.tudarmstadt.informatik.tudas.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import de.tudarmstadt.informatik.tudas.DailyAppointmentsActivity;
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 
 public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
 
+    private int fontsize;
+
     public AppointmentAdapter(Context context) {
         super(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        this.fontsize = prefs.getInt("fontSize", 12);
     }
 
     @Override
@@ -33,6 +41,7 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
 
             time.setText(appointment.toTimeString());
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
+            time.setTextSize(TypedValue.COMPLEX_UNIT_DIP, this.fontsize);
             time.setTextColor(color);
             room.setText(appointment.getAppointmentContent().getRoom());
             room.setTextColor(color);

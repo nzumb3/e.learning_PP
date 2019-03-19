@@ -22,8 +22,5 @@ public class DailyAppointmentPopupView extends PopupWindow {
         popUpLayout.setBackgroundColor(context.getResources().getColor(R.color.popupBackground));
         this.setContentView(popUpLayout);
         this.setFocusable(true);
-        //int widht = Resources.getSystem().getDisplayMetrics().widthPixels;
-        //int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        //this.update(widht-20, height-20);
     }
 }
