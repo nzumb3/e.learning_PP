@@ -52,7 +52,6 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
 
     DailyAppointmentPopupView popUp;
-    RelativeLayout popUpLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +61,15 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDailyAppointments);
         setSupportActionBar(toolbar);
 
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         viewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
+        this.refreshView();
+
         dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
         startDate = Calendar.getInstance();
         startDate.set(2019, Calendar.MARCH, 15, 0, 0, 0);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
 
         popUp = new DailyAppointmentPopupView(this);
 
@@ -76,24 +77,44 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
 
-        //popUpLayout = findViewById(R.id.dailyAppointmentPopup);//new LinearLayout(this);
+        drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
+        NavigationView navView = findViewById(R.id.nav_view);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
 
+        Button navButton = findViewById(R.id.navButton_dailyAppointments);
+        navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    private void refreshView(){
+        dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
+        startDate = Calendar.getInstance();
+        startDate.set(2019, Calendar.MARCH, 15, 0, 0, 0);
+
+        popUp = new DailyAppointmentPopupView(this);
+
+        DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
+        viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
+        dailyAppointmentsListView.setAdapter(adapter);
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, 1);
+        else
+            viewModel.setPermissionStatus(PackageManager.PERMISSION_GRANTED);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
                 Timber.d("MyLog: Shared Prefs: " + prefs.getAll().toString());
                 String loc = Locale.getDefault().getDisplayCountry();
-                Timber.d("MyLog: Current Locale -> " + loc);*/
-                /*if (clicked) {
-                    popUp.showAtLocation(popUpLayout, Gravity.BOTTOM, 10, 10);
-                    popUp.update(20, 50, 300, 300);
-                    clicked = false;
-                } else {
-                    popUp.dismiss();
-                    clicked = true;
-                }*/
+                Timber.d("MyLog: Current Locale -> " + loc);
+
 
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + "S103/171" + "+TU+Darmstadt");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -104,12 +125,6 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
             }
         });
 
-        //params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        //popUpLayout.setOrientation(LinearLayout.VERTICAL);
-        //popUpText.setText("Example Popup!!!! YAY! I guess...");
-        //popUpLayout.addView(popUpText, params);
-        //popUp.setContentView(popUpLayout);
-
         drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
         NavigationView navView = findViewById(R.id.nav_view);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -117,10 +132,5 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         Button navButton = findViewById(R.id.navButton_dailyAppointments);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
-
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, 1);
-        else
-            viewModel.setPermissionStatus(PackageManager.PERMISSION_GRANTED);
     }
 }

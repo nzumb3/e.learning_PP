@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dailyAppointmentPopupDescription"
-        android:text="THE DESCRIPTION is very long so we need some space for this. Maybe this will wort like so?!?"
+        android:text="THE DESCRIPTION is very long so we need some space for this. Maybe this will work like so?!?"
         android:layout_below="@id/dailyAppointmentPopupTitle"
         android:layout_marginTop="2px"
         android:layout_marginLeft="5px"
