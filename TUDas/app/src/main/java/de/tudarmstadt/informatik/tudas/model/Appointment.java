@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -30,6 +31,9 @@ public class Appointment {
 
     @Embedded(prefix = "content_")
     private AppointmentContent appointmentContent;
+
+    @Ignore
+    private boolean overlap;
 
     public long getId() {
         return id;
@@ -123,5 +127,13 @@ public class Appointment {
 
     public static int millisToMinute(long millis) {
         return (int) (millis / 1000 / 60);
+    }
+
+    public boolean overlap() {
+        return overlap;
+    }
+
+    public void setOverlap(boolean overlap) {
+        this.overlap = overlap;
     }
 }

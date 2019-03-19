@@ -1,11 +1,19 @@
 package de.tudarmstadt.informatik.tudas;
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.CalendarContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,12 +29,16 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import de.tudarmstadt.informatik.tudas.adapters.DailyAppointmentsListViewAdapter;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationButtonListener;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationListener;
+import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 import de.tudarmstadt.informatik.tudas.viewmodels.DailyAppointmentsViewModel;
 import de.tudarmstadt.informatik.tudas.views.DailyAppointmentPopupView;
@@ -82,6 +94,13 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
                     popUp.dismiss();
                     clicked = true;
                 }*/
+
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + "S103/171" + "+TU+Darmstadt");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if(mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
             }
         });
 
@@ -99,5 +118,9 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         Button navButton = findViewById(R.id.navButton_dailyAppointments);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
 
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, 1);
+        else
+            viewModel.setPermissionStatus(PackageManager.PERMISSION_GRANTED);
     }
 }
