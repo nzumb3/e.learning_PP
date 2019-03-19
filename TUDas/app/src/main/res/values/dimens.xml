@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_padding">6dp</dimen>
-    <dimen name="big_padding">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="small_padding">6sp</dimen>
+    <dimen name="big_padding">16sp</dimen>
+
+    <dimen name="heading6">20sp</dimen>
+    <dimen name="body_big">16sp</dimen>
+    <dimen name="body_small">14sp</dimen>
 </resources>
