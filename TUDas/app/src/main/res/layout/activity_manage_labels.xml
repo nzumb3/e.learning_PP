@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DailyAppointmentsActivity"
-    android:fitsSystemWindows="true">
+    tools:context=".ManageLabelsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:id="@+id/appbarDailyAppointments">
+        android:id="@+id/appbarManageLabels">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -22,9 +19,9 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/navButton_dailyAppointments"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/navButton_manageLabels"
                 android:background="?attr/colorPrimary"
                 android:text="NAV"
                 android:textColor="#FFFFFF"
@@ -35,7 +32,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:id="@+id/toolbarDailyAppointments"
+                android:id="@+id/toolbarManageLabels"
                 android:layout_weight="5"/>
 
         </LinearLayout>
@@ -43,27 +40,21 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drawerLayoutDailyAppointments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/drawerLayoutManageLabels"
         android:fitsSystemWindows="false"
-        android:layout_below="@id/appbarDailyAppointments">
-
+        android:layout_below="@id/appbarManageLabels">
 
         <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".DailyAppointmentsActivity">
+            tools:context=".ManageLabelsActivity">
 
             <include
-                layout="@layout/content_daily_appointments"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
+                layout="@layout/content_manage_labels"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
@@ -71,22 +62,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/big_padding"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                app:srcCompat="@android:drawable/ic_dialog_email" />
+                android_layout_alignParentRight="true"
+                app:srcCompat="@drawable/ic_add_black_24dp"/>
 
         </RelativeLayout>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_width="wrap_content"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/navigation_view">
-
-
-        </android.support.design.widget.NavigationView>
-
+            app:menu="@menu/navigation_view"/>
 
     </android.support.v4.widget.DrawerLayout>
 

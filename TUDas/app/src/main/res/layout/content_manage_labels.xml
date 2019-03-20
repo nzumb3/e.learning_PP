@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <de.tudarmstadt.informatik.tudas.customWidgets.LabelListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvLabels"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/small_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding">
+
+    </de.tudarmstadt.informatik.tudas.customWidgets.LabelListView>
+
+</RelativeLayout>

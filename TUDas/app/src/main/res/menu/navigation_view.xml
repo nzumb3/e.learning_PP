@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_settings"
-            android:title="@string/nav_settings_title" />
-        <item
             android:id="@+id/nav_dailyAppointments"
             android:title="@string/title_activity_daily_appointments" />
         <item
             android:id="@+id/nav_timeTable"
             android:title="@string/nav_timetable_title" />
+        <item
+            android:id="@+id/nav_manageLabels"
+            android:title="@string/nav_manageLabels_title" />
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/nav_settings_title" />
     </group>
 </menu>
