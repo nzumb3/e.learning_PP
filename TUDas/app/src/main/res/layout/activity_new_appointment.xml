@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/new_appointment_layout">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,9 +18,9 @@
             android:id="@+id/add_appointment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
-            android:layout_marginTop="10px"
+            android:layout_marginLeft="@dimen/small_padding"
+            android:layout_marginRight="@dimen/small_padding"
+            android:layout_marginTop="@dimen/small_padding"
             android:minHeight="250dp">
 
             <RelativeLayout
@@ -33,8 +34,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/appointment_title"
-                    android:textSize="28px"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/heading6"/>
 
                 <EditText
                     android:id="@+id/appointment_title_input"
@@ -44,8 +45,8 @@
                     android:inputType="text"
                     android:maxLength="40"
                     android:padding="@dimen/small_padding"
-                    android:textSize="16px"
-                    android:layout_below="@+id/appointment_title_title" />
+                    android:layout_below="@+id/appointment_title_title"
+                    android:textSize="@dimen/body_small"/>
 
             </RelativeLayout>
 
@@ -61,8 +62,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/appointment_description"
-                    android:textSize="28px"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/heading6"/>
 
                 <EditText
                     android:id="@+id/appointment_description_input"
@@ -74,31 +75,31 @@
                     android:inputType="textMultiLine"
                     android:padding="@dimen/small_padding"
                     android:singleLine="false"
-                    android:textSize="16px"
-                    android:layout_below="@id/appointment_description_title"/>
+                    android:layout_below="@id/appointment_description_title"
+                    android:textSize="@dimen/body_small"/>
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/appointment_abbrevation_color"
-                android:layout_width="wrap_content"
+                android:layout_width="800sp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/appointment_description"
-                android:layout_marginLeft="20px"
-                android:layout_marginRight="20px">
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_marginRight="@dimen/small_padding">
 
                 <RelativeLayout
                     android:id="@+id/appointment_abbrevation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true">
+                    android:layout_centerHorizontal="true">
 
                     <TextView
                         android:id="@+id/appointment_abbrevation_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/appointment_abbrevation"
-                        android:textSize="28px"/>
+                        android:textSize="@dimen/heading6"/>
 
                     <EditText
                         android:id="@+id/appointment_abbrevation_input"
@@ -107,9 +108,36 @@
                         android:hint="@string/abbrevation_example"
                         android:maxLength="6"
                         android:maxLines="1"
-                        android:textSize="16px"
+                        android:layout_centerInParent="true"
+                        android:layout_below="@id/appointment_abbrevation_title"
+                        android:textSize="@dimen/body_small"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/appointment_room"
+                    android:layout_toLeftOf="@id/appointment_abbrevation"
+                    android:layout_marginRight="@dimen/big_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appointment_room"
+                        android:textSize="@dimen/heading6"
                         android:layout_centerHorizontal="true"
-                        android:layout_below="@id/appointment_abbrevation_title"/>
+                        android:id="@+id/appointment_room_title"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="..."
+                        android:maxLength="8"
+                        android:layout_below="@id/appointment_room_title"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/body_small"
+                        android:id="@+id/appointment_room_input"/>
 
                 </RelativeLayout>
 
@@ -117,23 +145,24 @@
                     android:id="@+id/appointment_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="45px"
-                    android:layout_alignParentRight="true">
+                    android:layout_toRightOf="@id/appointment_abbrevation"
+                    android:layout_marginLeft="@dimen/big_padding">
 
                     <TextView
                         android:id="@+id/appointment_color_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Color"
-                        android:textSize="28px"/>
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/heading6"/>
 
                     <View
                         android:id="@+id/appointment_color_preview"
-                        android:layout_width="40px"
-                        android:layout_height="40px"
+                        android:layout_width="@dimen/heading6"
+                        android:layout_height="@dimen/heading6"
                         android:background="@color/colorPrimary"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10px"
+                        android:layout_marginTop="@dimen/small_padding"
                         android:clickable="true"
                         android:layout_below="@id/appointment_color_title"/>
 
@@ -145,8 +174,8 @@
                 android:id="@+id/appointment_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:layout_marginRight="20px"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_marginRight="@dimen/small_padding"
                 android:layout_below="@id/appointment_abbrevation_color">
 
                 <RelativeLayout
@@ -160,8 +189,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/start_date"
-                        android:textSize="28px"
-                        android:layout_centerHorizontal="true"/>
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/heading6"/>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -176,8 +205,8 @@
                             android:clickable="true"
                             android:focusable="false"
                             android:inputType="date"
-                            android:textSize="16px"
-                            android:layout_alignParentLeft="true"/>
+                            android:layout_alignParentLeft="true"
+                            android:textSize="@dimen/body_small"/>
 
                         <EditText
                             android:id="@+id/start_time_input"
@@ -185,8 +214,8 @@
                             android:layout_height="wrap_content"
                             android:focusable="false"
                             android:inputType="date"
-                            android:textSize="16px"
-                            android:layout_toRightOf="@id/start_date_input"/>
+                            android:layout_toRightOf="@id/start_date_input"
+                            android:textSize="@dimen/body_small"/>
 
                     </RelativeLayout>
 
@@ -203,8 +232,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/end_date"
-                        android:textSize="28px"
-                        android:layout_centerHorizontal="true"/>
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/heading6"/>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -219,7 +248,7 @@
                             android:clickable="true"
                             android:focusable="false"
                             android:inputType="date"
-                            android:textSize="16px"/>
+                            android:textSize="@dimen/body_small"/>
 
                         <EditText
                             android:id="@+id/end_time_input"
@@ -227,8 +256,8 @@
                             android:layout_height="wrap_content"
                             android:focusable="false"
                             android:inputType="date"
-                            android:textSize="16px"
-                            android:layout_toRightOf="@id/end_date_input"/>
+                            android:layout_toRightOf="@id/end_date_input"
+                            android:textSize="@dimen/body_small"/>
 
                     </RelativeLayout>
 
@@ -243,7 +272,7 @@
                 android:background="@color/colorPrimary"
                 android:text="@string/button_save"
                 android:textColor="@color/buttonLabel"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="@dimen/small_padding"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/appointment_time"/>
 
