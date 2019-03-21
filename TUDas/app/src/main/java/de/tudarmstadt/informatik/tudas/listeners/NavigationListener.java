@@ -9,10 +9,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
 import de.tudarmstadt.informatik.tudas.DailyAppointmentsActivity;
+import de.tudarmstadt.informatik.tudas.ManageLabelsActivity;
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.SettingsActivity;
 import de.tudarmstadt.informatik.tudas.TimeTableActivity;
-import timber.log.Timber;
 
 public class NavigationListener implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,6 +47,11 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
                     Intent intent = new Intent(this.context, TimeTableActivity.class);
                     context.startActivity(intent);
                     //((Activity)context).finish();
+                }
+            case R.id.nav_manageLabels:
+                if (!(context instanceof ManageLabelsActivity)){
+                    Intent intent = new Intent(this.context, ManageLabelsActivity.class);
+                    context.startActivity(intent);
                 }
         }
         return false;

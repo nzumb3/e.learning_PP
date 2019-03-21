@@ -22,4 +22,6 @@
     <string name="nav_timetable_title">Timetable</string>
     <string name="appointment_room">Room</string>
     <string name="appointment_save">Appointment saved!</string>
+    <string name="title_activity_manage_labels">Manage Labels</string>
+    <string name="nav_manageLabels_title">Manage Labels</string>
 </resources>

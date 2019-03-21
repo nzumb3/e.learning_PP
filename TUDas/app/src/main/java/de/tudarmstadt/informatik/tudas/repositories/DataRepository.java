@@ -22,6 +22,7 @@ import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
 import de.tudarmstadt.informatik.tudas.model.AppointmentService;
+import de.tudarmstadt.informatik.tudas.model.Label;
 import de.tudarmstadt.informatik.tudas.model.TudasServiceGenerator;
 import de.tudarmstadt.informatik.tudas.utils.LiveDataTransformations;
 import retrofit2.Call;
@@ -172,6 +173,25 @@ public class DataRepository {
         @Override
         protected Void doInBackground(final AppointmentContentWithAppointments... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    public void insert(final Label label){
+        new insertLabelAsyncTask(labelDao).execute(label);
+    }
+
+    private static class insertLabelAsyncTask extends AsyncTask<Label, Void, Void>{
+
+        private LabelDao mLabelDao;
+
+        insertLabelAsyncTask(LabelDao dao) {
+            mLabelDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Label... params) {
+            mLabelDao.insertLabel(params[0]);
             return null;
         }
     }

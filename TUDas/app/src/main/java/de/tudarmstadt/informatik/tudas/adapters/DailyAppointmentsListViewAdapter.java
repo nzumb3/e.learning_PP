@@ -44,7 +44,6 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
 
         if (list != null && list.size() >= position + 1){
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
-            int fontsize = prefs.getInt("fontsize", 12);
             Appointment appointment = list.get(position);
             RelativeLayout entry = convertView.findViewById(R.id.rlDailyAppointment);
             TextView title = convertView.findViewById(R.id.dailyAppointmentTitle);
@@ -62,19 +61,14 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             }
             title.setText(appointment.getAppointmentContent().getTitle());
             title.setTextColor(color);
-            //title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontsize);
             abbr.setText(appointment.getAppointmentContent().getAbbreviation());
             abbr.setTextColor(color);
-            //abbr.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontsize);
             room.setText(appointment.getAppointmentContent().getRoom());
             room.setTextColor(color);
-            //room.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontsize);
             start.setText(timeFormat.format(appointment.getStartDate().getTime()) + " - ");
             start.setTextColor(color);
-            //start.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontsize);
             end.setText(timeFormat.format(appointment.getEndDate().getTime()));
             end.setTextColor(color);
-            //end.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontsize);
 
             entry.setOnClickListener(new View.OnClickListener() {
                 @Override

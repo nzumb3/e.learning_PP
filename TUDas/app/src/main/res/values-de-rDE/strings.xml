@@ -22,4 +22,6 @@
     <string name="nav_timetable_title">Stundenplan</string>
     <string name="appointment_room">Raum</string>
     <string name="appointment_save">Termin gespeichert!</string>
+    <string name="title_activity_manage_labels">Abo Verwaltung</string>
+    <string name="nav_manageLabels_title">Abo Verwaltung</string>
 </resources>
