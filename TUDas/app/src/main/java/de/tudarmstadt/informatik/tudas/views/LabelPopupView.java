@@ -19,14 +19,6 @@ public class LabelPopupView extends PopupWindow {
         this.setContentView(popUpLayout);
         this.setFocusable(true);
 
-        EditText labelInput = popUpLayout.findViewById(R.id.addLabel_input);
-        Button labelButton = popUpLayout.findViewById(R.id.addLabel_button);
 
-        labelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 }

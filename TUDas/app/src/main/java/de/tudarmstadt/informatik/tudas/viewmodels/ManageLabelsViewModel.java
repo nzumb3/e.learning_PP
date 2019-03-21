@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 
 import java.util.List;
 
+import de.tudarmstadt.informatik.tudas.model.Label;
 import de.tudarmstadt.informatik.tudas.repositories.DataRepository;
 
 
@@ -21,5 +22,10 @@ public class ManageLabelsViewModel extends AndroidViewModel {
 
     public LiveData<List<String>> getLabels(){
         return repository.getLabels();
+    }
+
+    public void insertLabel(Label label){
+        //TODO: Validation
+        repository.insert(label);
     }
 }
