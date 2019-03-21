@@ -36,7 +36,7 @@ public abstract class TheDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TheDatabase.class, "tudas_database")
-                            .addCallback(sRoomDatabaseCallback)
+                            //.addCallback(sRoomDatabaseCallback)
                             .build();
                 }
             }
@@ -144,7 +144,7 @@ public abstract class TheDatabase extends RoomDatabase {
             test5.setDescription("Content for testing the merging of local and distributed appointments");
             test5.setAbbreviation("App5");
             test5.setRoom("S308/311");
-            test5.setColor("#000000");
+            test5.setColor("#FF0000");
             Appointment app5= new Appointment();
             Calendar start5 = Calendar.getInstance();
             start5.set(2019,Calendar.MARCH,15,13,0, 0);

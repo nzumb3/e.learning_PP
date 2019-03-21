@@ -34,6 +34,7 @@
 		Dieses Kapitel beschreibt die Funktionalitäten, die die App in ihrer jeweils aktuellen Version anbietet. Dabei sollen die jeweiligen funktionalen sowie nicht-funktionalen Anforderungen aufgezeigt werden und nicht die programmiertechnische Umsetzung, die dann in Kapitel \ref{chap:documentation} folgt.
 		
 		\section{Campus-Navigation}\label{sec:campus_navigation}
+			Die TU Darmstadt belegt Gebäude und Räume, die über das gesamte Stadtgebiet verteilt sind. Daher kann es schwer fallen, stets zu wissen, wohin man gehen muss, um pünktlich zu dem Raum zu gelangen, in dem die nächste Veranstaltung stattfindet, insbesondere wenn man zuvor noch nie in Darmstadt gewesen ist. Der Nutzer soll deswegen die Möglichkeit haben, zu dem entsprechenden Ort einer Veranstaltung navigieren zu können.
 		
 		\section{Stundenplan}\label{sec:timetable}
 			Im Stundenplan werden die selbst erstellten Termine des Nutzers angezeigt. Hier können grundsätzlich zwei Typen von Terminen unterschieden werden:
@@ -51,6 +52,19 @@
 			Um solche Termine zu erstellen und zu bearbeiten, wird ein Webinterface mit einer zugrundeliegenden Datenbank verwendet, welches über einen herkömmlichen Browser erreichbar ist. Fachschaften und andere Institutionen benutzen oftmals schon eine Software für die Verwaltung ihrer Termine. Daher soll das Webinterface auch eine Importfunktion besitzen, die das Hochladen von Kalenderdateien ermöglicht und für verschiedene Dateiformate erweiterbar ist.
 		
 	\chapter{Dokumentation der Implementierung}\label{chap:documentation}
+		\section{Campus-Navigation}
+			Um die in Abschnitt \ref{sec:campus_navigation} beschriebene Funktionalität erfüllen zu können, kann für einen Termin ein Ort gespeichert werden. Dabei ist es dem Nutzer selbst überlassen, was er hierbei eingibt. Für die Realisierung der Navigation haben sich verschiedene Möglichkeiten geboten:
+			\begin{itemize}
+			\item Nutzen einer Karten-API, um sowohl den kürzesten Weg zu finden als auch der Weg auf der Karte anzuzeigen
+			
+			\item Crawlen von Kartenmaterial und der Entwurf eines eigenen Routing-Algorithmus
+			
+			\item Weiterleitung an eine Navigationsapp
+			\end{itemize}
+			
+			Die meisten APIs, die einen Navigationsalgorithmus bereitstellen, sind entweder kostenpflichtig oder begrenzen die Anzahl der Zugriffe für einen bestimmten Zeitraum auf ein Maß, das für den erwarteten Nutzungsumfang von TUDas unzureichend ist. Aus Gründen der Kosteneffizienz der App ist die Nutzung einer Karten-API daher nicht möglich.\\
+			Eine weitere Möglichkeit, die Campus-Navigation zu realisieren, ist das Crawlen, also das Beschaffen von frei zugänglichem Kartenmaterial wie zum Beispiel von Openstreetmap. %TODO Link einfügen
+			Hier werden Kartenmaterial in einem verarbeitungsfähigen Format bereitgestellt. Auf dieser Grundlage kann dann ein Algorithmus wie etwa der Dijkstra entwickelt, bzw. angewandt werden, um eine kürzeste Route von der aktuellen Position des Nutzers bis zum angegebenen Ziel zu berechnen. Auch dieser Ansatz muss aus verschiedenen Gründen abgelehnt werden. Einerseits enthalten die verfügbaren Kartendaten sehr viele Informationen, die für die Anwendung der App unnötig sind, weshalb ein hoher Aufwand aufgebracht werden muss, um die Daten zu bereinigen. Darüber hinaus müssten die Daten ständig aktualisiert werden, um mögliche Straßensperrungen oder Änderungen des Kartenmaterials einbinden zu können. Andererseits muss die Korrektheit des Routing-Algorithmus gewährleistet werden, was im Umfang dieser Implementierung nicht möglich ist.
 		\section{Stundenplan}
 			Wie in Abschnitt \ref{sec:timetable} beschrieben, müssen grundlegend zwei Arten von Terminen unterschieden werden. Ein wiederholender Termin hat im Vergleich zu einem einfachen Termin zusätzlich ein Startdatum, an dem die Wiederholung des Termins beginnt und ein Enddatum, wann die Wiederholung endet. Notwendig ist ebenfalls eine Wiederholungsvorschrift. Möchte man nun eine Teilmenge von wiederholenden Terminen löschen, so ist es notwendig, dass die Termine nicht zur Laufzeit auf Grundlage der Wiederholungsvorschrift berechnet werden sondern die Termine schon gespeichert wurden. Ansonsten wäre es nicht möglich zu spezifizieren, welche Termine von der Wiederholungsvorschrift ausgeschlossen werden sollen. Die wiederholenden Termine unterscheiden sich dann nur noch in den Daten. Der Titel und die Beschreibung beispielsweise sind für alle wiederholenden Termine jeweils gleich. Um Redundanzen zu vermeiden, werden solche Attribute von den reinen Datumsangaben getrennt. Die Klasse \lstinline!AppointmentContent! beinhaltet die statischen Informationen einer Terminsammlung und die Klasse \lstinline!Appointment! enthält die Datumsangaben. Die Attribute der Klassen sind im UML-Diagramm in Abbildung \ref{fig:uml_appointment} zu sehen.\\
 			Für eine mathematische Beschreibung des Projekts müssen diverse Hilfsfunktionen definiert werden. Sei $A$ die Menge aller Termine des Benutzers und $\mathbb{D}$ die Menge aller Datumsangaben, die auch den Zeitpunkt am Tag beinhalten. Die Funktion

@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -51,8 +52,14 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             TextView room = convertView.findViewById(R.id.dailyAppointmentRoom);
             TextView start = convertView.findViewById(R.id.tvAppointmentStartTime);
             TextView end = convertView.findViewById(R.id.tvAppointmentEndTime);
+            ImageView overlapInfo = convertView.findViewById(R.id.ivOverlapInfo);
             entry.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
+
+            if(appointment.overlap()) {
+                overlapInfo.setVisibility(View.VISIBLE);
+                overlapInfo.setColorFilter(color);
+            }
             title.setText(appointment.getAppointmentContent().getTitle());
             title.setTextColor(color);
             //title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontsize);
@@ -76,6 +83,7 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
                     popTitle.setText(appointment.getAppointmentContent().getTitle());
                     TextView popDescription = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupDescription);
                     popDescription.setText(appointment.getAppointmentContent().getDescription());
+                    /* Known Bug: In newer android versions Gravity.CENTER not working -> PopupWindow is shown on left upper corner */
                     popUp.showAtLocation(popUp.getContentView(), Gravity.CENTER, 0, 0);
                     int width = Resources.getSystem().getDisplayMetrics().widthPixels;
                     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
