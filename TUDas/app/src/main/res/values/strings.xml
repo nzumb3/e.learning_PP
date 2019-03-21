@@ -18,7 +18,6 @@
     <string name="notification_settings">Enable Notification Messages</string>
     <string name="hourSizeTitle">Size per Hour (px)</string>
     <string name="nav_settings_title">Settings</string>
-    <string name="default_lan_code" translatable="false">en_</string>
     <string name="nav_timetable_title">Timetable</string>
     <string name="appointment_room">Room</string>
     <string name="appointment_save">Appointment saved!</string>
