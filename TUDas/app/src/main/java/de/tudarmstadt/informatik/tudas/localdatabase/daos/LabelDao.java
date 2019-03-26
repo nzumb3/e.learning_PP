@@ -17,4 +17,7 @@ public interface LabelDao {
 
     @Query("SELECT name FROM labels")
     LiveData<List<String>> getLabels();
+
+    @Query("SELECT name FROM labels WHERE name == :label")
+    LiveData<List<String>> getLabelsWithName(String label);
 }
