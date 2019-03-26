@@ -20,7 +20,11 @@
     <string name="nav_settings_title">Settings</string>
     <string name="nav_timetable_title">Timetable</string>
     <string name="appointment_room">Room</string>
-    <string name="appointment_save">Appointment saved!</string>
+    <string name="appointment_save">Appointment saved.</string>
+    <string name="end_after_start">The end time must be after the start time.</string>
+    <string name="start_unequal_end">The start time must not be equal to the end time.</string>
+    <string name="abbreviation_not_empty">The abbreviation must not be empty.</string>
+    <string name="title_not_empty">The title must not be empty.</string>
     <string name="title_activity_manage_labels">Manage Labels</string>
     <string name="nav_manageLabels_title">Manage Labels</string>
     <string name="title_activity_timetable">Timetable</string>

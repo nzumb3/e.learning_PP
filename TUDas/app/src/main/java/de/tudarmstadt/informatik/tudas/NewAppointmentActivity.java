@@ -31,8 +31,8 @@ public class NewAppointmentActivity extends AppCompatActivity {
 
     private View colorPreview;
     private EditText mEditWordView;
-    private Calendar start_date_calendar = Calendar.getInstance();
-    private Calendar end_date_calendar = Calendar.getInstance();
+    private Calendar start_date_calendar;
+    private Calendar end_date_calendar;
     private EditText start_date_input;
     private EditText end_date_input;
     private EditText descriptionInput;
@@ -89,6 +89,11 @@ public class NewAppointmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(NewAppointmentViewModel.class);
         setContentView(R.layout.activity_new_appointment);
+
+        start_date_calendar = Calendar.getInstance();
+        end_date_calendar = ((Calendar) start_date_calendar.clone());
+        end_date_calendar.add(Calendar.MINUTE, 15);
+
         mEditWordView = findViewById(R.id.appointment_title_input);
         descriptionInput = findViewById(R.id.appointment_description_input);
         abbrInput = findViewById(R.id.appointment_abbrevation_input);
@@ -109,18 +114,40 @@ public class NewAppointmentActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.button_save_appointment);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AppointmentContent content = new AppointmentContent();
-                content.setTitle(mEditWordView.getText().toString());
-                content.setDescription(descriptionInput.getText().toString());
-                content.setAbbreviation(abbrInput.getText().toString());
+                String title = mEditWordView.getText().toString();
+                String description = descriptionInput.getText().toString();
+                String abbreviation = abbrInput.getText().toString();
                 int background = ((ColorDrawable) findViewById(R.id.appointment_color_preview).getBackground()).getColor();
-                String colorStr = "#" + Integer.toHexString(background & 0x00ffffff);
-                content.setColor(colorStr);
-                content.setRoom(roomInput.getText().toString());
-                Appointment app = new Appointment();
-                app.setStartDate(start_date_calendar);
-                app.setEndDate(end_date_calendar);
-                viewModel.insert(content, app);
+                String colorString = "#" + Integer.toHexString(background & 0x00ffffff);
+                String room = roomInput.getText().toString();
+                Calendar startDate = start_date_calendar;
+                Calendar endDate = end_date_calendar;
+
+                if(!title.isEmpty()) {
+                    if(!abbreviation.isEmpty()) {
+                        if(startDate.compareTo(endDate) != 0) {
+                            if(startDate.compareTo(endDate) < 0) {
+                                AppointmentContent content = new AppointmentContent();
+                                content.setTitle(title);
+                                content.setDescription(description);
+                                content.setAbbreviation(abbreviation);
+                                content.setColor(colorString);
+                                content.setRoom(room);
+                                Appointment appointment = new Appointment();
+                                appointment.setStartDate(startDate);
+                                appointment.setEndDate(endDate);
+
+                                viewModel.insert(content, appointment);
+
+                                saveBar.setText(R.string.appointment_save);
+                            } else
+                                saveBar.setText(R.string.end_after_start);
+                        } else
+                            saveBar.setText(R.string.start_unequal_end);
+                    } else
+                        saveBar.setText(R.string.abbreviation_not_empty);
+                } else
+                    saveBar.setText(R.string.title_not_empty);
                 saveBar.show();
             }
         });
