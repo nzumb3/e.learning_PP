@@ -48,11 +48,13 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
                     context.startActivity(intent);
                     //((Activity)context).finish();
                 }
+                break;
             case R.id.nav_manageLabels:
                 if (!(context instanceof ManageLabelsActivity)){
                     Intent intent = new Intent(this.context, ManageLabelsActivity.class);
                     context.startActivity(intent);
                 }
+                break;
         }
         return false;
     }

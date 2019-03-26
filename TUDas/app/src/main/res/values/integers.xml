@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="hourSizeMin">2</integer>
-    <integer name="hourSizeMax">10</integer>
-    <integer name="hourSizeDefault">5</integer>
+    <integer name="hourSizeMin">1</integer>
+    <integer name="hourSizeMax">8</integer>
+    <integer name="hourSizeDefault">3</integer>
     <integer name="timetableDaysMin">2</integer>
     <integer name="timetableDaysMax">5</integer>
     <integer name="timetableDaysDefault">2</integer>

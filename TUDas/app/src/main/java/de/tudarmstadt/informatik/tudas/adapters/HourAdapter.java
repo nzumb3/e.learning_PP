@@ -21,10 +21,12 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private AppCompatActivity activity;
+    private int PIXEL_PER_MINUTE;
 
-    public HourAdapter(Context context, AppCompatActivity activity) {
+    public HourAdapter(Context context, AppCompatActivity activity, int size) {
         super(context);
         this.activity = activity;
+        this.PIXEL_PER_MINUTE = size;
     }
 
     private static int getRelativeSliderPosition(Calendar current, Calendar beginning){
@@ -42,7 +44,7 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
         if(list != null && list.size() > 0)
             sliderPosition = getRelativeSliderPosition(current, list.get(0));
         if (sliderPosition >= 0) {
-            p.setMargins(0, sliderPosition * TimeTableViewModel.PIXEL_PER_MINUTE, 0, 0);
+            p.setMargins(0, sliderPosition * this.PIXEL_PER_MINUTE, 0, 0);
             timeSlider.setVisibility(View.VISIBLE);
         }
         else
@@ -74,7 +76,7 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
                 ));
                 gridline.setBackgroundColor(activity.getResources().getColor(R.color.GREY));
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
-                p.setMargins(0, gridlinePosition*TimeTableViewModel.PIXEL_PER_MINUTE, 0, 0);
+                p.setMargins(0, gridlinePosition*this.PIXEL_PER_MINUTE, 0, 0);
                 gridline.requestLayout();
                 //RelativeLayout timetable = (RelativeLayout) activity.findViewById(R.id.rlTimeTable);
                 //RelativeLayout timetable = rLTimeTable;
@@ -83,7 +85,7 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
             }
 
             timeSlotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-            timeSlotBlock.getLayoutParams().height = 60 * TimeTableViewModel.PIXEL_PER_MINUTE;
+            timeSlotBlock.getLayoutParams().height = 60 * this.PIXEL_PER_MINUTE;
             timeSlotBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
             setTimeSlider();
         }

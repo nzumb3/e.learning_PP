@@ -45,7 +45,10 @@ public class TimeTableViewModel extends AndroidViewModel {
         startDate = new MutableLiveData<>();
         Calendar _startDate = Calendar.getInstance();
         //_startDate.set(2018, Calendar.DECEMBER, 25, 0, 0, 0);
-        //_startDate.set(Calendar.MILLISECOND, 0);
+        _startDate.set(Calendar.MILLISECOND, 0);
+        _startDate.set(Calendar.HOUR_OF_DAY, 0);
+        _startDate.set(Calendar.MINUTE, 0);
+        _startDate.set(Calendar.SECOND, 0);
         startDate.setValue(_startDate);
     }
 

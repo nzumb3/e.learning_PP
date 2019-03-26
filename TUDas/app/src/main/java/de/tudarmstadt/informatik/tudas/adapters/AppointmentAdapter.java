@@ -17,12 +17,11 @@ import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 
 public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
 
-    private int fontsize;
+    private int PIXEL_PER_MINUTE;
 
-    public AppointmentAdapter(Context context) {
+    public AppointmentAdapter(Context context, int size) {
         super(context);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        this.fontsize = prefs.getInt("fontSize", 12);
+        this.PIXEL_PER_MINUTE = size;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
 
             time.setText(appointment.toTimeString());
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
-            time.setTextSize(TypedValue.COMPLEX_UNIT_DIP, this.fontsize);
+            time.setTextSize(TypedValue.COMPLEX_UNIT_DIP); // obsolete?
             time.setTextColor(color);
             room.setText(appointment.getAppointmentContent().getRoom());
             room.setTextColor(color);
@@ -49,7 +48,7 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
             abbr.setTextColor(color);
 
             timetableBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
-            timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * TimeTableViewModel.PIXEL_PER_MINUTE;
+            timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * this.PIXEL_PER_MINUTE;
             timetableBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
         }
 

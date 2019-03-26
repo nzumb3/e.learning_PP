@@ -11,8 +11,12 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.adapters.AppointmentAdapter;
 import de.tudarmstadt.informatik.tudas.adapters.HourAdapter;
+import de.tudarmstadt.informatik.tudas.customWidgets.DayListView;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationButtonListener;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationListener;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
@@ -41,7 +46,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        int days = prefs.getInt(getString(R.string.timetableSizeTitle), getResources().getInteger(R.integer.timetableDaysDefault));
+        int days = prefs.getInt("timetableSize", getResources().getInteger(R.integer.timetableDaysDefault));
         Timber.d("Mylog: " + days);
         viewModel.setNumDays(days);
 
@@ -91,8 +96,8 @@ public class TimeTableActivity extends AppCompatActivity {
         findViewById(R.id.tvTimeFrame).setOnClickListener(v -> datePickerDialog.show());
 
         listViews = new ArrayList<>();
-        listViews.add((ListView) findViewById(R.id.lvToday));
-        listViews.add((ListView) findViewById(R.id.lvTomorrow));
+        //listViews.add((ListView) findViewById(R.id.lvToday));
+        //listViews.add((ListView) findViewById(R.id.lvTomorrow));
         timeSlotView = (ListView) findViewById(R.id.lvTimeSlots);
     }
 
@@ -103,17 +108,18 @@ public class TimeTableActivity extends AppCompatActivity {
                 periodTextView.setText(string);
             }
         });
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int size = prefs.getInt("hourSize", getResources().getInteger(R.integer.hourSizeDefault));
         viewModel.getAppointments().observe(this, (appointments) -> {
             if(appointments != null) {
                 for(int day = 0; day < appointments.size(); day++) {
-                    AppointmentAdapter adapter = new AppointmentAdapter(this);
+                    AppointmentAdapter adapter = new AppointmentAdapter(this, size);
                     adapter.setList(appointments.get(day));
                     listViews.get(day).setAdapter(adapter);
                 }
             }
         });
-
-        HourAdapter adapter = new HourAdapter(this, this);
+        HourAdapter adapter = new HourAdapter(this, this, size);
         viewModel.getTimeSlots().observe(this, adapter::setList);
         timeSlotView.setAdapter(adapter);
         final Handler handler = new Handler();
