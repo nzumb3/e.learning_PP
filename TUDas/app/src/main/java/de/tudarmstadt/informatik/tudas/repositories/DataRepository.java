@@ -231,6 +231,10 @@ public class DataRepository {
         return labelDao.getLabelsWithName(label);
     }
 
+    public void deleteLabel(String label) {
+        new deleteLabelAsyncTask(labelDao).execute(label);
+    }
+
     public class BooleanResult {
         private boolean exists;
 
@@ -244,6 +248,20 @@ public class DataRepository {
 
         public String toString() {
             return "exists: " + exists;
+        }
+    }
+
+    private static class deleteLabelAsyncTask extends AsyncTask<String, Void, Void> {
+        private LabelDao labelDao;
+
+        deleteLabelAsyncTask(LabelDao labelDao) {
+            this.labelDao = labelDao;
+        }
+
+        @Override
+        protected Void doInBackground(final String... params) {
+            labelDao.delete(params[0]);
+            return null;
         }
     }
 }

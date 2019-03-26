@@ -37,4 +37,8 @@ public class ManageLabelsViewModel extends AndroidViewModel {
         LiveData<LiveDataTransformations.Tuple2<Boolean, List<String>>> intermediate = LiveDataTransformations.ifNotNull(repository.labelExists(label.getName()), repository.getLabelsWithName(label.getName()));
         return Transformations.map(intermediate, (tuple) -> tuple.first && tuple.second.isEmpty());
     }
+
+    public void deleteLabel(String label) {
+        repository.deleteLabel(label);
+    }
 }

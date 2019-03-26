@@ -37,7 +37,7 @@ public class ManageLabelsActivity extends AppCompatActivity {
 
         //Setup the listview
         manageLabelsListView = findViewById(R.id.lvLabels);
-        LabelListViewAdapter adapter = new LabelListViewAdapter(this);
+        LabelListViewAdapter adapter = new LabelListViewAdapter(this, viewModel);
         viewModel.getLabels().observe(this, adapter::setList);
         manageLabelsListView.setAdapter(adapter);
 
