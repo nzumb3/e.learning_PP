@@ -109,4 +109,16 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
     public void setPermissionStatus(int permissionStatus) {
         this.permissionStatus.setValue(permissionStatus);
     }
+
+    public LiveData<Integer> getInformationCode(String day) {
+        LiveData<LiveDataTransformations.Tuple2<List<String>, List<Appointment>>> intermediate = LiveDataTransformations.ifNotNull(repository.getLabels(), getAppointmentsForDay(day));
+        return Transformations.map(intermediate, (tuple) -> {
+            if(tuple.second.isEmpty()) {
+                if(tuple.first.isEmpty())
+                    return 2;
+                return 1;
+            }
+            return 0;
+        });
+    }
 }

@@ -65,6 +65,27 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         popUp = new DailyAppointmentPopupView(this);
 
+        viewModel.getInformationCode(CalendarConverter.toDateString(startDate)).observe(this, (code) -> {
+            if(code != null) {
+                switch (code) {
+                    case 1:
+                        findViewById(R.id.tvNoAppointments).setVisibility(View.VISIBLE);
+                        findViewById(R.id.tvNoAppointmentsNoLists).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.lvDailyAppointments).setVisibility(View.INVISIBLE);
+                        break;
+                    case 2:
+                        findViewById(R.id.tvNoAppointments).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.tvNoAppointmentsNoLists).setVisibility(View.VISIBLE);
+                        findViewById(R.id.lvDailyAppointments).setVisibility(View.INVISIBLE);
+                        break;
+                    default:
+                        findViewById(R.id.tvNoAppointments).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.tvNoAppointmentsNoLists).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.lvDailyAppointments).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
         viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
@@ -106,14 +127,6 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
                 Timber.d("MyLog: Shared Prefs: " + prefs.getAll().toString());
                 String loc = Locale.getDefault().getDisplayCountry();
                 Timber.d("MyLog: Current Locale -> " + loc);
-
-
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + "S103/171" + "+TU+Darmstadt");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if(mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }
             }
         });
 
