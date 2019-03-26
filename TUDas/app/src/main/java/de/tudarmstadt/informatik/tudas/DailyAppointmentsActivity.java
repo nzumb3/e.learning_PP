@@ -20,7 +20,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +57,15 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         viewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
+
+        viewModel.getCurrentDate().observe(this, (calendar -> {
+            if(calendar != null) {
+                TextView dateTextView = findViewById(R.id.tvTimeFrame);
+                SimpleDateFormat format = new SimpleDateFormat("dd. MMM yyyy");
+                dateTextView.setText(format.format(calendar.getTime()));
+            }
+        }));
+
         this.refreshView();
 
         dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
@@ -65,7 +76,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         popUp = new DailyAppointmentPopupView(this);
 
-        viewModel.getInformationCode(CalendarConverter.toDateString(startDate)).observe(this, (code) -> {
+        viewModel.getInformationCode().observe(this, (code) -> {
             if(code != null) {
                 switch (code) {
                     case 1:
@@ -87,7 +98,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         });
 
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
-        viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
+        viewModel.getAppointmentsForDay().observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
 
         drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
@@ -112,7 +123,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         popUp = new DailyAppointmentPopupView(this);
 
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
-        viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
+        viewModel.getAppointmentsForDay().observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
