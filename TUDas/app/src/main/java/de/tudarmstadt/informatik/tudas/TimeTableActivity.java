@@ -3,7 +3,9 @@ package de.tudarmstadt.informatik.tudas;
 import android.arch.lifecycle.ViewModelProviders;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -38,6 +40,10 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int days = prefs.getInt(getString(R.string.timetableSizeTitle), getResources().getInteger(R.integer.timetableDaysDefault));
+        Timber.d("Mylog: " + days);
+        viewModel.setNumDays(days);
 
         setContentView(R.layout.activity_timetable);
         setupUIViews();
@@ -66,6 +72,9 @@ public class TimeTableActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int days = prefs.getInt(getString(R.string.timetableSizeTitle), getResources().getInteger(R.integer.timetableDaysDefault));
+        viewModel.setNumDays(days);
     }
 
     private void setupUIViews() {

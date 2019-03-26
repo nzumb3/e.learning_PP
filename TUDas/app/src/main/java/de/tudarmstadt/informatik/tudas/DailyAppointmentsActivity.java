@@ -53,7 +53,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDailyAppointments);
         setSupportActionBar(toolbar);
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(DailyAppointmentsActivity.this, R.xml.preferences, false);
         viewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
         this.refreshView();
 
@@ -102,18 +102,14 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
-                Timber.d("MyLog: Shared Prefs: " + prefs.getAll().toString());
-                String loc = Locale.getDefault().getDisplayCountry();
-                Timber.d("MyLog: Current Locale -> " + loc);
 
-
+                /*
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + "S103/171" + "+TU+Darmstadt");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 if(mapIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(mapIntent);
-                }
+                }*/
             }
         });
 

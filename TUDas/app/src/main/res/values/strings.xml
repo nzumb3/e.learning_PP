@@ -16,7 +16,7 @@
     <string name="lan_german">German</string>
     <string name="language">Language</string>
     <string name="notification_settings">Enable Notification Messages</string>
-    <string name="hourSizeTitle">Size per Hour (px)</string>
+    <string name="hourSizeTitle">Size per Hour</string>
     <string name="nav_settings_title">Settings</string>
     <string name="nav_timetable_title">Timetable</string>
     <string name="appointment_room">Room</string>
@@ -24,4 +24,5 @@
     <string name="title_activity_manage_labels">Manage Labels</string>
     <string name="nav_manageLabels_title">Manage Labels</string>
     <string name="title_activity_timetable">Timetable</string>
+    <string name="timetableSizeTitle">Days in Timetable</string>
 </resources>

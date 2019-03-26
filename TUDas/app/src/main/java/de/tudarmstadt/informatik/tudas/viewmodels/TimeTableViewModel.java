@@ -6,6 +6,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
+import android.content.SharedPreferences;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,13 +44,14 @@ public class TimeTableViewModel extends AndroidViewModel {
 
         startDate = new MutableLiveData<>();
         Calendar _startDate = Calendar.getInstance();
-        _startDate.set(2018, Calendar.DECEMBER, 25, 0, 0, 0);
-        _startDate.set(Calendar.MILLISECOND, 0);
+        //_startDate.set(2018, Calendar.DECEMBER, 25, 0, 0, 0);
+        //_startDate.set(Calendar.MILLISECOND, 0);
         startDate.setValue(_startDate);
+    }
 
+    public void setNumDays(int num){
         numDays = new MutableLiveData<>();
-        numDays.setValue(2);
-
+        numDays.setValue(num);
         LiveData<LiveDataTransformations.Tuple2<Calendar, Integer>> intermediate = LiveDataTransformations.ifNotNull(startDate, numDays);
 
         LiveData<List<Appointment>> appointmentsInPeriod = Transformations.switchMap(intermediate, (tuple) -> repository.getAppointmentsInPeriod(CalendarConverter.fromCalendar(tuple.first), CalendarConverter.fromCalendar(getEndDate(tuple.first, tuple.second))));
@@ -57,24 +59,24 @@ public class TimeTableViewModel extends AndroidViewModel {
         LiveData<LiveDataTransformations.Tuple3<Calendar, Integer, List<Appointment>>> intermediate2 = LiveDataTransformations.ifNotNull(startDate, numDays, appointmentsInPeriod);
 
         LiveData<List<List<Appointment>>> appointmentsFromDatabase = Transformations.map(intermediate2, (tuple) -> {
-           Calendar startDate = (Calendar) tuple.first.clone();
-           int numDays = tuple.second;
-           List<Appointment> _appointmentsInPeriod = tuple.third;
+            Calendar startDate = (Calendar) tuple.first.clone();
+            int numDays = tuple.second;
+            List<Appointment> _appointmentsInPeriod = tuple.third;
 
-           List<List<Appointment>> output = new LinkedList<>();
+            List<List<Appointment>> output = new LinkedList<>();
 
-           for(int dayOffset = 0; dayOffset < numDays; dayOffset++) {
-               List<Appointment> listForDay = new ArrayList<>();
-               for(Appointment appointment : _appointmentsInPeriod) {
-                   if(onSameDay(appointment.getStartDate(), startDate) || onSameDay(appointment.getEndDate(), startDate) || (getDate(appointment.getStartDate()).compareTo(startDate) < 0 && getDate(appointment.getEndDate()).compareTo(startDate) > 0)) {
-                       listForDay.add(appointment);
-                   }
-               }
-               output.add(listForDay);
-               startDate.add(Calendar.DATE, 1);
-           }
+            for(int dayOffset = 0; dayOffset < numDays; dayOffset++) {
+                List<Appointment> listForDay = new ArrayList<>();
+                for(Appointment appointment : _appointmentsInPeriod) {
+                    if(onSameDay(appointment.getStartDate(), startDate) || onSameDay(appointment.getEndDate(), startDate) || (getDate(appointment.getStartDate()).compareTo(startDate) < 0 && getDate(appointment.getEndDate()).compareTo(startDate) > 0)) {
+                        listForDay.add(appointment);
+                    }
+                }
+                output.add(listForDay);
+                startDate.add(Calendar.DATE, 1);
+            }
 
-           return output;
+            return output;
         });
 
         LiveData<Calendar> earliestBeginning = Transformations.map(intermediate2, (tuple) -> {

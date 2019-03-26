@@ -3,21 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:key="notifications"
-        android:title="Enable Notification Messages"
-        android:defaultValue="@bool/default_notifications"/>
-
-    <EditTextPreference
+    <SeekBarPreference
         android:key="hourSize"
         android:title="@string/hourSizeTitle"
-        android:defaultValue="@string/default_hourSize"/>
-<!--
-    <ListPreference
-        android:key="fontSize"
-        android:title="@string/font_size_title"
-        android:entries="@array/font_sizes"
-        android:entryValues="@array/font_size_values"
-        android:defaultValue="@string/font_size_medium_value"/>
--->
+        app:min="@integer/hourSizeMin"
+        android:max="@integer/hourSizeMax"
+        android:defaultValue="@integer/hourSizeDefault"/>
+
+    <SeekBarPreference
+        android:key="timetableSize"
+        android:title="@string/timetableSizeTitle"
+        app:min="@integer/timetableDaysMin"
+        android:max="@integer/timetableDaysMax"
+        android:defaultValue="@integer/timetableDaysDefault"/>
+
 </PreferenceScreen>
