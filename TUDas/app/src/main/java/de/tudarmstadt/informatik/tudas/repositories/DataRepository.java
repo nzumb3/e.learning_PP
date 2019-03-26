@@ -209,4 +209,41 @@ public class DataRepository {
 
         return builder.toString();
     }
+
+    public LiveData<Boolean> labelExists(String label) {
+        MutableLiveData<Boolean> output = new MutableLiveData<>();
+        appointmentService.labelExists(label).enqueue(new Callback<BooleanResult>() {
+            @Override
+            public void onResponse(Call<BooleanResult> call, Response<BooleanResult> response) {
+                Timber.d("MyLog: " + response.body());
+                output.setValue(response.body().getExists());
+            }
+
+            @Override
+            public void onFailure(Call<BooleanResult> call, Throwable t) {
+                output.setValue(null);
+            }
+        });
+        return output;
+    }
+
+    public LiveData<List<String>> getLabelsWithName(String label) {
+        return labelDao.getLabelsWithName(label);
+    }
+
+    public class BooleanResult {
+        private boolean exists;
+
+        public boolean getExists() {
+            return exists;
+        }
+
+        public void setExists(boolean exists) {
+            this.exists = exists;
+        }
+
+        public String toString() {
+            return "exists: " + exists;
+        }
+    }
 }

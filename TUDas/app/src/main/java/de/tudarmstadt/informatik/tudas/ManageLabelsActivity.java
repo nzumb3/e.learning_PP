@@ -64,7 +64,10 @@ public class ManageLabelsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Label label = new Label();
                 label.setName(labelInput.getText().toString());
-                viewModel.insertLabel(label);
+                viewModel.validateLabel(label).observe(ManageLabelsActivity.this, (validation) -> {
+                    if(validation != null && validation)
+                        viewModel.insertLabel(label);
+                });
                 labelInput.setText("");
                 popup.dismiss();
             }
