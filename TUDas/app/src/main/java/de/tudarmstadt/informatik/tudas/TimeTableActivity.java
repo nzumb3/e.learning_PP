@@ -29,6 +29,7 @@ import de.tudarmstadt.informatik.tudas.customWidgets.DayListView;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationButtonListener;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationListener;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
+import de.tudarmstadt.informatik.tudas.views.TimetablePopupView;
 import timber.log.Timber;
 
 public class TimeTableActivity extends AppCompatActivity {
@@ -36,6 +37,7 @@ public class TimeTableActivity extends AppCompatActivity {
     private List<ListView> listViews;
     private ListView timeSlotView;
     private TimeTableViewModel viewModel;
+    private TimetablePopupView popup;
     DrawerLayout drawerLayout;
 
     private DatePickerDialog datePickerDialog;
@@ -47,10 +49,10 @@ public class TimeTableActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         int days = prefs.getInt("timetableSize", getResources().getInteger(R.integer.timetableDaysDefault));
-        Timber.d("Mylog: " + days);
         viewModel.setNumDays(days);
 
         setContentView(R.layout.activity_timetable);
+        popup = new TimetablePopupView(this);
         setupUIViews();
         setupListView();
 
@@ -113,7 +115,7 @@ public class TimeTableActivity extends AppCompatActivity {
         viewModel.getAppointments().observe(this, (appointments) -> {
             if(appointments != null) {
                 for(int day = 0; day < appointments.size(); day++) {
-                    AppointmentAdapter adapter = new AppointmentAdapter(this, size);
+                    AppointmentAdapter adapter = new AppointmentAdapter(this, size, popup);
                     adapter.setList(appointments.get(day));
                     listViews.get(day).setAdapter(adapter);
                 }

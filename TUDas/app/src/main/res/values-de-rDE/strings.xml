@@ -26,4 +26,5 @@
     <string name="nav_manageLabels_title">Abo Verwaltung</string>
     <string name="title_activity_timetable">Stundenplan</string>
     <string name="timetableSizeTitle">Tage im Stundenplan</string>
+    <string name="popupDeleteButton">Löschen</string>
 </resources>

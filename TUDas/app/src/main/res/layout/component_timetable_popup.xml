@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/dailyAppointmentPopup">
+    android:id="@+id/timetablePopup">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dailyAppointmentPopupTitle"
+        android:id="@+id/timetablePopupTitle"
         android:text="THE TITLE"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/small_padding"/>
@@ -16,9 +16,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dailyAppointmentPopupDescription"
+        android:id="@+id/timetablePopupDescription"
         android:text="THE DESCRIPTION is very long so we need some space for this. Maybe this will work like so?!?"
-        android:layout_below="@id/dailyAppointmentPopupTitle"
+        android:layout_below="@id/timetablePopupTitle"
         android:layout_marginTop="@dimen/small_padding"
         android:layout_marginLeft="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding"/>
@@ -26,7 +26,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/dailyAppointmentPopupDescription"
+        android:layout_below="@id/timetablePopupDescription"
         android:layout_marginTop="@dimen/big_padding"
         android:layout_marginLeft="@dimen/big_padding"
         android:layout_marginRight="@dimen/big_padding">
@@ -34,39 +34,51 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/dailyAppointmentPopupRoom"
+            android:id="@+id/timetablePopupRoom"
             android:text="ROOM"
             android:layout_alignParentLeft="true"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:id="@+id/rlTimetablePopup">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dailyAppointmentPopupStartTime"
+                android:id="@+id/timetablePopupStartTime"
                 android:text="START_TIME"
                 android:layout_centerHorizontal="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dailyAppointmentPopupTimeDivider"
+                android:id="@+id/timetablePopupTimeDivider"
                 android:text="-"
-                android:layout_below="@id/dailyAppointmentPopupStartTime"
+                android:layout_below="@id/timetablePopupStartTime"
                 android:layout_centerHorizontal="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dailyAppointmentPopupEndTime"
+                android:id="@+id/timetablePopupEndTime"
                 android:text="END_TIME"
-                android:layout_below="@id/dailyAppointmentPopupTimeDivider"
+                android:layout_below="@id/timetablePopupTimeDivider"
                 android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timetablePopupDeleteButton"
+            android:text="@string/popupDeleteButton"
+            android:background="@color/colorPrimary"
+            android:layout_below="@id/rlTimetablePopup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/big_padding"/>
+
     </RelativeLayout>
 
 </RelativeLayout>
