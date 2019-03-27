@@ -30,4 +30,12 @@
     <string name="title_activity_timetable">Timetable</string>
     <string name="timetableSizeTitle">Days in Timetable</string>
     <string name="popupDeleteButton">Delete</string>
+    <string name="confirm_label_deletion">Do you really want to delete the label</string>
+    <string name="label_deletion">Label Deletion</string>
+    <string name="cancel">Cancel</string>
+    <string name="color_picker_closed">Color Picker closed</string>
+    <string name="color">Color</string>
+    <string name="OK">OK</string>
+    <string name="nothing_todo_today">Very well! Nothing to do today!</string>
+    <string name="follow_list">You have no appointments today. Maybe you can follow some appointment lists?</string>
 </resources>

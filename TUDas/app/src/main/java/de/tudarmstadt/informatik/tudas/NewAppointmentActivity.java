@@ -69,7 +69,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, ContextCompat.getColor(this, R.color.colorPrimary), new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
-                Toast.makeText(NewAppointmentActivity.this, "Color Picker closed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewAppointmentActivity.this, R.string.color_picker_closed, Toast.LENGTH_SHORT).show();
             }
 
             @Override

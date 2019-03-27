@@ -58,7 +58,6 @@
                 android:id="@+id/tvTimeFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1-2 Jan"
                 android:textAlignment="center"
                 android:background="#FFFFFF"/>
 

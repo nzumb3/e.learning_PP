@@ -44,10 +44,10 @@ public class LabelListViewAdapter extends AbstractListAdapter<String> {
 
     private AlertDialog createDialog(View v, String label) {
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
-        builder.setMessage("Do you really want to delete the label \"" + label + "\"?")
-                .setTitle("Label Deletion")
-                .setPositiveButton("Delete", ((dialog, which) -> viewModel.deleteLabel(label)))
-                .setNegativeButton("Cancel", ((dialog, which) -> dialog.cancel()));
+        builder.setMessage(R.string.confirm_label_deletion + " \"" + label + "\"?")
+                .setTitle(R.string.label_deletion)
+                .setPositiveButton(R.string.popupDeleteButton, ((dialog, which) -> viewModel.deleteLabel(label)))
+                .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.cancel()));
 
         return builder.create();
     }

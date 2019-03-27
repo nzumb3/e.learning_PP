@@ -27,4 +27,16 @@
     <string name="title_activity_timetable">Stundenplan</string>
     <string name="timetableSizeTitle">Tage im Stundenplan</string>
     <string name="popupDeleteButton">Löschen</string>
+    <string name="end_after_start">Die Endzeit muss nach der Startzeit liegen.</string>
+    <string name="start_unequal_end">Die Startzeit muss ungleich der Endzeit sein.</string>
+    <string name="abbreviation_not_empty">Die Abkürzung darf nicht leer sein.</string>
+    <string name="title_not_empty">Der Titel darf nicht leer sein.</string>
+    <string name="confirm_label_deletion">Löschst Du wirklich das Label</string>
+    <string name="label_deletion">Label löschen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="color_picker_closed">Color Picker geschlossen</string>
+    <string name="color">Farbe</string>
+    <string name="OK">OK</string>
+    <string name="nothing_todo_today">Sehr gut! Heute steht nichts an!</string>
+    <string name="follow_list">Du hast heute keine Termine. Möchtest Du vielleicht eine Terminliste abonnieren?</string>
 </resources>

@@ -8,7 +8,6 @@
         android:id="@+id/tvTimeFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1-2 Jan"
         android:textAlignment="center"
         android:background="#FFFFFF"/>
 
@@ -23,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/tvNoAppointments"
-        android:text="Very well! Nothing to do today!"
+        android:text="@string/nothing_todo_today"
         android:gravity="center_horizontal"
         android:layout_below="@+id/separatorLine"
         android:visibility="invisible"/>
@@ -32,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/tvNoAppointmentsNoLists"
-        android:text="You have no appointments today. Maybe you can follow some appointment lists?"
+        android:text="@string/follow_list"
         android:gravity="center_horizontal"
         android:layout_below="@+id/separatorLine"
         android:visibility="invisible"/>

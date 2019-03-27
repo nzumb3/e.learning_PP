@@ -152,7 +152,7 @@
                         android:id="@+id/appointment_color_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Color"
+                        android:text="@string/color"
                         android:layout_centerHorizontal="true"
                         android:textSize="@dimen/heading6"/>
 
