@@ -271,7 +271,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:text="@string/button_save"
-                android:textColor="@color/buttonLabel"
+                android:textColor="@color/WHITE"
                 android:layout_marginTop="@dimen/small_padding"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/appointment_time"/>

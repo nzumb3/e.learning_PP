@@ -81,8 +81,10 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
                 public void onClick(View v) {
                     TextView popTitle = popup.getContentView().findViewById(R.id.timetablePopupTitle);
                     popTitle.setText(appointment.getAppointmentContent().getTitle());
+                    popTitle.setTextColor(context.getResources().getColor(R.color.BLACK));
                     TextView popDescription = popup.getContentView().findViewById(R.id.timetablePopupDescription);
                     popDescription.setText(appointment.getAppointmentContent().getDescription());
+                    popDescription.setTextColor(context.getResources().getColor(R.color.BLACK));
                     TextView popRoom = popup.getContentView().findViewById(R.id.timetablePopupRoom);
                     String roomString = "<u>" + appointment.getAppointmentContent().getRoom() + "</u>";
                     popRoom.setText(Html.fromHtml(roomString));
@@ -97,8 +99,12 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
                     }));
                     TextView popStartTime = popup.getContentView().findViewById(R.id.timetablePopupStartTime);
                     TextView popEndTime = popup.getContentView().findViewById(R.id.timetablePopupEndTime);
+                    TextView popTimeDivider = popup.getContentView().findViewById(R.id.timetablePopupTimeDivider);
                     popStartTime.setText(timeFormat.format(appointment.getStartDate().getTime()));
                     popEndTime.setText(timeFormat.format(appointment.getEndDate().getTime()));
+                    popStartTime.setTextColor(context.getResources().getColor(R.color.BLACK));
+                    popEndTime.setTextColor(context.getResources().getColor(R.color.BLACK));
+                    popTimeDivider.setTextColor(context.getResources().getColor(R.color.BLACK));
                     Button deleteButton = popup.getContentView().findViewById(R.id.timetablePopupDeleteButton);
                     deleteButton.setOnClickListener(new View.OnClickListener() {
                         @Override

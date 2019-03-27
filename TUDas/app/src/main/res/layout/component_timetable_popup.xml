@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/timetablePopupDeleteButton"
             android:text="@string/popupDeleteButton"
+            android:textColor="@color/WHITE"
             android:background="@color/colorPrimary"
             android:layout_below="@id/rlTimetablePopup"
             android:layout_centerHorizontal="true"

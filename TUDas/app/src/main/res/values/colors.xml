@@ -7,4 +7,5 @@
     <color name="GREY">#10CCCCCC</color>
     <color name="popupBackground">#AAEEEEEE</color>
     <color name="WHITE">#FFFFFF</color>
+    <color name="BLACK">#000000</color>
 </resources>
