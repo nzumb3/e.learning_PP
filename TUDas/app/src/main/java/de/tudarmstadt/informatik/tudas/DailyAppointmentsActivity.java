@@ -57,7 +57,6 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(DailyAppointmentsActivity.this, R.xml.preferences, false);
         viewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
-
         viewModel.getCurrentDate().observe(this, (calendar -> {
             if(calendar != null) {
                 TextView dateTextView = findViewById(R.id.tvTimeFrame);
@@ -134,8 +133,6 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences bla = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
-                Timber.d("MyLog: " + bla.getAll().toString());
             }
         });
 

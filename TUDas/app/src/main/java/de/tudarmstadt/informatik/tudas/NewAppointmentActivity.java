@@ -163,6 +163,8 @@ public class NewAppointmentActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 start_date_calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 start_date_calendar.set(Calendar.MINUTE, minute);
+                end_date_calendar.setTime(start_date_calendar.getTime());
+                end_date_calendar.add(Calendar.MINUTE, 15);
                 updateLabel();
             }
         };
