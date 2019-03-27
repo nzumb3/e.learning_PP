@@ -24,6 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="ffffff" />
+                                                <entry key="paddingPercent" value="25" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,6 +45,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundColor" value="000000" />
                                       <entry key="iconShape" value="NONE" />
                                       <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/beers.png" />
                                       <entry key="outputName" value="menu" />

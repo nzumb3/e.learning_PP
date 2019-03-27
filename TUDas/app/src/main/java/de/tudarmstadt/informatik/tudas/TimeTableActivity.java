@@ -66,7 +66,6 @@ public class TimeTableActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.toolbarTimetable));
         drawerLayout = findViewById(R.id.drawerLayout_timetable);
         NavigationView navView = findViewById(R.id.nav_view);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(TimeTableActivity.this, drawerLayout));
         ImageButton navButton = findViewById(R.id.navButton_timetable);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));

@@ -17,6 +17,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -103,7 +105,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
         NavigationView navView = findViewById(R.id.nav_view);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
 
         ImageButton navButton = findViewById(R.id.navButton_dailyAppointments);
@@ -139,7 +141,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
         NavigationView navView = findViewById(R.id.nav_view);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
 
         ImageButton navButton = findViewById(R.id.navButton_dailyAppointments);

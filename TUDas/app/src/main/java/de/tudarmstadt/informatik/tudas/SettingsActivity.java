@@ -37,7 +37,6 @@ public class SettingsActivity extends AppCompatActivity {
         ImageButton navButton = findViewById(R.id.navButton_settings);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
         NavigationView navView = findViewById(R.id.nav_view);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
     }
 }

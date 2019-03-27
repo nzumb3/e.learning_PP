@@ -77,7 +77,6 @@ public class ManageLabelsActivity extends AppCompatActivity {
         //Setup the navigation bar
         drawerLayout = findViewById(R.id.drawerLayoutManageLabels);
         NavigationView navView = findViewById(R.id.nav_view);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
         ImageButton navButton = findViewById(R.id.navButton_manageLabels);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
