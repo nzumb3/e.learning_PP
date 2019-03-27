@@ -2,10 +2,13 @@ package de.tudarmstadt.informatik.tudas.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +80,18 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
                     popTitle.setText(appointment.getAppointmentContent().getTitle());
                     TextView popDescription = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupDescription);
                     popDescription.setText(appointment.getAppointmentContent().getDescription());
+                    TextView popRoom = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupRoom);
+                    String roomString = "<u>" + appointment.getAppointmentContent().getRoom() + "</u>";
+                    popRoom.setText(Html.fromHtml(roomString));
+                    popRoom.setTextColor(Color.parseColor("blue"));
+                    popRoom.setOnClickListener((v1 -> {
+                        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + appointment.getAppointmentContent().getRoom() + "+TU+Darmstadt");
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if(mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                            context.startActivity(mapIntent);
+                        }
+                    }));
                     /* Known Bug: In newer android versions Gravity.CENTER not working -> PopupWindow is shown on left upper corner */
                     popUp.showAtLocation(popUp.getContentView(), Gravity.CENTER, 0, 0);
                     int width = Resources.getSystem().getDisplayMetrics().widthPixels;

@@ -1,6 +1,5 @@
 package de.tudarmstadt.informatik.tudas.viewmodels;
 
-import android.Manifest;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
@@ -11,11 +10,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.support.v4.app.ActivityCompat;
 
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.model.Appointment;
@@ -30,6 +26,8 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
 
     private MutableLiveData<Integer> permissionStatus;
 
+    private MutableLiveData<Calendar> currentDate;
+
     public DailyAppointmentsViewModel(Application application) {
         super(application);
 
@@ -37,10 +35,19 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
 
         permissionStatus = new MutableLiveData<>();
         permissionStatus.setValue(PackageManager.PERMISSION_DENIED);
+
+        currentDate = new MutableLiveData<>();
+        Calendar _startDate = Calendar.getInstance();
+        _startDate.set(Calendar.HOUR_OF_DAY, 0);
+        _startDate.set(Calendar.MINUTE, 0);
+        _startDate.set(Calendar.SECOND, 0);
+        _startDate.set(Calendar.MILLISECOND, 0);
+        currentDate.setValue(_startDate);
     }
 
-    public LiveData<List<Appointment>> getAppointmentsForDay(String day) {
-        LiveData<LiveDataTransformations.Tuple2<Integer, List<Appointment>>> intermediate = LiveDataTransformations.ifNotNull(permissionStatus, repository.getDailyAppointments(day));
+    public LiveData<List<Appointment>> getAppointmentsForDay() {
+        LiveData<List<Appointment>> appointmentsForDay = Transformations.switchMap(currentDate, (calendar) -> repository.getDailyAppointments(CalendarConverter.fromCalendar(calendar)));
+        LiveData<LiveDataTransformations.Tuple2<Integer, List<Appointment>>> intermediate = LiveDataTransformations.ifNotNull(permissionStatus, appointmentsForDay);
         return Transformations.map(intermediate, (tuple) -> {
             int permission = tuple.first;
             List<Appointment> appointments = tuple.second;
@@ -108,5 +115,21 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
 
     public void setPermissionStatus(int permissionStatus) {
         this.permissionStatus.setValue(permissionStatus);
+    }
+
+    public LiveData<Integer> getInformationCode() {
+        LiveData<LiveDataTransformations.Tuple2<List<String>, List<Appointment>>> intermediate = LiveDataTransformations.ifNotNull(repository.getLabels(), getAppointmentsForDay());
+        return Transformations.map(intermediate, (tuple) -> {
+            if(tuple.second.isEmpty()) {
+                if(tuple.first.isEmpty())
+                    return 2;
+                return 1;
+            }
+            return 0;
+        });
+    }
+
+    public LiveData<Calendar> getCurrentDate() {
+        return currentDate;
     }
 }

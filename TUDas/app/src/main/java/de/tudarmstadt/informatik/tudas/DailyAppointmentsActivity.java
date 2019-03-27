@@ -20,7 +20,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +57,15 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(DailyAppointmentsActivity.this, R.xml.preferences, false);
         viewModel = ViewModelProviders.of(this).get(DailyAppointmentsViewModel.class);
+
+        viewModel.getCurrentDate().observe(this, (calendar -> {
+            if(calendar != null) {
+                TextView dateTextView = findViewById(R.id.tvTimeFrame);
+                SimpleDateFormat format = new SimpleDateFormat("dd. MMM yyyy");
+                dateTextView.setText(format.format(calendar.getTime()));
+            }
+        }));
+
         this.refreshView();
 
         dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
@@ -65,8 +76,29 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
 
         popUp = new DailyAppointmentPopupView(this);
 
+        viewModel.getInformationCode().observe(this, (code) -> {
+            if(code != null) {
+                switch (code) {
+                    case 1:
+                        findViewById(R.id.tvNoAppointments).setVisibility(View.VISIBLE);
+                        findViewById(R.id.tvNoAppointmentsNoLists).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.lvDailyAppointments).setVisibility(View.INVISIBLE);
+                        break;
+                    case 2:
+                        findViewById(R.id.tvNoAppointments).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.tvNoAppointmentsNoLists).setVisibility(View.VISIBLE);
+                        findViewById(R.id.lvDailyAppointments).setVisibility(View.INVISIBLE);
+                        break;
+                    default:
+                        findViewById(R.id.tvNoAppointments).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.tvNoAppointmentsNoLists).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.lvDailyAppointments).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
-        viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
+        viewModel.getAppointmentsForDay().observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
 
         drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
@@ -91,7 +123,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         popUp = new DailyAppointmentPopupView(this);
 
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
-        viewModel.getAppointmentsForDay(CalendarConverter.toDateString(startDate)).observe(this, adapter::setList);
+        viewModel.getAppointmentsForDay().observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
@@ -102,14 +134,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                /*
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + "S103/171" + "+TU+Darmstadt");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if(mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }*/
+                
             }
         });
 

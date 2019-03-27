@@ -23,4 +23,14 @@
         android:layout_marginLeft="5px"
         android:layout_marginRight="5px"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dailyAppointmentPopupRoom"
+        android:text="Room"
+        android:layout_below="@id/dailyAppointmentPopupDescription"
+        android:layout_marginTop="20px"
+        android:layout_marginLeft="5px"
+        android:layout_marginRight="5px"/>
+
 </RelativeLayout>
