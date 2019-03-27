@@ -23,6 +23,7 @@ import java.util.Locale;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.viewmodels.NewAppointmentViewModel;
+import timber.log.Timber;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class NewAppointmentActivity extends AppCompatActivity {
@@ -118,7 +119,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
                 String description = descriptionInput.getText().toString();
                 String abbreviation = abbrInput.getText().toString();
                 int background = ((ColorDrawable) findViewById(R.id.appointment_color_preview).getBackground()).getColor();
-                String colorString = "#" + Integer.toHexString(background & 0x00ffffff);
+                String colorString = "#" + Integer.toHexString(background);
                 String room = roomInput.getText().toString();
                 Calendar startDate = start_date_calendar;
                 Calendar endDate = end_date_calendar;
@@ -136,6 +137,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
                                 Appointment appointment = new Appointment();
                                 appointment.setStartDate(startDate);
                                 appointment.setEndDate(endDate);
+                                Timber.d("MyLog: Farbe = " + colorString + ", background = " + background);
 
                                 viewModel.insert(content, appointment);
 

@@ -134,7 +134,8 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                SharedPreferences bla = PreferenceManager.getDefaultSharedPreferences(DailyAppointmentsActivity.this);
+                Timber.d("MyLog: " + bla.getAll().toString());
             }
         });
 

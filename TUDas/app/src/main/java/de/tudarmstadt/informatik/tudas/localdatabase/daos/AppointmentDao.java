@@ -47,6 +47,6 @@ public abstract class AppointmentDao {
     @Query("SELECT MAX(TIME(end_date)) FROM appointments WHERE DATE(start_date) <= DATE(:endDate) AND end_date >= DATE(:startDate)")
     public abstract LiveData<String> getLatestEndingInPeriod(String startDate, String endDate);
 
-    @Query("SELECT * FROM appointments WHERE DATE(start_date) == :date OR DATE(end_date) == :date OR (DATE(start_date) < :date AND DATE(end_date) > :date) ORDER BY start_date ASC, end_date DESC")
+    @Query("SELECT * FROM appointments WHERE DATE(start_date) == DATE(:date) OR DATE(end_date) == DATE(:date) OR (DATE(start_date) < DATE(:date) AND DATE(end_date) > DATE(:date)) ORDER BY start_date ASC, end_date DESC")
     public abstract LiveData<List<Appointment>> getAppointmentsForDay(String date);
 }
