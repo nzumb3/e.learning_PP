@@ -2,6 +2,7 @@ package de.tudarmstadt.informatik.tudas.localdatabase.daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -49,4 +50,10 @@ public abstract class AppointmentDao {
 
     @Query("SELECT * FROM appointments WHERE DATE(start_date) == DATE(:date) OR DATE(end_date) == DATE(:date) OR (DATE(start_date) < DATE(:date) AND DATE(end_date) > DATE(:date)) ORDER BY start_date ASC, end_date DESC")
     public abstract LiveData<List<Appointment>> getAppointmentsForDay(String date);
+
+    @Delete
+    public abstract void delete(Appointment appointment);
+
+    @Delete
+    public abstract void delete(AppointmentContent appointmentContent);
 }
