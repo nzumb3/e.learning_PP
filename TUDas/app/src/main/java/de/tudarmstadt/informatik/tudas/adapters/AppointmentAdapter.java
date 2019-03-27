@@ -30,15 +30,17 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
     private int PIXEL_PER_MINUTE;
     TimetablePopupView popup;
     Context context;
+    TimeTableViewModel viewModel;
 
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-    public AppointmentAdapter(Context context, int size, TimetablePopupView popup) {
+    public AppointmentAdapter(Context context, int size, TimetablePopupView popup, TimeTableViewModel viewModel) {
         super(context);
         this.PIXEL_PER_MINUTE = size;
         this.popup = popup;
         this.context = context;
+        this.viewModel = viewModel;
     }
 
     @Override
@@ -49,15 +51,22 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
         if(list != null && list.size() >= position + 1) {
             RelativeLayout timetableBlock = convertView.findViewById(R.id.timetableEntryBlock);
             TextView abbr = convertView.findViewById(R.id.timetableEntryAbbreviation);
-            TextView time = convertView.findViewById(R.id.timetableEntryTime);
+            TextView startTime = convertView.findViewById(R.id.timetableEntryStartTime);
+            TextView endTime = convertView.findViewById(R.id.timetableEntryEndtime);
+            TextView timeDivider = convertView.findViewById(R.id.timetableEntryTimeDivider);
             TextView room = convertView.findViewById(R.id.timetableEntryRoom);
 
             Appointment appointment = list.get(position);
             timetableBlock.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
 
-            time.setText(appointment.toTimeString());
+            startTime.setText(timeFormat.format(appointment.getStartDate().getTime()));
+            endTime.setText(timeFormat.format(appointment.getEndDate().getTime()));
+            //time.setText(appointment.toTimeString());
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
-            time.setTextColor(color);
+            //time.setTextColor(color);
+            startTime.setTextColor(color);
+            endTime.setTextColor(color);
+            timeDivider.setTextColor(color);
             room.setText(appointment.getAppointmentContent().getRoom());
             room.setTextColor(color);
             abbr.setText(appointment.getAppointmentContent().getAbbreviation());
@@ -94,7 +103,8 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
                     deleteButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            viewModel.deleteAppointment(appointment);
+                            popup.dismiss();
                         }
                     });
                     /* Known Bug: In newer android versions Gravity.CENTER not working -> PopupWindow is shown on left upper corner */

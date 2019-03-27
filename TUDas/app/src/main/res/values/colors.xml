@@ -6,4 +6,5 @@
     <color name="buttonLabel">#d3d3d3</color>
     <color name="GREY">#10CCCCCC</color>
     <color name="popupBackground">#AAEEEEEE</color>
+    <color name="WHITE">#FFFFFF</color>
 </resources>

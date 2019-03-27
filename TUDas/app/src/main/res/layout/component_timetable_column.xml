@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+    android:id="@+id/timetableColumn"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2sp"
+    android:layout_marginTop="0dp"
+    android:layout_marginRight="0dp"
+    android:layout_marginBottom="0dp"
+    android:scrollbars="none"
+    android:gravity="center_horizontal"
+    android:divider="@null"
+    android:dividerHeight="0dp"
+    android:layout_weight="2"/>

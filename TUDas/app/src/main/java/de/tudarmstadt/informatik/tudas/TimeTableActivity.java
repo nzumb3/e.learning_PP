@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -38,6 +39,7 @@ public class TimeTableActivity extends AppCompatActivity {
     private ListView timeSlotView;
     private TimeTableViewModel viewModel;
     private TimetablePopupView popup;
+    int days;
     DrawerLayout drawerLayout;
 
     private DatePickerDialog datePickerDialog;
@@ -48,7 +50,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(TimeTableViewModel.class);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        int days = prefs.getInt("timetableSize", getResources().getInteger(R.integer.timetableDaysDefault));
+        days = prefs.getInt("timetableSize", getResources().getInteger(R.integer.timetableDaysDefault));
         viewModel.setNumDays(days);
 
         setContentView(R.layout.activity_timetable);
@@ -98,9 +100,19 @@ public class TimeTableActivity extends AppCompatActivity {
         findViewById(R.id.tvTimeFrame).setOnClickListener(v -> datePickerDialog.show());
 
         listViews = new ArrayList<>();
-        listViews.add((ListView) findViewById(R.id.lvToday));
-        listViews.add((ListView) findViewById(R.id.lvTomorrow));
-        timeSlotView = (ListView) findViewById(R.id.lvTimeSlots);
+        LinearLayout parentLayout = (LinearLayout) findViewById(R.id.llTimetable);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        ListView view;
+        timeSlotView = (ListView) layoutInflater.inflate(R.layout.component_timetable_hour_colum, parentLayout, false);
+        parentLayout.addView(timeSlotView);
+        for (int i = 0; i < this.days; i++){
+            view = (ListView) layoutInflater.inflate(R.layout.component_timetable_column, parentLayout, false);
+            listViews.add(view);
+            parentLayout.addView(view);
+        }
+        //listViews.add((ListView) findViewById(R.id.lvToday));
+        //listViews.add((ListView) findViewById(R.id.lvTomorrow));
+        //timeSlotView = (ListView) findViewById(R.id.lvTimeSlots);
     }
 
     private void setupListView() {
@@ -115,7 +127,7 @@ public class TimeTableActivity extends AppCompatActivity {
         viewModel.getAppointments().observe(this, (appointments) -> {
             if(appointments != null) {
                 for(int day = 0; day < appointments.size(); day++) {
-                    AppointmentAdapter adapter = new AppointmentAdapter(this, size, popup);
+                    AppointmentAdapter adapter = new AppointmentAdapter(this, size, popup, viewModel);
                     adapter.setList(appointments.get(day));
                     listViews.get(day).setAdapter(adapter);
                 }
