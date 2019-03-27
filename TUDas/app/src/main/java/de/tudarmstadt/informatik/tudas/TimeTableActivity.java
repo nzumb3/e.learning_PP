@@ -96,8 +96,8 @@ public class TimeTableActivity extends AppCompatActivity {
         findViewById(R.id.tvTimeFrame).setOnClickListener(v -> datePickerDialog.show());
 
         listViews = new ArrayList<>();
-        //listViews.add((ListView) findViewById(R.id.lvToday));
-        //listViews.add((ListView) findViewById(R.id.lvTomorrow));
+        listViews.add((ListView) findViewById(R.id.lvToday));
+        listViews.add((ListView) findViewById(R.id.lvTomorrow));
         timeSlotView = (ListView) findViewById(R.id.lvTimeSlots);
     }
 

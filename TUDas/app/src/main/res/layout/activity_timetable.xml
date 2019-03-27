@@ -96,8 +96,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/llTimeSlots">
+                        android:orientation="horizontal">
 
                         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
                             android:id="@+id/lvTimeSlots"
@@ -114,18 +113,32 @@
                         </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 
                         <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
-                            android:id="@+id/lvTimeTableDays"
+                            android:id="@+id/lvToday"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="2"
                             android:layout_marginLeft="0dp"
                             android:layout_marginTop="0dp"
                             android:layout_marginRight="0dp"
                             android:layout_marginBottom="0dp"
                             android:scrollbars="none"
+                            android:gravity="center_horizontal"
+                            android:divider="@null"
                             android:dividerHeight="0dp"
-                            android:divider="@null"/>
+                            android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+
+                        <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+                            android:id="@+id/lvTomorrow"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginRight="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:scrollbars="none"
+                            android:gravity="center_horizontal"
+                            android:divider="@null"
+                            android:dividerHeight="0dp"
+                            android:layout_weight="2"></de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
 
                     </LinearLayout>
                 </RelativeLayout>
