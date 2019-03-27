@@ -264,4 +264,24 @@ public class DataRepository {
             return null;
         }
     }
+
+    public void deleteAppointment(Appointment appointment) {
+        new deleteAppointmentAsyncTask(appointmentDao).execute(appointment);
+    }
+
+    private static class deleteAppointmentAsyncTask extends AsyncTask<Appointment, Void, Void> {
+        private AppointmentDao appointmentDao;
+
+        deleteAppointmentAsyncTask(AppointmentDao appointmentDao) {
+            this.appointmentDao = appointmentDao;
+        }
+
+        @Override
+        protected Void doInBackground(final Appointment... params) {
+            AppointmentContent content = params[0].getAppointmentContent();
+            appointmentDao.delete(params[0]);
+            appointmentDao.delete(content);
+            return null;
+        }
+    }
 }
