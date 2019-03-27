@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/GREY">
 
     <EditText
         android:layout_width="wrap_content"
@@ -11,7 +12,9 @@
         android:maxLength="10"
         android:layout_alignParentLeft="true"
         android:id="@+id/addLabel_input"
-        android:layout_marginLeft="@dimen/small_padding"/>
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_centerVertical="true"
+        android:textColor="@color/WHITE"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -21,6 +24,9 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/small_padding"
         android:layout_marginLeft="@dimen/big_padding"
-        android:layout_toRightOf="@id/addLabel_input"/>
+        android:layout_toRightOf="@id/addLabel_input"
+        android:layout_centerVertical="true"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/WHITE"/>
 
 </RelativeLayout>
