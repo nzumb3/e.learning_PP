@@ -94,8 +94,15 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
                     }));
                     TextView popStartTime = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupStartTime);
                     TextView popEndTime = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupEndTime);
+                    TextView popTimeDivider = popUp.getContentView().findViewById(R.id.dailyAppointmentPopupTimeDivider);
                     popStartTime.setText(timeFormat.format(appointment.getStartDate().getTime()));
                     popEndTime.setText(timeFormat.format(appointment.getEndDate().getTime()));
+
+                    popDescription.setTextColor(context.getResources().getColor(R.color.BLACK));
+                    popEndTime.setTextColor(context.getResources().getColor(R.color.BLACK));
+                    popStartTime.setTextColor(context.getResources().getColor(R.color.BLACK));
+                    popTimeDivider.setTextColor(context.getResources().getColor(R.color.BLACK));
+                    popTitle.setTextColor(context.getResources().getColor(R.color.BLACK));
                     /* Known Bug: In newer android versions Gravity.CENTER not working -> PopupWindow is shown on left upper corner */
                     popUp.showAtLocation(popUp.getContentView(), Gravity.CENTER, 0, 0);
                     int width = Resources.getSystem().getDisplayMetrics().widthPixels;
