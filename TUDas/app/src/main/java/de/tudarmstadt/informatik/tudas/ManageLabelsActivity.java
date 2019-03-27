@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import de.tudarmstadt.informatik.tudas.adapters.LabelListViewAdapter;
@@ -78,7 +79,7 @@ public class ManageLabelsActivity extends AppCompatActivity {
         NavigationView navView = findViewById(R.id.nav_view);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
-        Button navButton = findViewById(R.id.navButton_manageLabels);
+        ImageButton navButton = findViewById(R.id.navButton_manageLabels);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
     }
 }

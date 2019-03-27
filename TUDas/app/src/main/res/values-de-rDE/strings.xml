@@ -12,7 +12,7 @@
     <string name="empty_not_saved">Leerer Termin!</string>
     <string name="appointment_abbrevation">Abkürzung</string>
     <string name="abbrevation_example">Abkz.</string>
-    <string name="title_activity_daily_appointments">Termine: Heute</string>
+    <string name="title_activity_daily_appointments">Tagesansicht</string>
     <string name="lan_english">Englisch</string>
     <string name="lan_german">Deutsch</string>
     <string name="language">Sprache</string>
@@ -22,8 +22,8 @@
     <string name="nav_timetable_title">Stundenplan</string>
     <string name="appointment_room">Raum</string>
     <string name="appointment_save">Termin gespeichert!</string>
-    <string name="title_activity_manage_labels">Abo Verwaltung</string>
-    <string name="nav_manageLabels_title">Abo Verwaltung</string>
+    <string name="title_activity_manage_labels">Abonnements</string>
+    <string name="nav_manageLabels_title">Abonnements</string>
     <string name="title_activity_timetable">Stundenplan</string>
     <string name="timetableSizeTitle">Tage im Stundenplan</string>
     <string name="popupDeleteButton">Löschen</string>

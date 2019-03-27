@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -67,7 +68,7 @@ public class TimeTableActivity extends AppCompatActivity {
         NavigationView navView = findViewById(R.id.nav_view);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(TimeTableActivity.this, drawerLayout));
-        Button navButton = findViewById(R.id.navButton_timetable);
+        ImageButton navButton = findViewById(R.id.navButton_timetable);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
     }
 

@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -105,7 +106,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
 
-        Button navButton = findViewById(R.id.navButton_dailyAppointments);
+        ImageButton navButton = findViewById(R.id.navButton_dailyAppointments);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
     }
 
@@ -141,7 +142,7 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
 
-        Button navButton = findViewById(R.id.navButton_dailyAppointments);
+        ImageButton navButton = findViewById(R.id.navButton_dailyAppointments);
         navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
     }
 }

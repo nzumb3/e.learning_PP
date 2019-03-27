@@ -18,14 +18,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <ImageButton
+                android:id="@+id/navButton_manageLabels"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/navButton_manageLabels"
                 android:background="?attr/colorPrimary"
                 android:text="NAV"
                 android:textColor="#FFFFFF"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:src="@mipmap/menu"/>
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
