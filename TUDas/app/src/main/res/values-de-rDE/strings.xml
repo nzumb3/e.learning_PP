@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">TUDas</string>
     <string name="appointment_title">Titel</string>
-    <string name="button_save">Termin Speichern</string>
+    <string name="button_save">Speichern</string>
     <string name="appointment_title_default">Termin Titel eingeben...</string>
     <string name="appointment_description">Beschreibung</string>
     <string name="appointment_description_default">Termin Beschreibung eingeben...</string>
@@ -39,4 +39,5 @@
     <string name="OK">OK</string>
     <string name="nothing_todo_today">Sehr gut! Heute steht nichts an!</string>
     <string name="follow_list">Du hast heute keine Termine. Möchtest Du vielleicht eine Terminliste abonnieren?</string>
+    <string name="new_appointment_label">Termin erstellen</string>
 </resources>

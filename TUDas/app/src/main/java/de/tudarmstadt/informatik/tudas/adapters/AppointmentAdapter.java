@@ -25,6 +25,16 @@ import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import de.tudarmstadt.informatik.tudas.views.TimetablePopupView;
 
+
+/*
+* A listener, which handles the drawing of a column in the timetable(one day). The list contains the appointments
+* for the corresponding day. With the PIXEL_PER_MINUTE field, the size of each appointment
+* is computed along with its position on the screen. In addition, a Popupwindow is attached to each
+* appointment to show up when it is clicked and shows additional information about the appointment.
+* @param context: the current context of the listener, which is used to properly show the Popup
+* @param popup: the view of the popup, since we do not need a distinct Popup for each appointment
+* @param viewModel: the Viewmodel of the Acivity. Is used to enable the user to delete an appointment through the Popup
+*/
 public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
 
     private int PIXEL_PER_MINUTE;
@@ -43,6 +53,12 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
         this.viewModel = viewModel;
     }
 
+    /*
+    * Function handles the drawing of the appointments.
+    * @param position: index in the list of an appointment to draw
+    * @param convertView: The layout of an entry in the column
+    * @param parent: The Listview, to which the appointment should be added.
+    */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
@@ -59,11 +75,18 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
             Appointment appointment = list.get(position);
             timetableBlock.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
 
-            startTime.setText(timeFormat.format(appointment.getStartDate().getTime()));
-            endTime.setText(timeFormat.format(appointment.getEndDate().getTime()));
-            //time.setText(appointment.toTimeString());
+            // See if the current appointment is empty, which corresponds to filler entrys. If found set all text to emptry.
+            if (appointment.getAppointmentContent().getTitle().equals("")){
+                startTime.setText("");
+                endTime.setText("");
+                timeDivider.setText("");
+            } else {
+                startTime.setText(timeFormat.format(appointment.getStartDate().getTime()));
+                endTime.setText(timeFormat.format(appointment.getEndDate().getTime()));
+
+            }
+            //Since the user can select a color of his choice, we need a text color w.r.t. the selected color. In our case the complementary color.
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
-            //time.setTextColor(color);
             startTime.setTextColor(color);
             endTime.setTextColor(color);
             timeDivider.setTextColor(color);
@@ -76,50 +99,57 @@ public class AppointmentAdapter extends AbstractListAdapter<Appointment> {
             timetableBlock.getLayoutParams().height = appointment.getDurationBeforeMidnight() * this.PIXEL_PER_MINUTE;
             timetableBlock.getLayoutParams().width = RelativeLayout.LayoutParams.FILL_PARENT;
 
-            timetableBlock.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TextView popTitle = popup.getContentView().findViewById(R.id.timetablePopupTitle);
-                    popTitle.setText(appointment.getAppointmentContent().getTitle());
-                    popTitle.setTextColor(context.getResources().getColor(R.color.BLACK));
-                    TextView popDescription = popup.getContentView().findViewById(R.id.timetablePopupDescription);
-                    popDescription.setText(appointment.getAppointmentContent().getDescription());
-                    popDescription.setTextColor(context.getResources().getColor(R.color.BLACK));
-                    TextView popRoom = popup.getContentView().findViewById(R.id.timetablePopupRoom);
-                    String roomString = "<u>" + appointment.getAppointmentContent().getRoom() + "</u>";
-                    popRoom.setText(Html.fromHtml(roomString));
-                    popRoom.setTextColor(Color.parseColor("blue"));
-                    popRoom.setOnClickListener((v1 -> {
-                        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + appointment.getAppointmentContent().getRoom() + "+TU+Darmstadt");
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        if(mapIntent.resolveActivity(context.getPackageManager()) != null) {
-                            context.startActivity(mapIntent);
-                        }
-                    }));
-                    TextView popStartTime = popup.getContentView().findViewById(R.id.timetablePopupStartTime);
-                    TextView popEndTime = popup.getContentView().findViewById(R.id.timetablePopupEndTime);
-                    TextView popTimeDivider = popup.getContentView().findViewById(R.id.timetablePopupTimeDivider);
-                    popStartTime.setText(timeFormat.format(appointment.getStartDate().getTime()));
-                    popEndTime.setText(timeFormat.format(appointment.getEndDate().getTime()));
-                    popStartTime.setTextColor(context.getResources().getColor(R.color.BLACK));
-                    popEndTime.setTextColor(context.getResources().getColor(R.color.BLACK));
-                    popTimeDivider.setTextColor(context.getResources().getColor(R.color.BLACK));
-                    Button deleteButton = popup.getContentView().findViewById(R.id.timetablePopupDeleteButton);
-                    deleteButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            viewModel.deleteAppointment(appointment);
-                            popup.dismiss();
-                        }
-                    });
-                    /* Known Bug: In newer android versions Gravity.CENTER not working -> PopupWindow is shown on left upper corner */
-                    popup.showAtLocation(popup.getContentView(), Gravity.CENTER, 0, 0);
-                    int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-                    int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-                    popup.update((int) Math.round(width*0.75), (int) Math.round(height*0.6));
-                }
-            });
+            //Prevent the filler entrys to show the popup with more infromation
+            if (!appointment.getAppointmentContent().getTitle().equals("")) {
+                timetableBlock.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView popTitle = popup.getContentView().findViewById(R.id.timetablePopupTitle);
+                        popTitle.setText(appointment.getAppointmentContent().getTitle());
+                        popTitle.setTextColor(context.getResources().getColor(R.color.BLACK));
+                        TextView popDescription = popup.getContentView().findViewById(R.id.timetablePopupDescription);
+                        popDescription.setText(appointment.getAppointmentContent().getDescription());
+                        popDescription.setTextColor(context.getResources().getColor(R.color.BLACK));
+                        TextView popRoom = popup.getContentView().findViewById(R.id.timetablePopupRoom);
+                        /*
+                        * We want the user to be able to click the room to move to the google maps navigation
+                        * which is set up here for the room text.
+                        */
+                        String roomString = "<u>" + appointment.getAppointmentContent().getRoom() + "</u>";
+                        popRoom.setText(Html.fromHtml(roomString));
+                        popRoom.setTextColor(Color.parseColor("blue"));
+                        popRoom.setOnClickListener((v1 -> {
+                            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + appointment.getAppointmentContent().getRoom() + "+TU+Darmstadt");
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                                context.startActivity(mapIntent);
+                            }
+                        }));
+                        TextView popStartTime = popup.getContentView().findViewById(R.id.timetablePopupStartTime);
+                        TextView popEndTime = popup.getContentView().findViewById(R.id.timetablePopupEndTime);
+                        TextView popTimeDivider = popup.getContentView().findViewById(R.id.timetablePopupTimeDivider);
+                        popStartTime.setText(timeFormat.format(appointment.getStartDate().getTime()));
+                        popEndTime.setText(timeFormat.format(appointment.getEndDate().getTime()));
+                        popStartTime.setTextColor(context.getResources().getColor(R.color.BLACK));
+                        popEndTime.setTextColor(context.getResources().getColor(R.color.BLACK));
+                        popTimeDivider.setTextColor(context.getResources().getColor(R.color.BLACK));
+                        Button deleteButton = popup.getContentView().findViewById(R.id.timetablePopupDeleteButton);
+                        deleteButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewModel.deleteAppointment(appointment);
+                                popup.dismiss();
+                            }
+                        });
+                        /* Known Bug: In newer android versions Gravity.CENTER not working -> PopupWindow is shown on left upper corner */
+                        popup.showAtLocation(popup.getContentView(), Gravity.CENTER, 0, 0);
+                        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+                        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+                        popup.update((int) Math.round(width * 0.75), (int) Math.round(height * 0.6));
+                    }
+                });
+            }
         }
 
         return convertView;

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">TUDas</string>
     <string name="appointment_title">Title</string>
-    <string name="button_save">Save Appointment</string>
+    <string name="button_save">Save</string>
     <string name="appointment_title_default">What to do?</string>
     <string name="appointment_description">Description</string>
     <string name="appointment_description_default">I\'m going to...</string>
@@ -38,4 +38,5 @@
     <string name="OK">OK</string>
     <string name="nothing_todo_today">Very well! Nothing to do today!</string>
     <string name="follow_list">You have no appointments today. Maybe you can follow some appointment lists?</string>
+    <string name="new_appointment_label">New Appointment</string>
 </resources>

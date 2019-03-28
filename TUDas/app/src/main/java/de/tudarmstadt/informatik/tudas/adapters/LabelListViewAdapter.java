@@ -1,20 +1,20 @@
 package de.tudarmstadt.informatik.tudas.adapters;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.tudarmstadt.informatik.tudas.R;
-import de.tudarmstadt.informatik.tudas.localdatabase.daos.LabelDao;
-import de.tudarmstadt.informatik.tudas.model.Label;
 import de.tudarmstadt.informatik.tudas.viewmodels.ManageLabelsViewModel;
 
+
+/*
+* Adapter which manages the view of the subscribed labels by the user.
+* @param viewModel: Is needed to allow the user to unsubscribe to a label.
+*/
 public class LabelListViewAdapter extends AbstractListAdapter<String> {
 
     private ManageLabelsViewModel viewModel;
@@ -25,6 +25,10 @@ public class LabelListViewAdapter extends AbstractListAdapter<String> {
         this.viewModel = viewModel;
     }
 
+    /*
+    * Display all subscribed labels in a listview. And add a dialog, which lets the user unsubscribe
+    * from a label.
+    */
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         if(convertView == null)
@@ -42,6 +46,9 @@ public class LabelListViewAdapter extends AbstractListAdapter<String> {
         return convertView;
     }
 
+    /*
+    * Setup of the unsubscribe dialog.
+    */
     private AlertDialog createDialog(View v, String label) {
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
         builder.setMessage(R.string.confirm_label_deletion + " \"" + label + "\"?")

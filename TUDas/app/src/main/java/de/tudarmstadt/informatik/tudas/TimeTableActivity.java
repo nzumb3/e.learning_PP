@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -12,13 +13,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,12 +26,10 @@ import java.util.List;
 
 import de.tudarmstadt.informatik.tudas.adapters.AppointmentAdapter;
 import de.tudarmstadt.informatik.tudas.adapters.HourAdapter;
-import de.tudarmstadt.informatik.tudas.customWidgets.DayListView;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationButtonListener;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationListener;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import de.tudarmstadt.informatik.tudas.views.TimetablePopupView;
-import timber.log.Timber;
 
 public class TimeTableActivity extends AppCompatActivity {
 
@@ -104,15 +101,17 @@ public class TimeTableActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = getLayoutInflater();
         ListView view;
         timeSlotView = (ListView) layoutInflater.inflate(R.layout.component_timetable_hour_colum, parentLayout, false);
+        ViewGroup.LayoutParams tmp = timeSlotView.getLayoutParams();
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        /*Maybe change this in the future, because I think it does not use the layout parameters correctly*/
+        tmp.width = (int) Math.round(width*0.55);
+        timeSlotView.setLayoutParams(tmp);
         parentLayout.addView(timeSlotView);
         for (int i = 0; i < this.days; i++){
             view = (ListView) layoutInflater.inflate(R.layout.component_timetable_column, parentLayout, false);
             listViews.add(view);
             parentLayout.addView(view);
         }
-        //listViews.add((ListView) findViewById(R.id.lvToday));
-        //listViews.add((ListView) findViewById(R.id.lvTomorrow));
-        //timeSlotView = (ListView) findViewById(R.id.lvTimeSlots);
     }
 
     private void setupListView() {

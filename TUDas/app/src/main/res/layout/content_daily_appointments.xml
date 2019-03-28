@@ -36,7 +36,7 @@
         android:layout_below="@+id/separatorLine"
         android:visibility="invisible"/>
 
-    <de.tudarmstadt.informatik.tudas.customWidgets.DayListView
+    <de.tudarmstadt.informatik.tudas.customWidgets.CustomListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lvDailyAppointments"
@@ -47,6 +47,6 @@
         android:layout_below="@+id/separatorLine"
         android:dividerHeight="10px">
 
-    </de.tudarmstadt.informatik.tudas.customWidgets.DayListView>
+    </de.tudarmstadt.informatik.tudas.customWidgets.CustomListView>
 
 </RelativeLayout>

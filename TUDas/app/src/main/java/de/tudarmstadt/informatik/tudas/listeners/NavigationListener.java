@@ -14,6 +14,11 @@ import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.SettingsActivity;
 import de.tudarmstadt.informatik.tudas.TimeTableActivity;
 
+/*
+* Navigationbar Listener. Handles the navigation between the activities.
+* @param context: used to start the next activity and is an instance of the currently active activity
+* @param drawerLayout: the layout of the navigationbar, which should close when navigation starts
+*/
 public class NavigationListener implements NavigationView.OnNavigationItemSelectedListener {
 
     private Context context;
@@ -24,6 +29,12 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
         this.drawerLayout = drawerLayout;
     }
 
+    /*
+    * Handles the navigation. First it is checked, to where the user wants to navigate and also prevents
+    * the user from navigation to the same activity, from which he comes from by just closing the navigation
+    * bar.
+    * @param menuItem: The clicked item in the menu. Used to determine the destination of the navigation.
+    */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem){
         drawerLayout.closeDrawers();
@@ -32,21 +43,20 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
                 if (!(context instanceof DailyAppointmentsActivity)){
                     Intent intent = new Intent(this.context, DailyAppointmentsActivity.class);
                     context.startActivity(intent);
-                    //((Activity)context).finish();
                 }
                 break;
             case R.id.nav_settings:
                 if (!(context instanceof SettingsActivity)){
                     Intent intent = new Intent(this.context, SettingsActivity.class);
                     context.startActivity(intent);
-                    //((Activity)context).finish();
                 }
                 break;
             case R.id.nav_timeTable:
                 if (!(context instanceof TimeTableActivity)){
                     Intent intent = new Intent(this.context, TimeTableActivity.class);
+                    /*Flag is needed to let the user navigate to the timetable via the BACK button of the phone*/
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(intent);
-                    //((Activity)context).finish();
                 }
                 break;
             case R.id.nav_manageLabels:

@@ -9,6 +9,10 @@ import android.widget.BaseAdapter;
 import java.util.LinkedList;
 import java.util.List;
 
+
+/*
+* Abstract class, which provides the base functionality used in the other adapters.
+*/
 public abstract class AbstractListAdapter<T> extends BaseAdapter {
 
     LayoutInflater layoutInflater;

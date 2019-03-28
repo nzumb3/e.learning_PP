@@ -2,54 +2,49 @@ package de.tudarmstadt.informatik.tudas;
 
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.CalendarContract;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import de.tudarmstadt.informatik.tudas.adapters.DailyAppointmentsListViewAdapter;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationButtonListener;
 import de.tudarmstadt.informatik.tudas.listeners.NavigationListener;
-import de.tudarmstadt.informatik.tudas.model.Appointment;
-import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 import de.tudarmstadt.informatik.tudas.viewmodels.DailyAppointmentsViewModel;
 import de.tudarmstadt.informatik.tudas.views.DailyAppointmentPopupView;
 import timber.log.Timber;
 
+
+/*
+* Entry point of TuDas. The Activity, which shows every appointment for the current day.
+* The View consists of a list of all appointments, which are due on the current day. Each appointment
+* is shown in a box which opens a popup window when clicked and provieds additional information about
+* the appointment and also enables the user to get navigated to the google maps app for navigation to
+* the room.
+*/
 public class DailyAppointmentsActivity extends AppCompatActivity {
 
     DailyAppointmentsViewModel viewModel;
     ListView dailyAppointmentsListView;
-    Calendar startDate;
     DrawerLayout drawerLayout;
 
     DailyAppointmentPopupView popUp;
 
+    /*
+    * On creation, the interface of the layout is initialized and the default preferences are set
+    * on the first start of the app. Also Tudas needs access to other calendar apps to check for
+    * overlaps, which is also handled on creation. Lastly the navigation bar is initialized.
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,14 +63,26 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
             }
         }));
 
-        this.refreshView();
-
-        dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
-        startDate = Calendar.getInstance();
-        startDate.set(2019, Calendar.MARCH, 15, 0, 0, 0);
-
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, 1);
+        else
+            viewModel.setPermissionStatus(PackageManager.PERMISSION_GRANTED);
 
+        drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
+        NavigationView navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
+        ImageButton navButton = findViewById(R.id.navButton_dailyAppointments);
+        navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
+    }
+
+    /*
+    * Every time the user returns to the activity, the list of appointments is updated. It is also checked
+    * if there are any appointments due today. If not, a special message is shown instead of the listview.
+    */
+    @Override
+    protected void onResume() {
+        super.onResume();
         popUp = new DailyAppointmentPopupView(this);
 
         viewModel.getInformationCode().observe(this, (code) -> {
@@ -98,53 +105,10 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
                 }
             }
         });
-
-        DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
-        viewModel.getAppointmentsForDay().observe(this, adapter::setList);
-        dailyAppointmentsListView.setAdapter(adapter);
-
-        drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
-        NavigationView navView = findViewById(R.id.nav_view);
-        //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
-
-        ImageButton navButton = findViewById(R.id.navButton_dailyAppointments);
-        navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    private void refreshView(){
         dailyAppointmentsListView = findViewById(R.id.lvDailyAppointments);
-        startDate = Calendar.getInstance();
-        startDate.set(2019, Calendar.MARCH, 15, 0, 0, 0);
-
-        popUp = new DailyAppointmentPopupView(this);
-
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
         viewModel.getAppointmentsForDay().observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
 
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, 1);
-        else
-            viewModel.setPermissionStatus(PackageManager.PERMISSION_GRANTED);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
-        drawerLayout = findViewById(R.id.drawerLayoutDailyAppointments);
-        NavigationView navView = findViewById(R.id.nav_view);
-        //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        navView.setNavigationItemSelectedListener(new NavigationListener(this, drawerLayout));
-
-        ImageButton navButton = findViewById(R.id.navButton_dailyAppointments);
-        navButton.setOnClickListener(new NavigationButtonListener(drawerLayout));
     }
 }

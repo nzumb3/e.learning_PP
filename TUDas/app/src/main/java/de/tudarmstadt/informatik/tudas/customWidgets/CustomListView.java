@@ -4,17 +4,20 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ListView;
 
-public class DayListView extends ListView {
+/*
+* Custom ListView which allows to set the size of a Listview
+*/
+public class CustomListView extends ListView {
 
-    public DayListView(Context context) {
+    public CustomListView(Context context) {
         super(context);
     }
 
-    public DayListView(Context context, AttributeSet attrs) {
+    public CustomListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DayListView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

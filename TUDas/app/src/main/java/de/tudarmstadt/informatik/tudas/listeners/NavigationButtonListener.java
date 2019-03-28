@@ -4,6 +4,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
 
+
+/*
+* Listener responsible for opening and closing the navigation bar which can be used instead of
+* swiping. It gets the drawer layout and open/closes the menu on press.
+*/
 public class NavigationButtonListener implements View.OnClickListener {
 
     private boolean drawerOpen;

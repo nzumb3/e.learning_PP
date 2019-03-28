@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <de.tudarmstadt.informatik.tudas.customWidgets.LabelListView
+    <de.tudarmstadt.informatik.tudas.customWidgets.CustomListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lvLabels"
@@ -14,6 +14,6 @@
         android:layout_marginLeft="@dimen/small_padding"
         android:layout_marginRight="@dimen/small_padding">
 
-    </de.tudarmstadt.informatik.tudas.customWidgets.LabelListView>
+    </de.tudarmstadt.informatik.tudas.customWidgets.CustomListView>
 
 </RelativeLayout>

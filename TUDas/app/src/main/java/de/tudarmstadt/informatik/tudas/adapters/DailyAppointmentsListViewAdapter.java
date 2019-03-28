@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Gravity;
@@ -19,13 +18,21 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-import de.tudarmstadt.informatik.tudas.DailyAppointmentsActivity;
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import de.tudarmstadt.informatik.tudas.views.DailyAppointmentPopupView;
-import timber.log.Timber;
 
+
+/*
+* Listener for the daily appointment listview. It handles the drawing of each appointment for the current day.
+* Each appointment is show with fixed size for a better overview. In addition, each appointment can be
+* clicked for further information, which is shown as a Popup. Inside of the Popup, the user can use a link
+* on the room to start the google maps navigation to this room. Each entry has a flag in form of a lightning
+* which sybolizes an overlap with a private calendar appointment.
+* @param context: the context of the app the popup is used in. Is needed for starting new activities and getting some ressources.
+* @param popUp: The view of the popup, which is used multiple times for different appointments
+*/
 public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appointment> {
 
     DailyAppointmentPopupView popUp;
@@ -40,6 +47,10 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
         this.context = context;
     }
 
+    /*
+    * The function is responsible for rendering each appointment in the ListView of the DailyAppointmentsActivity.
+    *
+    */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
@@ -58,9 +69,12 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             entry.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
 
+            //Check if the appointment overlaps with another appointment and show a hint.
             if(appointment.overlap()) {
                 overlapInfo.setVisibility(View.VISIBLE);
                 overlapInfo.setColorFilter(color);
+            } else {
+                overlapInfo.setVisibility(View.INVISIBLE);
             }
             title.setText(appointment.getAppointmentContent().getTitle());
             title.setTextColor(color);
@@ -73,6 +87,7 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             end.setText(timeFormat.format(appointment.getEndDate().getTime()));
             end.setTextColor(color);
 
+            //Setup the popup window for the appointment with the corresponding text.
             entry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

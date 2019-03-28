@@ -15,6 +15,13 @@ import java.util.Calendar;
 import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 
+/*
+* This adapter is responsible for drawing the hour boxes and also draws and
+* updates a red line which symbolizes the current time inside of the timetable.
+* @param context: the context of the adapter. Only used because super class needs it.
+* @param activity: Used to get access to different elements of the activities layout.
+* @param size: The size of the hour boxes, which can be set by the user in the settings, but needs to be forwarded, because the Adapter has no access to the SharedPreferences
+*/
 public class HourAdapter extends AbstractListAdapter<Calendar> {
 
     @SuppressLint("SimpleDateFormat")
@@ -29,6 +36,10 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
         this.PIXEL_PER_MINUTE = size;
     }
 
+    /*
+    * Computes the relative position of a timeslot with respect to another timeslot. Used for
+    * arranging the elements of the layout.
+    */
     private static int getRelativeSliderPosition(Calendar current, Calendar beginning){
         int currentMinutes = current.get(Calendar.HOUR_OF_DAY)*60+current.get(Calendar.MINUTE);
         int earlyMinutes = beginning.get(Calendar.HOUR_OF_DAY)*60+beginning.get(Calendar.MINUTE);
@@ -36,6 +47,10 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
         return currentMinutes - earlyMinutes;
     }
 
+    /*
+    * Computes the position of the current time in the layout and sets the position of the timeslider
+    * accordingly.
+    */
     private void setTimeSlider() {
         View timeSlider = activity.findViewById(R.id.currentTimeSlider);
         ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) timeSlider.getLayoutParams();
@@ -52,6 +67,9 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
         timeSlider.requestLayout();
     }
 
+    /*
+    * This function is responsible to draw every timeslot in the correct form.
+    */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
@@ -68,7 +86,6 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
 
             int gridlinePosition = getRelativeSliderPosition(calendar, list.get(0));
             if (gridlinePosition > 0){
-                //View gridline = new View(activity.findViewById(R.id.rlTimeTable).getContext());
                 View gridline = new View(rLTimeTable.getContext());
                 gridline.setLayoutParams(new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.FILL_PARENT,
@@ -78,10 +95,7 @@ public class HourAdapter extends AbstractListAdapter<Calendar> {
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) gridline.getLayoutParams();
                 p.setMargins(0, gridlinePosition*this.PIXEL_PER_MINUTE, 0, 0);
                 gridline.requestLayout();
-                //RelativeLayout timetable = (RelativeLayout) activity.findViewById(R.id.rlTimeTable);
-                //RelativeLayout timetable = rLTimeTable;
                 rLTimeTable.addView(gridline);
-                //timetable.addView(gridline);
             }
 
             timeSlotBlock.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 50));
