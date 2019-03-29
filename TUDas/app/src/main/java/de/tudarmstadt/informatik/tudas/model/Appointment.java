@@ -8,15 +8,20 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
-//TODO Take into account, that an appointment could go over multiple days -> duration = whole day
+/**
+ * This class represents an appointment. An appointment has a start- and an enddate and is belonngs
+ * to an appointment content.
+ *
+ * This class is persisted in a room database. It includes a foreign key to the appointment contents.
+ */
 @Entity(tableName = "appointments", foreignKeys = @ForeignKey(entity = AppointmentContent.class, parentColumns = "id", childColumns = "appointment_content_id"), indices = {@Index("appointment_content_id")})
 public class Appointment {
 
+    /**
+     * The primary key in the database table
+     */
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -29,11 +34,20 @@ public class Appointment {
     @ColumnInfo(name = "appointment_content_id")
     private long appointmentContentId;
 
+    /**
+     * The appointment content loaded from the appointment content entity
+     */
     @Embedded(prefix = "content_")
     private AppointmentContent appointmentContent;
 
+    /**
+     * This flag is used for the daily appointments view and denotes, if this appointment overlaps
+     * with an event, that is saved in another calendar app of the user's phone
+     */
     @Ignore
     private boolean overlap;
+
+    // Standard setters and getters
 
     public long getId() {
         return id;
@@ -59,17 +73,6 @@ public class Appointment {
         this.endDate = endDate;
     }
 
-    //TODO Use DateFormat
-    @Override
-    public String toString() {
-        return startDate.get(Calendar.DAY_OF_MONTH) + "." + startDate.get(Calendar.MONTH) + "." + startDate.get(Calendar.YEAR) + " " + startDate.get(Calendar.HOUR_OF_DAY) + ":" + startDate.get(Calendar.MINUTE) + " - " + endDate.get(Calendar.HOUR_OF_DAY) + ":" + endDate.get(Calendar.MINUTE);
-    }
-
-    public String toTimeString() {
-        DateFormat df = new SimpleDateFormat("HH:mm", Locale.GERMANY);
-        return df.format(startDate.getTime()) + " - " + df.format(endDate.getTime());
-    }
-
     public long getAppointmentContentId() {
         return appointmentContentId;
     }
@@ -86,9 +89,18 @@ public class Appointment {
         this.appointmentContent = appointmentContent;
     }
 
+    public boolean overlap() {
+        return overlap;
+    }
+
+    public void setOverlap(boolean overlap) {
+        this.overlap = overlap;
+    }
+
     /**
      * Returns the duration of this appointment in minutes before midnight.
-     * @return
+     *
+     * @return int  the duration before midnight in minutes
      */
     public int getDurationBeforeMidnight() {
         long millis;
@@ -105,35 +117,24 @@ public class Appointment {
         return millisToMinute(millis);
     }
 
-    public int getDurationAfterMidnight() {
-        long millis;
-        if(atSameDay())
-            millis = endDate.getTimeInMillis() - startDate.getTimeInMillis();
-        else {
-            Calendar midnight = (Calendar) endDate.clone();
-            midnight.set(Calendar.HOUR_OF_DAY, 0);
-            midnight.set(Calendar.MINUTE, 0);
-            millis = endDate.getTimeInMillis() - midnight.getTimeInMillis();
-        }
-
-        return millisToMinute(millis);
-    }
-
+    /**
+     * This method returns true, if this appointment ends at the same day as it starts.
+     *
+     * @return boolean  true, if start- and enddate are on the same day
+     */
     public boolean atSameDay() {
         return  startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR) &&
                 startDate.get(Calendar.MONTH) == endDate.get(Calendar.MONTH) &&
                 startDate.get(Calendar.DAY_OF_MONTH) == endDate.get(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     * This method converts milliseconds to minutes.
+     *
+     * @param millis    The milliseconds, that shall be converted into minutes
+     * @return int      Amount of minutes calculated from the milliseconds
+     */
     public static int millisToMinute(long millis) {
         return (int) (millis / 1000 / 60);
-    }
-
-    public boolean overlap() {
-        return overlap;
-    }
-
-    public void setOverlap(boolean overlap) {
-        this.overlap = overlap;
     }
 }

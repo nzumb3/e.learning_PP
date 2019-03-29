@@ -20,10 +20,22 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * This class is a generator class for a retrofit service provider. An instance of this retrofit
+ * service class is needed for an REST API call.
+ *
+ * The URL of the server, where the REST API is located, has to be set in this class.
+ */
 public class TudasServiceGenerator {
 
+    /**
+     * URL of the server, where the REST API is located
+     */
     private static final String BASE_URL = "http://88.152.247.4/tudas/public/api/";
 
+    /**
+     * Deserializer of a calendar object
+     */
     private static JsonDeserializer<Calendar> deserializer = ((json, typeOfT, context) -> {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
         Calendar output = Calendar.getInstance();
@@ -33,6 +45,9 @@ public class TudasServiceGenerator {
         return output;
     });
 
+    /**
+     * Have to be set for serializing a calendar object
+     */
     private static Gson gson = new GsonBuilder()
             .registerTypeAdapter(Calendar.class, deserializer)
             .create();
@@ -43,8 +58,13 @@ public class TudasServiceGenerator {
 
     private static Retrofit retrofit = builder.build();
 
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
+    /**
+     * Returns a retrofit service class of the given REST api interface.
+     *
+     * @param serviceClass  an interface where the api requests are defined
+     * @param <S>           class of the interface
+     * @return              the retrofit service class for the given request interface
+     */
     public static <S> S createService(Class<S> serviceClass) {
         return retrofit.create(serviceClass);
     }

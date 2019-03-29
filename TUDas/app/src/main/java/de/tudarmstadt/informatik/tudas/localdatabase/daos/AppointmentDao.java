@@ -12,6 +12,15 @@ import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.model.AppointmentContentWithAppointments;
 
+/**
+ * This class defines the database operations for the appointments and appointments content table.
+ *
+ * There are the following operations:
+ * insert: insert an appointment content with appointments
+ * getAppointmentsInPeriod: Returns all appointments in the given period
+ * getAppointmentsForDay: Returns all appointments at the given date
+ * delete: delete the given appointment resp. the given appointment content
+ */
 @Dao
 public abstract class AppointmentDao {
 
@@ -22,11 +31,17 @@ public abstract class AppointmentDao {
     }
 
     @Insert
-    public abstract void _insertAll(List<Appointment> appointments);
+    protected abstract void _insertAll(List<Appointment> appointments);
 
     @Insert
-    public abstract long insert(AppointmentContent appointmentContent);
+    protected abstract long insert(AppointmentContent appointmentContent);
 
+    /**
+     * Private method that inserts all appointments for a given appointment content.
+     * @param contentId     primary key of the appointment content
+     * @param content       appointment content of the appointments
+     * @param appointments  appointments that should be inserted
+     */
     private void insertAppointmentsForContent(long contentId, AppointmentContent content, List<Appointment> appointments) {
         for(Appointment appointment : appointments) {
             appointment.setAppointmentContentId(contentId);
@@ -36,17 +51,11 @@ public abstract class AppointmentDao {
         _insertAll(appointments);
     }
 
-    @Query("SELECT * FROM appointment_contents")
-    public abstract LiveData<List<AppointmentContent>> getAll();
-
+    /**
+     * Start- and enddate should be the output of CalendarConverter.fromCalendar().
+     */
     @Query("SELECT * FROM appointments WHERE (DATE(start_date) >= DATE(:startDate) AND DATE(start_date) <= DATE(:endDate)) OR (DATE(end_date) >= DATE(:startDate) AND DATE(end_date) <= DATE(:endDate))")
     public abstract LiveData<List<Appointment>> getAppointmentsInPeriod(String startDate, String endDate);
-
-    @Query("SELECT MIN(TIME(start_date)) FROM appointments WHERE DATE(start_date) <= DATE(:endDate) AND end_date >= DATE(:startDate)")
-    public abstract LiveData<String> getEarliestBeginningInPeriod(String startDate, String endDate);
-
-    @Query("SELECT MAX(TIME(end_date)) FROM appointments WHERE DATE(start_date) <= DATE(:endDate) AND end_date >= DATE(:startDate)")
-    public abstract LiveData<String> getLatestEndingInPeriod(String startDate, String endDate);
 
     @Query("SELECT * FROM appointments WHERE DATE(start_date) == DATE(:date) OR DATE(end_date) == DATE(:date) OR (DATE(start_date) < DATE(:date) AND DATE(end_date) > DATE(:date)) ORDER BY start_date ASC, end_date DESC")
     public abstract LiveData<List<Appointment>> getAppointmentsForDay(String date);

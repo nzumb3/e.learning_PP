@@ -45,6 +45,10 @@ public class NewAppointmentActivity extends AppCompatActivity {
 
     private boolean hour24Format;
 
+    /**
+     * This method updates the labels for the input elements depending on the values from the Date/
+     * TimePickers.
+     */
     private void updateLabel() {
         String myTimeFormat;
         SimpleDateFormat dateFormat;
@@ -65,6 +69,9 @@ public class NewAppointmentActivity extends AppCompatActivity {
         end_time_input.setText(timeFormat.format(end_date_calendar.getTime()));
     }
 
+    /**
+     * This method opens the ColorPicker.
+     */
     private void openColorPicker(boolean alphaSupport){
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, ContextCompat.getColor(this, R.color.colorPrimary), new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
@@ -85,6 +92,9 @@ public class NewAppointmentActivity extends AppCompatActivity {
         view.setLayoutParams(params);
     }
 
+    /**
+     * The Date/Time/Color Pickers are initialized and the input from the user is validated.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +134,13 @@ public class NewAppointmentActivity extends AppCompatActivity {
                 Calendar startDate = start_date_calendar;
                 Calendar endDate = end_date_calendar;
 
+                /*
+                Validate the input:
+                The title must not be empty
+                The abbreviation must not be empty
+                The startdate must be not equal to the enddate
+                The enddate must be greater than the startdate
+                 */
                 if(!title.isEmpty()) {
                     if(!abbreviation.isEmpty()) {
                         if(startDate.compareTo(endDate) != 0) {
@@ -157,6 +174,10 @@ public class NewAppointmentActivity extends AppCompatActivity {
         start_time_input = (EditText) findViewById(R.id.start_time_input);
         end_date_input = (EditText) findViewById(R.id.end_date_input);
         end_time_input = (EditText) findViewById(R.id.end_time_input);
+
+
+        //Settings for the Date/TimePickers
+
 
         TimePickerDialog.OnTimeSetListener time_start = new TimePickerDialog.OnTimeSetListener() {
             @Override

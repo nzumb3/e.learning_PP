@@ -31,6 +31,12 @@ import de.tudarmstadt.informatik.tudas.listeners.NavigationListener;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import de.tudarmstadt.informatik.tudas.views.TimetablePopupView;
 
+/**
+ * This activity shows the appointments for a specified period. It contains of x + 1 ListViews,
+ * where x is the number of days to be displayed. The first ListView shows the integer hours of the
+ * days.
+ * The period string is shown at a line above the ListViews.
+ */
 public class TimeTableActivity extends AppCompatActivity {
 
     private List<ListView> listViews;
@@ -42,6 +48,9 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private DatePickerDialog datePickerDialog;
 
+    /**
+     * At creation time of the activity the preferences are loaded and the UI is initialized.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +84,10 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    /**
+     * The onResume has to be called, when the number of days has changed in the settings, so the
+     * timetable has to be redrawn.
+     */
     @Override
     protected void onResume(){
         super.onResume();
@@ -83,6 +96,10 @@ public class TimeTableActivity extends AppCompatActivity {
         viewModel.setNumDays(days);
     }
 
+    /**
+     * This method initializes the UI. It provides the DatePicker for choosing the startdate. It
+     * dynamically creates the ListViews depending on the number of days to be shown.
+     */
     private void setupUIViews() {
         DatePickerDialog.OnDateSetListener dateStartFunction = (view, year, month, dayOfMonth) -> {
             Calendar startDate = Calendar.getInstance();
@@ -114,6 +131,11 @@ public class TimeTableActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method sets the period string and fills the ListViews with the appointments from the
+     * database. After that, it initializes the time line, that shows the current time in the
+     * timetable.
+     */
     private void setupListView() {
         viewModel.getPeriodString().observe(this, (string) -> {
             if(string != null) {

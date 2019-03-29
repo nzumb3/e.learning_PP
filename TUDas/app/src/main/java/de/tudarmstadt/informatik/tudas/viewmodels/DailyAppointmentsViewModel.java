@@ -19,7 +19,6 @@ import de.tudarmstadt.informatik.tudas.model.AppointmentContent;
 import de.tudarmstadt.informatik.tudas.repositories.DataRepository;
 import de.tudarmstadt.informatik.tudas.utils.CalendarConverter;
 import de.tudarmstadt.informatik.tudas.utils.LiveDataTransformations;
-import timber.log.Timber;
 
 public class DailyAppointmentsViewModel extends AndroidViewModel {
     private DataRepository repository;
@@ -45,6 +44,10 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
         currentDate.setValue(_startDate);
     }
 
+    /**
+     * Returns the appointments for the current startdate from the local database and from the
+     * server.
+     */
     public LiveData<List<Appointment>> getAppointmentsForDay() {
         LiveData<List<Appointment>> appointmentsForDay = Transformations.switchMap(currentDate, (calendar) -> repository.getDailyAppointments(CalendarConverter.fromCalendar(calendar)));
         LiveData<LiveDataTransformations.Tuple2<Integer, List<Appointment>>> intermediate = LiveDataTransformations.ifNotNull(permissionStatus, appointmentsForDay);
@@ -57,18 +60,20 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
 
             return appointments;
         });
-        //return repository.getAppointmentsForDay(day);
-        //return repository.getDailyAppointments(day);
     }
 
+    /**
+     * Returns the labels from the database.
+     */
     public LiveData<List<String>> getLabels() {
         return repository.getLabels();
     }
 
-    public void insert(AppointmentContent content, Appointment... appointments) {
-        repository.insert(content, appointments);
-    }
-
+    /**
+     * Checks if one of the given appointments overlaps with an event in another calendar app, that
+     * is installed on the user's device. If there is an overlap, it sets a flag in the appointment,
+     * so it can be marked in the view.
+     */
     private void checkOverlap(List<Appointment> appointments) {
         for(Appointment appointment : appointments) {
             Cursor cur;
@@ -85,38 +90,30 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
                     Long.toString(appointment.getStartDate().getTimeInMillis())
             };
 
-            //String[] selectionArgs = new String[]{Long.toString(CalendarConverter.fromString("2019-03-15T23:59:00").getTimeInMillis()), Long.toString(CalendarConverter.fromString("2019-03-15T00:00:00").getTimeInMillis())};
-
-
             cur = cr.query(uri, mProjection, selection, selectionArgs, null);
 
             if(cur != null) {
-                //Timber.d("MyLog: numRows = " + cur.getCount());
                 appointment.setOverlap(cur.getCount() > 0);
                 cur.close();
             }
-
-            /*if(cur != null) {
-                Timber.d("MyLog: Drin");
-                while (cur.moveToNext()) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(new Date(cur.getLong(cur.getColumnIndex(CalendarContract.Events.DTSTART))));
-                    Timber.d("MyLog: New:" + cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE)) + "(" + CalendarConverter.fromCalendar(calendar) + ")");
-                }
-            }*/
         }
-
-
-
-        /*if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, 1);
-        }*/
     }
 
+    /**
+     * Sets the permission status, if the user permits the access on the installed calendar apps.
+     */
     public void setPermissionStatus(int permissionStatus) {
         this.permissionStatus.setValue(permissionStatus);
     }
 
+    /**
+     * Returns an information code for the current state of the viewModel for showing some
+     * informations in the view depending on the current state.
+     * There are the following states:
+     * 0: There are appointments for the current date
+     * 1: There are no appointments for the current date, but the user has labels saved
+     * 2: There are no appointments for the current date and the user hasn't saved any labels
+     */
     public LiveData<Integer> getInformationCode() {
         LiveData<LiveDataTransformations.Tuple2<List<String>, List<Appointment>>> intermediate = LiveDataTransformations.ifNotNull(repository.getLabels(), getAppointmentsForDay());
         return Transformations.map(intermediate, (tuple) -> {
@@ -129,6 +126,9 @@ public class DailyAppointmentsViewModel extends AndroidViewModel {
         });
     }
 
+    /**
+     * Returns the current date.
+     */
     public LiveData<Calendar> getCurrentDate() {
         return currentDate;
     }

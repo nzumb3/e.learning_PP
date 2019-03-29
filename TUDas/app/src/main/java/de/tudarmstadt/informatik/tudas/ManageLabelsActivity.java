@@ -21,6 +21,11 @@ import de.tudarmstadt.informatik.tudas.model.Label;
 import de.tudarmstadt.informatik.tudas.viewmodels.ManageLabelsViewModel;
 import de.tudarmstadt.informatik.tudas.views.LabelPopupView;
 
+/**
+ * This activity manages the labels, the user has saved, i.e. follow it.
+ * It contains a ListView that holds the labels from the local database. By clicking on a label, the
+ * label can be deleted. Via a button a new label can be added.
+ */
 public class ManageLabelsActivity extends AppCompatActivity {
 
     ManageLabelsViewModel viewModel;

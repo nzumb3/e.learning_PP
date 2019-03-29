@@ -4,6 +4,13 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+/**
+ * This class represents an appointment content. A content contains a title of the description, an
+ * abbreviation that is shown in the timetable and the daily view, a description of the appointment,
+ * a room, where the appointment takes place and a color the appointment is visualized in the views.
+ *
+ * This class is persisted in a room database
+ */
 @Entity(tableName = "appointment_contents")
 public class AppointmentContent {
 
@@ -24,6 +31,8 @@ public class AppointmentContent {
 
     @ColumnInfo(name = "color")
     private String color;
+
+    //Standard setters and getters
 
     public long getId() {
         return id;
@@ -47,11 +56,6 @@ public class AppointmentContent {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return id + ": " + title + " - " + (description.length() > 30 ? description.substring(0, 29) + "..." : description);
     }
 
     public void setAbbreviation(String abbreviation) {

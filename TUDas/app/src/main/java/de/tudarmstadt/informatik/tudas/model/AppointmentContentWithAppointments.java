@@ -5,13 +5,22 @@ import android.arch.persistence.room.Relation;
 
 import java.util.List;
 
+/**
+ * This class is only used for inserting appointments with a corresponding appointment content into
+ * the room database via the appointments dao.
+ */
 public class AppointmentContentWithAppointments {
 
     @Embedded
     private AppointmentContent content;
 
+    /**
+     * 1:n association from appointment content to appointments
+     */
     @Relation(parentColumn = "id", entityColumn = "appointment_content_id", entity = Appointment.class)
     private List<Appointment> appointments;
+
+    //Standard setters and getters
 
     public AppointmentContent getContent() {
         return content;

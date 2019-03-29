@@ -3,12 +3,14 @@ package de.tudarmstadt.informatik.tudas.utils;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import de.tudarmstadt.informatik.tudas.model.Appointment;
-
+/**
+ * This class is a utility class to simplify the usage of LiveData.
+ * The methods combine multiple LiveDatas as sources for a MediatorLiveData.
+ * For this purpose the class TupleX are used, where X is the number of LiveDatas that shall be
+ * combined. The methods ifNotNull return a LiveData wrapping a tuple with the values of the
+ * LiveDatas to be combined. The methods assure, that the resulting values of the tuple are not
+ * null. The returned LiveData fires when one of the to be combined LiveData is changed.
+ */
 public class LiveDataTransformations {
 
     private LiveDataTransformations() {}
@@ -161,115 +163,12 @@ public class LiveDataTransformations {
         return mediator;
     }
 
-    /*public static LiveData<Tuple5> ifNotNull(LiveData<Integer> numDays, LiveData<Calendar> startDate, LiveData<Calendar> earliestBeginning, LiveData<Calendar> latestEnding, List<LiveData<List<Appointment>>> appointments) {
-        MediatorLiveData<Tuple5> mediator = new MediatorLiveData<>();
-
-        mediator.addSource(numDays, (_numDays -> {
-            Calendar _startDate = startDate.getValue();
-            Calendar _earliestBeginning = earliestBeginning.getValue();
-            Calendar _latestEnding = latestEnding.getValue();
-
-            if(_numDays != null && _startDate != null && _earliestBeginning != null && _latestEnding != null && !isNull(appointments)) {
-                List<List<Appointment>> _appointments = new ArrayList<>();
-                for(LiveData<List<Appointment>> listLiveData : appointments)
-                    _appointments.add(listLiveData.getValue());
-                mediator.setValue(new Tuple5(_numDays, _startDate, _earliestBeginning, _latestEnding, _appointments));
-            }
-        }));
-
-        mediator.addSource(startDate, (_startDate -> {
-            Integer _numDays = numDays.getValue();
-            Calendar _earliestBeginning = earliestBeginning.getValue();
-            Calendar _latestEnding = latestEnding.getValue();
-
-            if(_numDays != null && _startDate != null && _earliestBeginning != null && _latestEnding != null && !isNull(appointments)) {
-                List<List<Appointment>> _appointments = new ArrayList<>();
-                for(LiveData<List<Appointment>> listLiveData : appointments)
-                    _appointments.add(listLiveData.getValue());
-                mediator.setValue(new Tuple5(_numDays, _startDate, _earliestBeginning, _latestEnding, _appointments));
-            }
-        }));
-
-        mediator.addSource(earliestBeginning, (_earliestBeginning -> {
-            Integer _numDays = numDays.getValue();
-            Calendar _startDate = startDate.getValue();
-            Calendar _latestEnding = latestEnding.getValue();
-
-            if(_numDays != null && _startDate != null && _earliestBeginning != null && _latestEnding != null && !isNull(appointments)) {
-                List<List<Appointment>> _appointments = new ArrayList<>();
-                for(LiveData<List<Appointment>> listLiveData : appointments)
-                    _appointments.add(listLiveData.getValue());
-                mediator.setValue(new Tuple5(_numDays, _startDate, _earliestBeginning, _latestEnding, _appointments));
-            }
-        }));
-
-        mediator.addSource(latestEnding, (_latestEnding -> {
-            Integer _numDays = numDays.getValue();
-            Calendar _startDate = startDate.getValue();
-            Calendar _earliestBeginning = earliestBeginning.getValue();
-
-            if(_numDays != null && _startDate != null && _earliestBeginning != null && _latestEnding != null && !isNull(appointments)) {
-                List<List<Appointment>> _appointments = new ArrayList<>();
-                for(LiveData<List<Appointment>> listLiveData : appointments)
-                    _appointments.add(listLiveData.getValue());
-                mediator.setValue(new Tuple5(_numDays, _startDate, _earliestBeginning, _latestEnding, _appointments));
-            }
-        }));
-
-        for(LiveData<List<Appointment>> listLiveData : appointments) {
-            mediator.addSource(listLiveData, (_listLiveData -> {
-                Integer _numDays = numDays.getValue();
-                Calendar _startDate = startDate.getValue();
-                Calendar _earliestBeginning = earliestBeginning.getValue();
-                Calendar _latestEnding = latestEnding.getValue();
-
-                if(_numDays != null && _startDate != null && _earliestBeginning != null && _latestEnding != null && !isNull(appointments)) {
-                    List<List<Appointment>> _appointments = new ArrayList<>();
-                    for(LiveData<List<Appointment>> listLiveDataTmp : appointments)
-                        _appointments.add(listLiveDataTmp.getValue());
-                    mediator.setValue(new Tuple5(_numDays, _startDate, _earliestBeginning, _latestEnding, _appointments));
-                }
-            }));
-        }
-
-        return mediator;
-    }*/
-
-    private static boolean isNull(List<LiveData<List<Appointment>>> appointments) {
-        for(LiveData<List<Appointment>> listLiveData : appointments) {
-            if(listLiveData.getValue() == null)
-                return false;
-        }
-
-        return true;
-    }
-
-    /*public static class Tuple5 {
-        public final Integer numDays;
-
-        public final Calendar startDate;
-
-        public final Calendar earliestBeginning;
-
-        public final Calendar latestEnding;
-
-        public final List<List<Appointment>> appointments;
-
-        public Tuple5(Integer numDays, Calendar startDate, Calendar earliestBeginning, Calendar latestEnding, List<List<Appointment>> appointments) {
-            this.numDays = numDays;
-            this.startDate = startDate;
-            this.earliestBeginning = earliestBeginning;
-            this.latestEnding = latestEnding;
-            this.appointments = appointments;
-        }
-    }*/
-
     public static class Tuple2<S, T> {
         public final S first;
 
         public final T second;
 
-        public Tuple2(S first, T second) {
+        Tuple2(S first, T second) {
             this.first = first;
             this.second = second;
         }
@@ -282,7 +181,7 @@ public class LiveDataTransformations {
 
         public final U third;
 
-        public Tuple3(S first, T second, U third) {
+        Tuple3(S first, T second, U third) {
             this.first = first;
             this.second = second;
             this.third = third;
@@ -298,7 +197,7 @@ public class LiveDataTransformations {
 
         public final V fourth;
 
-        public Tuple4(S first, T second, U third, V fourth) {
+        Tuple4(S first, T second, U third, V fourth) {
             this.first = first;
             this.second = second;
             this.third = third;
@@ -317,7 +216,7 @@ public class LiveDataTransformations {
 
         public final W fifth;
 
-        public Tuple5(S first, T second, U third, V fourth, W fifth) {
+        Tuple5(S first, T second, U third, V fourth, W fifth) {
             this.first = first;
             this.second = second;
             this.third = third;
@@ -325,24 +224,4 @@ public class LiveDataTransformations {
             this.fifth = fifth;
         }
     }
-
-    /*public class Tuple5<LD1, LD2, LD3, LD4, LD5> {
-        public final LD1 first;
-
-        public final LD2 second;
-
-        public final LD3 third;
-
-        public final LD4 fourth;
-
-        public final LD5 fifth;
-
-        public Tuple5(LD1 first, LD2 second, LD3 third, LD4 fourth, LD5 fifth) {
-            this.first = first;
-            this.second = second;
-            this.third = third;
-            this.fourth = fourth;
-            this.fifth = fifth;
-        }
-    }*/
 }

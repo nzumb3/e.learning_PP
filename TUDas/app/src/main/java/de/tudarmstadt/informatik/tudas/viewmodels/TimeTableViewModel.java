@@ -6,7 +6,6 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
-import android.content.SharedPreferences;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +31,6 @@ public class TimeTableViewModel extends AndroidViewModel {
 
     private DataRepository repository;
 
-    public static final int PIXEL_PER_MINUTE = 3;
-
     public TimeTableViewModel(Application application) {
         super(application);
 
@@ -44,7 +41,6 @@ public class TimeTableViewModel extends AndroidViewModel {
 
         startDate = new MutableLiveData<>();
         Calendar _startDate = Calendar.getInstance();
-        //_startDate.set(2018, Calendar.DECEMBER, 25, 0, 0, 0);
         _startDate.set(Calendar.MILLISECOND, 0);
         _startDate.set(Calendar.HOUR_OF_DAY, 0);
         _startDate.set(Calendar.MINUTE, 0);
@@ -52,6 +48,10 @@ public class TimeTableViewModel extends AndroidViewModel {
         startDate.setValue(_startDate);
     }
 
+    /**
+     * Sets the number of days to be shown and initializes all LiveDatas that depending on each
+     * other.
+     */
     public void setNumDays(int num){
         numDays = new MutableLiveData<>();
         numDays.setValue(num);
@@ -171,10 +171,17 @@ public class TimeTableViewModel extends AndroidViewModel {
         });
     }
 
+    /**
+     * Returns the set startdate.
+     */
     public LiveData<Calendar> getStartDate() {
         return startDate;
     }
 
+    /**
+     * Returns a list of Appointments, that contains empty appointments between the real
+     * appointments got from the database.
+     */
     private static List<Appointment> fillList(List<Appointment> appointments, Calendar earliestBeginning, Calendar latestEnding, String day) {
         Calendar requestedDay = getDate(day);
 
@@ -237,6 +244,9 @@ public class TimeTableViewModel extends AndroidViewModel {
         return outputAppointments;
     }
 
+    /**
+     * Return an Appointment object with the given attributes.
+     */
     private static Appointment getAppointment(Calendar startDate, Calendar endDate, AppointmentContent content) {
         Appointment output = new Appointment();
         output.setStartDate(startDate);
@@ -245,18 +255,31 @@ public class TimeTableViewModel extends AndroidViewModel {
         return output;
     }
 
+    /**
+     * Returns the amount of milliseconds between the given calendar objects.
+     */
     private static long diff(Calendar first, Calendar second) {
         return second.getTimeInMillis() - first.getTimeInMillis();
     }
 
+    /**
+     * Returns a list of a list of appointments. Each list of appointments contains the appointments
+     * for one day and there is one list for each day in the shown period.
+     */
     public LiveData<List<List<Appointment>>> getAppointments() {
         return appointmentsForView;
     }
 
+    /**
+     * Sets the startdate and though triggers the recalculation of the appointments.
+     */
     public void setStartDate(Calendar startDate) {
         this.startDate.setValue(startDate);
     }
 
+    /**
+     * Returns the period string depending on the startdate and the number of days to be shown.
+     */
     public LiveData<String> getPeriodString() {
         LiveData<LiveDataTransformations.Tuple2<Calendar, Integer>> intermediate = LiveDataTransformations.ifNotNull(startDate, numDays);
 
@@ -269,20 +292,34 @@ public class TimeTableViewModel extends AndroidViewModel {
         });
     }
 
+    /**
+     * Returns the hours, that shall be shown in the first ListView.
+     */
     public LiveData<List<Calendar>> getTimeSlots() {
         return timeSlots;
     }
 
+    /**
+     * Returns a Calendar object, that represents the last day of the period, that is defined by the
+     * given startdate and the number of days.
+     */
     private static Calendar getEndDate(Calendar startDate, int numDays) {
         Calendar endDate = (Calendar) startDate.clone();
         endDate.add(Calendar.DATE, numDays - 1);
         return endDate;
     }
 
+    /**
+     * Converts a date string into a calendar object.
+     */
     private static Calendar getDate(String date) {
         return CalendarConverter.fromString(date + "T00:00:00");
     }
 
+    /**
+     * Returns a Calendar object, that is on the same date as the given Calendar object, but with
+     * midnight time.
+     */
     private static Calendar getDate(Calendar calendar) {
         Calendar output = (Calendar) calendar.clone();
         output.set(Calendar.HOUR_OF_DAY, 0);
@@ -292,20 +329,25 @@ public class TimeTableViewModel extends AndroidViewModel {
         return output;
     }
 
+    /**
+     * Insert a new appointment content with some appointments into the database.
+     */
     public void insert(AppointmentContent content, Appointment... appointments) {
         repository.insert(content, appointments);
     }
 
+    /**
+     * Checks if the given Calendar objects are on the same day.
+     */
     private static boolean onSameDay(Calendar date1, Calendar date2) {
         return date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
                 date1.get(Calendar.MONTH) == date2.get(Calendar.MONTH) &&
                 date1.get(Calendar.DATE) == date2.get(Calendar.DATE);
     }
 
-    private static int getDaysBetweenDates(Calendar date1, Calendar date2) {
-        return (int) (date2.getTimeInMillis() - date1.getTimeInMillis()) / 1000 / 60 / 60 / 24;
-    }
-
+    /**
+     * Returns the complementary color of a given color as a hexadecimal string.
+     */
     public static String getComplementaryColor(String hexColor) {
         if(hexColor.indexOf('#') == 0)
             hexColor = hexColor.substring(1);
@@ -318,6 +360,9 @@ public class TimeTableViewModel extends AndroidViewModel {
         return (r * 0.299 + g * 0.587 + b * 0.114) > 186 ? "#000000" : "#FFFFFF";
     }
 
+    /**
+     * Deletes the given appointment from the database.
+     */
     public void deleteAppointment(Appointment appointment){
         repository.deleteAppointment(appointment);
     }

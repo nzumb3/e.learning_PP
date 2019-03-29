@@ -1,13 +1,18 @@
 \select@language {german}
 \contentsline {chapter}{\numberline {1}Motivation}{2}
-\contentsline {chapter}{\numberline {2}Technische Spezifikationen}{3}
+\contentsline {chapter}{\numberline {2}Einrichtung}{3}
 \contentsline {chapter}{\numberline {3}Funktionalit\IeC {\"a}ten}{4}
 \contentsline {section}{\numberline {3.1}Campus-Navigation}{4}
 \contentsline {section}{\numberline {3.2}Stundenplan}{4}
 \contentsline {section}{\numberline {3.3}Variabel einsetzbare, moderierbare Aufgabenlisten}{4}
 \contentsline {chapter}{\numberline {4}Dokumentation der Implementierung}{5}
-\contentsline {section}{\numberline {4.1}Stundenplan}{5}
-\contentsline {subsection}{\numberline {4.1.1}Modellierung der Anfangs- und Endzeitbedingung}{5}
-\contentsline {subsection}{\numberline {4.1.2}Positionierung der Termine im Stundenplan}{6}
+\contentsline {section}{\numberline {4.1}Campus-Navigation}{5}
+\contentsline {section}{\numberline {4.2}Stundenplan}{5}
+\contentsline {subsection}{\numberline {4.2.1}Modellierung der Anfangs- und Endzeitbedingung}{6}
+\contentsline {subsection}{\numberline {4.2.2}Positionierung der Termine im Stundenplan}{6}
 \contentsline {chapter}{\numberline {5}Codespezifische Dokumentation}{7}
-\contentsline {section}{\numberline {5.1}\IeC {\"U}bersicht}{7}
+\contentsline {section}{\numberline {5.1}Struktur}{7}
+\contentsline {chapter}{\numberline {6}Ausblick}{8}
+\contentsline {section}{\numberline {6.1}Erstellen von sich wiederholenden Terminen}{8}
+\contentsline {section}{\numberline {6.2}Wechseln des Starttages im Stundenplan durch Wischen}{8}
+\contentsline {section}{\numberline {6.3}Tutorial}{8}
