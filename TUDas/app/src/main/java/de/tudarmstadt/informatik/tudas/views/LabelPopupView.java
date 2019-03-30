@@ -12,13 +12,13 @@ import de.tudarmstadt.informatik.tudas.R;
 
 public class LabelPopupView extends PopupWindow {
 
+    /*
+    * Setup the popup to subscribe to a label.
+    */
     public LabelPopupView(Context context){
         super(context);
-
         RelativeLayout popUpLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.component_manage_labels_popup, null) ;
         this.setContentView(popUpLayout);
         this.setFocusable(true);
-
-
     }
 }

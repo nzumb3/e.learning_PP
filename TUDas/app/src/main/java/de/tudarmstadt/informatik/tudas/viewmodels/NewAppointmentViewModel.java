@@ -16,6 +16,11 @@ public class NewAppointmentViewModel extends AndroidViewModel {
         repository = new DataRepository(application);
     }
 
+    /*
+    * Is called to insert an appointment into the local database. An appointment consists
+    * of the appointment itself and an appointmentcontent, which holds the description and other
+    * related fields.
+    */
     public void insert(AppointmentContent content, Appointment... appointments){
         repository.insert(content, appointments);
     }

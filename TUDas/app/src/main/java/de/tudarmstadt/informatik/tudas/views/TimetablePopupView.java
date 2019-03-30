@@ -11,9 +11,12 @@ import de.tudarmstadt.informatik.tudas.R;
 
 public class TimetablePopupView extends PopupWindow {
 
+    /*
+    * Setup the layout of the popup window, which displays the detailed informations of an appointment.
+    * The window closes, if the user touches an area anywhere on the screen.
+    */
     public TimetablePopupView(Context context) {
         super(context);
-
         RelativeLayout popUpLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.component_timetable_popup, null);
         popUpLayout.setBackgroundColor(context.getResources().getColor(R.color.popupBackground));
         popUpLayout.setOnTouchListener(new View.OnTouchListener() {
