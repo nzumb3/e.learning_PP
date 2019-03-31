@@ -2,6 +2,7 @@ package de.tudarmstadt.informatik.tudas.repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.os.AsyncTask;
@@ -83,6 +84,7 @@ public class DataRepository {
 
             @Override
             public void onFailure(Call<List<Appointment>> call, Throwable t) {
+                ((MutableLiveData<List<Appointment>>) appointmentsFromServer).setValue(new ArrayList<>());
                 Timber.d("MyLog: Error on requesting appointments from server");
             }
         });
