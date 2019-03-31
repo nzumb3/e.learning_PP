@@ -22,6 +22,7 @@ import de.tudarmstadt.informatik.tudas.R;
 import de.tudarmstadt.informatik.tudas.model.Appointment;
 import de.tudarmstadt.informatik.tudas.viewmodels.TimeTableViewModel;
 import de.tudarmstadt.informatik.tudas.views.DailyAppointmentPopupView;
+import timber.log.Timber;
 
 
 /*
@@ -57,7 +58,7 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             convertView = layoutInflater.inflate(R.layout.component_daily_appointments_item, null);
 
         if (list != null && list.size() >= position + 1){
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
             Appointment appointment = list.get(position);
             RelativeLayout entry = convertView.findViewById(R.id.rlDailyAppointment);
             TextView title = convertView.findViewById(R.id.dailyAppointmentTitle);
@@ -69,12 +70,11 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             entry.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
 
+            Timber.d("MyLog: " + appointment.getAppointmentContent().getTitle());
             //Check if the appointment overlaps with another appointment and show a hint.
             if(appointment.overlap()) {
                 overlapInfo.setVisibility(View.VISIBLE);
                 overlapInfo.setColorFilter(color);
-            } else {
-                overlapInfo.setVisibility(View.INVISIBLE);
             }
             title.setText(appointment.getAppointmentContent().getTitle());
             title.setTextColor(color);

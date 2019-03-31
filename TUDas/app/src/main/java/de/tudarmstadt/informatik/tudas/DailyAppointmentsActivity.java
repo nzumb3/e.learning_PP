@@ -109,6 +109,5 @@ public class DailyAppointmentsActivity extends AppCompatActivity {
         DailyAppointmentsListViewAdapter adapter = new DailyAppointmentsListViewAdapter(this, popUp);
         viewModel.getAppointmentsForDay().observe(this, adapter::setList);
         dailyAppointmentsListView.setAdapter(adapter);
-
     }
 }
