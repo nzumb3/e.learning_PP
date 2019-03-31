@@ -70,7 +70,6 @@ public class DailyAppointmentsListViewAdapter extends AbstractListAdapter<Appoin
             entry.setBackgroundColor(Color.parseColor(appointment.getAppointmentContent().getColor()));
             int color = Color.parseColor(TimeTableViewModel.getComplementaryColor(appointment.getAppointmentContent().getColor()));
 
-            Timber.d("MyLog: " + appointment.getAppointmentContent().getTitle());
             //Check if the appointment overlaps with another appointment and show a hint.
             if(appointment.overlap()) {
                 overlapInfo.setVisibility(View.VISIBLE);
