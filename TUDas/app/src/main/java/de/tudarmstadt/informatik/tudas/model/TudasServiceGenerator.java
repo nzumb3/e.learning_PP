@@ -31,7 +31,7 @@ public class TudasServiceGenerator {
     /**
      * URL of the server, where the REST API is located
      */
-    private static final String BASE_URL = "http://88.152.247.4/tudas/public/api/";
+    private static final String BASE_URL = "http://88.152.112.109/tudas/public/api/";
 
     /**
      * Deserializer of a calendar object
